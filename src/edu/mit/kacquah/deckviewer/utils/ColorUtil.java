@@ -1,5 +1,11 @@
 package edu.mit.kacquah.deckviewer.utils;
 
+
+/**
+ * Static color utilities for processing apps. 
+ * @author kojo
+ *
+ */
 public class ColorUtil {
 
   // Color constants
