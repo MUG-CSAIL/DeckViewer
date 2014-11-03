@@ -12,6 +12,7 @@ import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import edu.mit.yingyin.tabletop.models.HandTracker.DiecticEvent;
 import edu.mit.yingyin.tabletop.models.HandTracker.ManipulativeEvent;
+import edu.mit.yingyin.tabletop.models.HandTracker.ManipulativeEvent.FingerEventType;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine.IHandEventListener;
 import edu.mit.yingyin.util.SystemUtil;
 
@@ -30,7 +31,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   
   // Drawing constants
   private static final int CIRCLE_RADIUS = 10;
-  private static final int CIRCLE_COLOR = ColorUtil.color(255, 0, 0);
+//  private static final int CIRCLE_COLOR = ColorUtil.color(255, 0, 0);
   
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
@@ -44,6 +45,12 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     this.showFingers = newState;
   }
   
+  /**
+   * Scales points from tabletop coordinates to current desktop coordinates.
+   * If app is running on the tabletop, then this method has no effect.
+   * @param p
+   * @return
+   */
   private Point2f scale(Point2f p) {
     Dimension d = SystemUtil.getVirtualScreenBounds().getSize();
     return new Point2f(p.x * d.width / tabletopRes.width,
@@ -59,9 +66,15 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   public void render(PApplet p) {
     p.pushStyle();
     p.noStroke();
-    p.fill(CIRCLE_COLOR);
+//    p.fill(CIRCLE_COLOR);
     if (feList != null) {
       for (ManipulativeEvent fe : feList) {
+        FingerEventType type = fe.type;
+        if (type == FingerEventType.PRESSED) {
+          p.fill(ColorUtil.RED);
+        } else {
+          p.fill(ColorUtil.GREEN);
+        }
         Point2f point = scale(fe.posDisplay);
         Point pointInImageCoord = new Point((int) point.x, (int) point.y);
         SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
