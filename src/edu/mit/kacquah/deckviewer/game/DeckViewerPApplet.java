@@ -11,10 +11,10 @@ import org.OpenNI.GeneralException;
 import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.utils.*;
-
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
 import edu.mit.yingyin.tabletop.models.ProcessPacket;
+import edu.mit.yingyin.util.SystemUtil;
 import processing.core.*;
 
 /**
@@ -37,11 +37,12 @@ public class DeckViewerPApplet extends PApplet{
   public static final String CALIB_FILE = FileUtil.join(MAIN_DIR, 
       CALIB_DIR, "calibration.txt");
   
-  // App dimensions
-  // For now, we'll hard encode the app dimensions.
-  // TODO: Intelligently pass these in.
-  private static int appWidth = 1600;
-  private static int appHeight = 900;
+  /**
+   * App dimensions used to size the application window.
+   */
+  private int appWidth;
+  private int appHeight;
+  private float scaling;
 
   // Deck Objects and Managers
   private Deck deck;
@@ -54,7 +55,9 @@ public class DeckViewerPApplet extends PApplet{
 
   public void setup() {
     // Init app state
-    size(GameConstants.BACKGROUND_WIDTH, GameConstants.BACKGROUND_HEIGHT);
+    fitWindowToScreen();
+//    size(GameConstants.BACKGROUND_WIDTH, GameConstants.BACKGROUND_HEIGHT);
+    size(appWidth, appHeight);
     frameRate(30);
     
     // Rendering modes
@@ -127,6 +130,27 @@ public class DeckViewerPApplet extends PApplet{
   /****************************************************************************/
   /*Additional Methods*********************************************************/
   /****************************************************************************/
+  
+  /**
+   * Pulls the width and height from the args list and sets them as appWidth and
+   * appHeight.
+   */
+  private void fitWindowToScreen() {
+    // Dimensions for curren virtual screen (all monitors combined).
+    Dimension screen = SystemUtil.getVirtualScreenBounds().getSize();
+    float screenRatio = (float)screen.height / (float)screen.width;
+    
+    float desiredRatio = (float)GameConstants.BACKGROUND_HEIGHT / (float)GameConstants.BACKGROUND_WIDTH;
+    if (screenRatio > desiredRatio) { 
+      // Size based on maximizing width.
+      appWidth = screen.width;
+      appHeight = (int) ((float)appWidth * desiredRatio);  
+    } else {
+      // Size based on maximizing height.
+      appHeight = screen.height;
+      appWidth = (int) ((float)appHeight / desiredRatio);
+    }
+  }
   
   /**
    * Initialize the deck parameters and flight objects. 

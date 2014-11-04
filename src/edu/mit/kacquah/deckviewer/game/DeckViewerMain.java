@@ -8,10 +8,12 @@ import processing.core.PApplet;
  *
  */
 public class DeckViewerMain {
-
+  /**
+   * Main kicks off the PApplet for our game.
+   * @param args
+   */
   public static void main(String[] args) {
-    // TODO Auto-generated method stub
-    String[] newArgs = new String[] { "edu.mit.kacquah.deckviewer.game.DeckViewerPApplet" };
+    String[] newArgs = new String[] { "edu.mit.kacquah.deckviewer.game.DeckViewerPApplet"};
     PApplet.main(newArgs);
   }
 

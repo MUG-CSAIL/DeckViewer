@@ -26,7 +26,7 @@ public class FilteredPoints {
   FilteredPointMethod method;
 
   /**
-   * When true, the filter will ignor the numTrackedPoints set
+   * When true, the filter will ignore the numTrackedPoints set
    */
   boolean autoResizeNumTrackedPoints;
 
@@ -71,7 +71,7 @@ public class FilteredPoints {
     // Add to end of list
     pointsHistory.addLast(newPoints);
 
-    if (pointsHistory.size() >= maxHistory) {
+    if (pointsHistory.size() > maxHistory) {
       // Remove Point2fs from front
       pointsHistory.removeFirst();
     }
@@ -123,7 +123,7 @@ public class FilteredPoints {
     float denom = pointsHistory.size();
     for (Point2f[] historyStep : pointsHistory) {
       for (int i = 0; i < historyStep.length; ++i) {
-        Point2f point = historyStep[i];
+        Point2f point = new Point2f(historyStep[i]);
         point.scale(1.0f / denom);
         result[i].add(point);
       }

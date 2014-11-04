@@ -44,7 +44,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   /**
    * Length of history window to filter points
    */
-  private final int HISTORY_LENGTH = 3;
+  private final int HISTORY_LENGTH = 5;
 
   // Drawing constants
   private static final int CIRCLE_RADIUS = 10;
