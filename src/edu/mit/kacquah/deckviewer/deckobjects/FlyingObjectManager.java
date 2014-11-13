@@ -29,8 +29,8 @@ public class FlyingObjectManager implements PAppletRenderObject {
    * @param p
    * @return
    */
-  public ArrayList<FlyingObject> intersectsPoint(Point p) {
-    ArrayList<FlyingObject> result = new ArrayList<FlyingObject>();
+  public LinkedList<FlyingObject> intersectsPoint(Point p) {
+    LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
     for (FlyingObject f : this.flyingObjects) {
       if (f.intersectsPoint(p)) {
         result.add(f);

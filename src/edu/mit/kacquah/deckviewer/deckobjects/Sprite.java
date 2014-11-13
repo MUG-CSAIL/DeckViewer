@@ -51,9 +51,10 @@ public class Sprite implements PAppletRenderObject {
   }
 
   public Rectangle getBounds() {
-    return new Rectangle((int) pos.x, (int) pos.y,
-        spriteImages[selectedSpriteImage].width,
-        spriteImages[selectedSpriteImage].height);
+    int width = spriteImages[selectedSpriteImage].width;
+    int height = spriteImages[selectedSpriteImage].height;
+    // Sprites are drawn from position center, so subtract half of dimension.
+    return new Rectangle((int) pos.x - width/2, (int) pos.y - height/2, width, height);
   }
 
   public Dimension getDimensions() {

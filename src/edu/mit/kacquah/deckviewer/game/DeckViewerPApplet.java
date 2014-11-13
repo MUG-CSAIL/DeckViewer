@@ -190,11 +190,19 @@ public class DeckViewerPApplet extends PApplet {
    */
   private void initDeckObjects() {
     deck = new Deck(this);
-
     flyingObjectManager = new FlyingObjectManager();
 
+    // For now, we'll just place some random objects on the deck.
     PVector pos = new PVector(width / 2, height / 2);
     FlyingObject flyingObject = new FlyingObject("fmac", pos, 0);
+    flyingObjectManager.addFlyingObject(flyingObject);
+    
+    pos = new PVector(width / 3, height / 2);
+   flyingObject = new FlyingObject("fmac", pos, 0);
+    flyingObjectManager.addFlyingObject(flyingObject);
+    
+    pos = new PVector(width / 3 * 2, height / 2);
+    flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
   }
 
