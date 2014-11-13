@@ -5,6 +5,7 @@
 	<classpathentry kind="lib" path="lib/core.jar"/>
 	<classpathentry kind="lib" path="lib/org.OpenNI.jar"/>
 	<classpathentry kind="lib" path="lib/vecmath.jar"/>
+	<classpathentry kind="lib" path="lib/sphinx4.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/tabletop_kinect"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

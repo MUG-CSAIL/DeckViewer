@@ -7,7 +7,7 @@ import java.awt.Dimension;
  * @author kojo
  *
  */
-public class GlobalToggles {
+public class GlobalSettings {
   
   public enum BackgroundRatio{ WIDE, NORMAL};
   /**
@@ -25,5 +25,10 @@ public class GlobalToggles {
    */
   public static int desiredWidth = 2560;
   public static int desiredHeight = 2048;
-  
+ 
+  /**
+   * Grammar configuration for speech recognition.
+   */
+  public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/";
+  public static final String grammarName = "deckviewer";
 }

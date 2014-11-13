@@ -1,0 +1,58 @@
+#JSGF V1.0;
+grammar deckviewer;
+
+ /**
+  *=============================================================================
+  *JSGF Grammar for DeckViewer application
+  *=============================================================================
+  */
+
+/**
+ * Parts of speech.
+ */
+
+<digit> = oh    |
+          zero  |
+          one   |
+          two   |
+          three |
+          four  |
+          five  |
+          six   |
+          seven |
+          eight |
+          nine  ;
+
+<preposition> = to | over;
+
+<pronoun> = this | that;
+
+/**
+ * Deck objects.
+ */
+ 
+<object> = <aircraft>;
+
+<aircraft> = plane | aircraft | fighter | jet;
+
+/**
+ * Deck locations.
+ */
+
+<location> = <preposition> ( <catapult> | <genericLocation> ); 
+
+<catapult> = catapult (one | two | three | four);
+
+<genericLocation> = there | here;
+
+/**
+ * Connecting...
+ */
+ 
+<action> =  move | place;
+ 
+/**
+ * Public commands.
+ */
+
+public <command> = ( <action> <pronoun> <object> )  | ( <location> ) ;

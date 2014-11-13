@@ -1,8 +1,8 @@
 package edu.mit.kacquah.deckviewer.deckobjects;
 
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
-import edu.mit.kacquah.deckviewer.game.GlobalToggles;
-import edu.mit.kacquah.deckviewer.game.GlobalToggles.BackgroundRatio;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.utils.*;
 import processing.core.PImage;
 import processing.core.PApplet;
@@ -23,7 +23,7 @@ public class Deck implements PAppletRenderObject {
   public Deck(PApplet p) {
     this.parent = (DeckViewerPApplet)p;
     String fileName;
-    if (GlobalToggles.backgroundRatio == BackgroundRatio.NORMAL) {
+    if (GlobalSettings.backgroundRatio == BackgroundRatio.NORMAL) {
       fileName = FileUtil.join(DeckViewerPApplet.RESOURCE_DIR,
           "cvn_full_wake.png");
     } else {

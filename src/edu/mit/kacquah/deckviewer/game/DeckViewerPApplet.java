@@ -9,8 +9,9 @@ import javax.swing.SwingUtilities;
 import org.OpenNI.GeneralException;
 
 import edu.mit.kacquah.deckviewer.deckobjects.*;
-import edu.mit.kacquah.deckviewer.game.GlobalToggles.BackgroundRatio;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
+import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
 import edu.mit.kacquah.deckviewer.utils.*;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
@@ -56,6 +57,9 @@ public class DeckViewerPApplet extends PApplet {
   private HandTrackingEngine engine;
   private ProcessPacketController packetController;
   private HandTracker handTracker;
+  
+  // Speech
+  SpeechEngine speechEngine;
 
   public void setup() {
     // Init app state
@@ -79,6 +83,9 @@ public class DeckViewerPApplet extends PApplet {
 
     // Debug strings
     LOGGER.info(WORKING_DIR);
+    
+    // Setup speech
+    initSpeech();
   }
 
   /****************************************************************************/
@@ -135,11 +142,11 @@ public class DeckViewerPApplet extends PApplet {
   /****************************************************************************/
 
   private void initScreenSize() {
-    if (GlobalToggles.fitToWindowScreen) {
+    if (GlobalSettings.fitToWindowScreen) {
       fitWindowToScreen();
     } else {
-      appWidth = GlobalToggles.desiredWidth;
-      appHeight = GlobalToggles.desiredHeight;
+      appWidth = GlobalSettings.desiredWidth;
+      appHeight = GlobalSettings.desiredHeight;
     }
   }
 
@@ -154,7 +161,7 @@ public class DeckViewerPApplet extends PApplet {
 
     float desiredRatio;
     float origWidth;
-    if (GlobalToggles.backgroundRatio == BackgroundRatio.NORMAL) {
+    if (GlobalSettings.backgroundRatio == BackgroundRatio.NORMAL) {
       desiredRatio = (float) GameConstants.BACKGROUND_HEIGHT
           / (float) GameConstants.BACKGROUND_WIDTH;
       origWidth = (float) GameConstants.BACKGROUND_WIDTH;
@@ -215,6 +222,17 @@ public class DeckViewerPApplet extends PApplet {
 
     engine.addHandEventListener(handTracker);
 
+  }
+  
+  /**
+   * Setup speech recognition for app.
+   */
+  private void initSpeech() {
+    speechEngine = new SpeechEngine();
+    speechEngine.setGrammarPath(GlobalSettings.grammarPath);
+    speechEngine.setGrammarName(GlobalSettings.grammarName);
+    speechEngine.initRecognition();
+    //speechEngine.startRecognition();
   }
   
   /****************************************************************************/
