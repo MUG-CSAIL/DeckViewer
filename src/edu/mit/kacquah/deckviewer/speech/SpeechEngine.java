@@ -41,6 +41,7 @@ public class SpeechEngine implements Runnable {
 
   // Threads
   boolean initialized;
+  boolean isRunning;
   Thread speechRecognitionThread;
   
   // Listeners for events
@@ -93,12 +94,27 @@ public class SpeechEngine implements Runnable {
   }
   
   public void startRecognition() {
-    if (initialized) {
-      speechRecognitionThread = new Thread(this);
-      speechRecognitionThread.start();
-    } else {
+    if (!initialized) {
+      throw new IllegalStateException("Need to initializes speech.");
+    } else if (isRunning) {
       throw new IllegalStateException("Need to initializes speech.");
     }
+    speechRecognitionThread = new Thread(this);
+    speechRecognitionThread.start();
+    isRunning = true;
+  }
+  
+  /**
+   * Indicates if recognition thread is currently running on speech input.
+   * @return
+   */
+  public boolean isRunning() {
+    return isRunning;
+  }
+  
+  public void stopRecognition() {
+    isRunning = false;
+    LOGGER.info("Speech thread signaled for termination.");
   }
 
   @Override
@@ -109,7 +125,7 @@ public class SpeechEngine implements Runnable {
     LOGGER.info("Recognizer created...");
 
     // Process speech results and send to listeners.
-    while ((result = recognizer.getResult()) != null) {
+    while ((result = recognizer.getResult()) != null && isRunning) {
       LOGGER.info("New speech result: " + result.getHypothesis());
       if (speechListener != null) {
         speechListener.handleSpeechResult(result);
@@ -117,6 +133,7 @@ public class SpeechEngine implements Runnable {
     }
     
     recognizer.stopRecognition();
+    isRunning = false;
     LOGGER.info("Speech thread terminating");
   }
   

@@ -265,10 +265,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     speechEngine.setGrammarPath(GlobalSettings.grammarPath);
     speechEngine.setGrammarName(GlobalSettings.grammarName);
     speechEngine.initRecognition();
-    // speechEngine.startRecognition();
 
     speechParser = new SpeechParser();
     speechEngine.setSpeechListener(speechParser);
+    
+    speechEngine.startRecognition();
   }
 
   /****************************************************************************/

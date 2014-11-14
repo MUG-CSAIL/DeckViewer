@@ -33,9 +33,11 @@ public class SpeechParser implements ISpeechEventListener {
     // Since commands come in two types (action + selection) or (location), we
     // simply check for text unique to each sequence and handle appropriately.
     if (command.contains(Commands.MOVE) || command.contains(Commands.PLACE)) {
-      
+      //TODO: Pass specific actions to selectionWithAction.
+      selectionManager.selectWithAction(null);
     } else if (command.contains(Commands.TO) || command.contains(Commands.OVER)) {
-      
+      //TODO: Pass specific targets to executAction.
+      selectionManager.executeActionWithTarget(null);
     } else {
       // We don't understand this command...
       LOGGER.severe("Unable to parse command:" + command);
