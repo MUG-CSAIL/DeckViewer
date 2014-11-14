@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 import javax.vecmath.Point2f;
 
 import processing.core.PApplet;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.FilteredPoints;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
@@ -44,17 +45,20 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   /**
    * Length of history window to filter points
    */
-  private final int HISTORY_LENGTH = 5;
+  private int historyLength;
 
   // Drawing constants
-  private static final int CIRCLE_RADIUS = 10;
+  private int circleRadius;
 
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
     this.tabletopRes = screenResolution;
     showFingers = true;
+    
+    historyLength = GlobalSettings.FILTER_HISTORY_LENGTH;
+    circleRadius = GlobalSettings.FINGER_CIRCLE_RADIUS;
 
-    filteredPoints = new FilteredPoints(HISTORY_LENGTH);
+    filteredPoints = new FilteredPoints(historyLength);
     filteredPoints.resetHistory();
     // Enabling auto resize allows us to always track a new set of fingers when
     // the number of detected fingers changes.
@@ -94,9 +98,9 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
         Point2f[] points = filteredPoints.getFilteredPoints();
         for (Point2f point : points) {
           Point pointInImageCoord = new Point((int) point.x, (int) point.y);
-          SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
-          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, CIRCLE_RADIUS * 2,
-              CIRCLE_RADIUS * 2);
+          //SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
+          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
+              circleRadius * 2);
         }
       } else {
         for (ManipulativeEvent fe : feList) {
@@ -109,8 +113,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
           Point2f point = scale(fe.posDisplay);
           Point pointInImageCoord = new Point((int) point.x, (int) point.y);
           SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
-          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, CIRCLE_RADIUS * 2,
-              CIRCLE_RADIUS * 2);
+          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
+              circleRadius * 2);
         }
       }
     }
@@ -124,7 +128,12 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     // Extract points for filtering
     Point2f newPoints[] = new Point2f[feList.size()];
     for (int i = 0; i < feList.size(); ++i) {
-      newPoints[i] = feList.get(i).posDisplay;
+      Point2f point = feList.get(i).posDisplay;
+      Point pointInImageCoord = new Point((int) point.x, (int) point.y);
+      SwingUtilities.convertPointFromScreen(pointInImageCoord, parent);
+      point.x = pointInImageCoord.x;
+      point.y = pointInImageCoord.y;
+      newPoints[i] = point;
     }
     filteredPoints.updatePoints(newPoints);
   }

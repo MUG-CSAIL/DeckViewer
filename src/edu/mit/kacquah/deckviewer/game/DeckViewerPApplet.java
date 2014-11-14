@@ -12,6 +12,7 @@ import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
+import edu.mit.kacquah.deckviewer.speech.Commands;
 import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
 import edu.mit.kacquah.deckviewer.speech.SpeechParser;
 import edu.mit.kacquah.deckviewer.utils.*;
@@ -59,11 +60,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private HandTrackingEngine engine;
   private ProcessPacketController packetController;
   private HandTracker handTracker;
-  
+
   // Speech
   SpeechEngine speechEngine;
   SpeechParser speechParser;
-  
+
   // Actions
   SelectionManager selectionManager;
 
@@ -89,12 +90,13 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
     // Debug strings
     LOGGER.info(WORKING_DIR);
-    
+
     // Setup speech
     initSpeech();
-    
-    // Actions
-    selectionManager = new SelectionManager();
+
+    // Setup Actions
+    selectionManager = new SelectionManager(this, flyingObjectManager, deck,
+        handTracker);
     speechParser.setSelectionManager(selectionManager);
   }
 
@@ -145,6 +147,19 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
     // Render handtracking
     handTracker.render(p);
+  }
+
+  public void keyPressed() {
+    switch (key) {
+    case 'S':
+    case 's':
+      selectionManager.selectWithAction(Commands.MOVE);
+      break;
+    case 'E':
+    case 'e':
+      selectionManager.executeActionWithTarget(Commands.TO);
+      break;
+    }
   }
 
   /****************************************************************************/
@@ -206,11 +221,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     PVector pos = new PVector(width / 2, height / 2);
     FlyingObject flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
-    
+
     pos = new PVector(width / 3, height / 2);
-   flyingObject = new FlyingObject("fmac", pos, 0);
+    flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
-    
+
     pos = new PVector(width / 3 * 2, height / 2);
     flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
@@ -241,7 +256,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     engine.addHandEventListener(handTracker);
 
   }
-  
+
   /**
    * Setup speech recognition for app.
    */
@@ -250,14 +265,14 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     speechEngine.setGrammarPath(GlobalSettings.grammarPath);
     speechEngine.setGrammarName(GlobalSettings.grammarName);
     speechEngine.initRecognition();
-    //speechEngine.startRecognition();
-    
+    // speechEngine.startRecognition();
+
     speechParser = new SpeechParser();
     speechEngine.setSpeechListener(speechParser);
   }
-  
+
   /****************************************************************************/
-  /* Accessors ****************************************************************/
+  /* Accessors *************************************************************** */
   /****************************************************************************/
   public float scaleRatio() {
     return this.scaleRatio;

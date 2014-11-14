@@ -36,7 +36,7 @@ public class SelectionManager implements PAppletRenderObject {
   String currentAction;
   LinkedList<FlyingObject> selectedObjects;
 
-  public void SelectionManager(PApplet p, FlyingObjectManager f, Deck d, HandTracker t) {
+  public SelectionManager(PApplet p, FlyingObjectManager f, Deck d, HandTracker t) {
     // Init references
     this.parent = p;
     this.flyingObjectManager = f;
@@ -65,6 +65,7 @@ public class SelectionManager implements PAppletRenderObject {
       return false;
     }
     
+    // Take the first finger point for selection.
     Point fingerPoint = new Point((int)fingerPoints[0].x, (int)fingerPoints[0].y);
     selectedObjects = flyingObjectManager.intersectsPoint(fingerPoint);
     
@@ -89,10 +90,41 @@ public class SelectionManager implements PAppletRenderObject {
    */
   public boolean executeActionWithTarget(String target) {
     if (!hasSelection) {
-      // Cannot execute action with selection.
+      LOGGER.severe("Need to select aircraft first.");
       return false;
     }
-    return false;
+    
+    // Get finer points
+    Point2f fingerPoints[] = handTracker.getFilteredPoints();
+    if (fingerPoints.length == 0) {
+      LOGGER.severe("Cannot select without finger points.");
+      return false;
+    }
+    
+    // Take the first finger point for the target.
+    Point fingerPointTarget = new Point((int)fingerPoints[0].x, (int)fingerPoints[0].y);
+    
+    // Attempt to move object and test for intersections.
+    FlyingObject selectedObject = selectedObjects.get(0);
+    Point2f oldPosition = selectedObject.getPosition();
+    selectedObject.setPosition(fingerPointTarget.x, fingerPointTarget.y);
+    LinkedList<FlyingObject> possibleIntersections = flyingObjectManager.intersectsFlyingObjects(selectedObject);
+    if (possibleIntersections.size() > 1) {
+      selectedObject.setPosition(oldPosition.x, oldPosition.y);
+      LOGGER.severe("Cannot place aircraft in position with intersections.");
+      return false;
+    }
+    
+    // Clear selection after executing action
+    clearSelection();
+    
+    return true;
+  }
+  
+  public void clearSelection() {
+    hasSelection = false;
+    selectedObjects = null;
+    currentAction = null;
   }
 
   @Override

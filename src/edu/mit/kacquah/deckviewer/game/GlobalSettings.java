@@ -27,6 +27,14 @@ public class GlobalSettings {
   public static int desiredHeight = 2048;
  
   /**
+   * HandTracking constants.
+   */
+  // Length of history for finger position smoothing. 
+  public static final int FILTER_HISTORY_LENGTH = 5;
+  public static final int FINGER_CIRCLE_RADIUS = 10;
+
+  
+  /**
    * Grammar configuration for speech recognition.
    */
   public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/";

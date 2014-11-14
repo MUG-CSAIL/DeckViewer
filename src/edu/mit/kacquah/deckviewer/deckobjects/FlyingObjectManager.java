@@ -38,6 +38,21 @@ public class FlyingObjectManager implements PAppletRenderObject {
     }
     return result;
   }
+  
+  /**
+   * Returns all flying objects that intersect a given flying object. 
+   * @param other
+   * @return
+   */
+  public LinkedList<FlyingObject> intersectsFlyingObjects(FlyingObject other) {
+    LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
+    for (FlyingObject f : this.flyingObjects) {
+      if (f.intersectsFlyingObject(other)) {
+        result.add(f);
+      }
+    }
+    return result; 
+  }
 
   @Override
   public void update(long elapsedTime) {

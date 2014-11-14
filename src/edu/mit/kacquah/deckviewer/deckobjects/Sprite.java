@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
+import javax.vecmath.Point2f;
+
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import processing.core.*;
 
@@ -34,9 +36,17 @@ public class Sprite implements PAppletRenderObject {
     this.pos.x = x;
     this.pos.y = y;
   }
+  
+  public Point2f getPosition() {
+    return new Point2f(pos.x, pos.y);
+  }
 
   public void setRotation(float newRot) {
     this.rotation = newRot;
+  }
+  
+  public float getRotation() {
+    return rotation;
   }
   
   public void setSelectedSpriteImage(int newSelection) {
