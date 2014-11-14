@@ -8,10 +8,12 @@ import javax.swing.SwingUtilities;
 
 import org.OpenNI.GeneralException;
 
+import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
+import edu.mit.kacquah.deckviewer.speech.SpeechParser;
 import edu.mit.kacquah.deckviewer.utils.*;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
@@ -26,7 +28,7 @@ import processing.core.*;
  * @author kojo
  * 
  */
-public class DeckViewerPApplet extends PApplet {
+public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   // App utils
   private static Logger LOGGER = Logger.getLogger(DeckViewerPApplet.class
       .getName());
@@ -60,6 +62,10 @@ public class DeckViewerPApplet extends PApplet {
   
   // Speech
   SpeechEngine speechEngine;
+  SpeechParser speechParser;
+  
+  // Actions
+  SelectionManager selectionManager;
 
   public void setup() {
     // Init app state
@@ -86,6 +92,10 @@ public class DeckViewerPApplet extends PApplet {
     
     // Setup speech
     initSpeech();
+    
+    // Actions
+    selectionManager = new SelectionManager();
+    speechParser.setSelectionManager(selectionManager);
   }
 
   /****************************************************************************/
@@ -241,6 +251,9 @@ public class DeckViewerPApplet extends PApplet {
     speechEngine.setGrammarName(GlobalSettings.grammarName);
     speechEngine.initRecognition();
     //speechEngine.startRecognition();
+    
+    speechParser = new SpeechParser();
+    speechEngine.setSpeechListener(speechParser);
   }
   
   /****************************************************************************/

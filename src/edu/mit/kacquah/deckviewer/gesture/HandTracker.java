@@ -65,7 +65,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   public void toggleShowFingers(boolean newState) {
     this.showFingers = newState;
   }
-
+  
   /**
    * Scales points from tabletop coordinates to current desktop coordinates. If
    * app is running on the tabletop, then this method has no effect.
@@ -134,5 +134,12 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     // TODO Auto-generated method stub
 
   }
-
+  
+  /**
+   * List of current filtered finger pointed maintained by hand tracker.
+   * @return
+   */
+  public Point2f[]  getFilteredPoints() {
+    return filteredPoints.getFilteredPoints();
+  }
 }
