@@ -104,6 +104,11 @@ public class SelectionManager implements PAppletRenderObject {
     // Take the first finger point for the target.
     Point fingerPointTarget = new Point((int)fingerPoints[0].x, (int)fingerPoints[0].y);
     
+    if (!deck.contains(fingerPointTarget)) {
+      LOGGER.severe("Target must be located on arcraft deck.");
+      return false;
+    }
+    
     // Attempt to move object and test for intersections.
     FlyingObject selectedObject = selectedObjects.get(0);
     Point2f oldPosition = selectedObject.getPosition();

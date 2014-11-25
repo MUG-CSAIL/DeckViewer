@@ -32,6 +32,9 @@ public class GlobalSettings {
   // Length of history for finger position smoothing. 
   public static final int FILTER_HISTORY_LENGTH = 5;
   public static final int FINGER_CIRCLE_RADIUS = 10;
+  
+  // Use mouse pointer instead of finger points (for simpler debugging)
+  public static final boolean useMousePoint = true;
 
   
   /**

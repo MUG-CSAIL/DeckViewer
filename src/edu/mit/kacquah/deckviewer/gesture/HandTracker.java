@@ -125,7 +125,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   public void fingerPressed(List<ManipulativeEvent> feList) {
     this.feList = feList;
     
-    // Extract points for filtering
+    // Extract and scale points for filtering
     Point2f newPoints[] = new Point2f[feList.size()];
     for (int i = 0; i < feList.size(); ++i) {
       Point2f point = feList.get(i).posDisplay;
@@ -149,6 +149,10 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
    * @return
    */
   public Point2f[]  getFilteredPoints() {
+    if (GlobalSettings.useMousePoint) {
+      Point2f mouse[] = {new Point2f(parent.mouseX, parent.mouseY) };
+      return mouse;
+    }
     return filteredPoints.getFilteredPoints();
   }
 }
