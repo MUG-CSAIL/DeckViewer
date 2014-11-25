@@ -45,5 +45,6 @@ public class GlobalSettings {
    * Deck rendering configuration.
    */
   public static boolean renderDeckOutline = true;
-  public static boolean renderCatapults = true;
+  public static boolean renderDeckCatapults = true;
+  public static boolean renderDeckElevators = true;
 }

@@ -62,6 +62,9 @@ public class DeckPolygon implements PAppletRenderObject {
    */
   @Override
   public void render(PApplet p) {
+    if (points.isEmpty()) {
+      return;
+    }
     p.pushMatrix();
     p.translate(pos.x, pos.y);
     p.beginShape();

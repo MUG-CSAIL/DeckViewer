@@ -86,6 +86,40 @@ public class Deck implements PAppletRenderObject {
 
     // Elevators
     elevators = new Elevator[4];
+    Elevator el1 = new Elevator(scale(new Point(615, 914)), 1);
+    el1.addPoint(scale(538, 846));
+    el1.addPoint(scale(687, 846));
+    el1.addPoint(scale(687, 910));
+    el1.addPoint(scale(717, 941));
+    el1.addPoint(scale(717, 970));
+    el1.addPoint(scale(538, 970));
+    Elevator el2 = new Elevator(scale(new Point(1173, 914)), 2);
+    el2.addPoint(scale(538 + 555, 846));
+    el2.addPoint(scale(687 + 555, 846));
+    el2.addPoint(scale(687 + 555, 910));
+    el2.addPoint(scale(717 + 555, 941));
+    el2.addPoint(scale(717 + 555, 970));
+    el2.addPoint(scale(538 + 555, 970));
+    Elevator el3 = new Elevator(scale(new Point(1536, 914)), 3);
+    el3.addPoint(scale(538 + 910, 846));
+    el3.addPoint(scale(687 + 910, 846));
+    el3.addPoint(scale(687 + 910, 910));
+    el3.addPoint(scale(717 + 910, 941));
+    el3.addPoint(scale(717 + 910, 970));
+    el3.addPoint(scale(538 + 910, 970));
+    Elevator el4 = new Elevator(scale(new Point(573, 544)), 4);
+    el4.addPoint(scale(499, 477));
+    el4.addPoint(scale(678, 477));
+    el4.addPoint(scale(678, 506));
+    el4.addPoint(scale(648, 536));
+    el4.addPoint(scale(648, 599));
+    el4.addPoint(scale(499, 599));
+    
+    elevators[0] = el1;
+    elevators[1] = el2;
+    elevators[2] = el3;
+    elevators[3] = el4;
+    
     
   }
 
@@ -97,6 +131,10 @@ public class Deck implements PAppletRenderObject {
    */
   public Point scale(Point p) {
     return new Point((int) (p.x * scaleRatio), (int) (p.y * scaleRatio));
+  }
+  
+  public Point scale(int x, int y) {
+    return new Point((int) (x * scaleRatio), (int) (y * scaleRatio));
   }
 
   /**
@@ -132,13 +170,25 @@ public class Deck implements PAppletRenderObject {
     }
 
     // Draw the catapults in orange.
-    if (GlobalSettings.renderCatapults) {
+    if (GlobalSettings.renderDeckCatapults) {
       p.pushStyle();
       p.strokeWeight(1);
       p.noFill();
       p.stroke(p.color(255, 165, 0));
       for (Catapult c : catapults) {
         c.render(p);
+      }
+      p.popStyle();
+    }
+    
+    // Draw the elevators in orange.
+    if (GlobalSettings.renderDeckElevators) {
+      p.pushStyle();
+      p.strokeWeight(1);
+      p.noFill();
+      p.stroke(p.color(255, 165, 0));
+      for (Elevator e : elevators) {
+        e.render(p);
       }
       p.popStyle();
     }
