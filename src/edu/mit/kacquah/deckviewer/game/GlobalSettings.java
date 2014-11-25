@@ -40,4 +40,10 @@ public class GlobalSettings {
   public static final boolean useSpeechRecognition = false;
   public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/";
   public static final String grammarName = "deckviewer";
+  
+  /**
+   * Deck rendering configuration.
+   */
+  public static boolean renderDeckOutline = true;
+  public static boolean renderCatapults = true;
 }

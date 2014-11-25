@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 import javax.vecmath.Point2f;
 
 import processing.core.PApplet;
-import edu.mit.kacquah.deckviewer.deckobjects.Deck;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
+import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.speech.SpeechParser;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
