@@ -82,6 +82,21 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     return new Point2f(p.x * d.width / tabletopRes.width, p.y * d.height
         / tabletopRes.height);
   }
+  
+  /**
+   * Resets the background subtraction through the hand tracking engine.
+   */
+  public void recalibrateBackgroundSubtraction() {
+    
+  }
+  
+  /**
+   * Returns true whenever recording frames to subtract from the background.
+   * @return
+   */
+  public boolean isCalibratingBackground() {
+    return false;
+  }
 
   @Override
   public void update(long elapsedTime) {

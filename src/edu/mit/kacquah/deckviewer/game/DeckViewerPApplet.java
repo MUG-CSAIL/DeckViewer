@@ -154,11 +154,18 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     switch (key) {
     case 'S':
     case 's':
+      // Select a flying object.
       selectionManager.selectWithAction(Commands.MOVE);
       break;
     case 'E':
     case 'e':
+      // Execute an action.
       selectionManager.executeActionWithTarget(Commands.TO);
+      break;
+    case 'R':
+    case 'r':
+      // Reset the handtracking background calibration.
+      handTracker.recalibrateBackgroundSubtraction();
       break;
     }
   }
