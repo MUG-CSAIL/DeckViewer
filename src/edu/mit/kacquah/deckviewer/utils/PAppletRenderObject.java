@@ -15,7 +15,7 @@ public interface PAppletRenderObject {
    */
   public abstract void update(long elapsedTime);
   /**
-   * Render this object to the givien PApplet.
+   * Render this object to the given PApplet.
    * @param p
    */
   public abstract void render(PApplet p);

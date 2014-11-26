@@ -1,5 +1,7 @@
 package edu.mit.kacquah.deckviewer.utils;
 
+import javax.vecmath.Point4f;
+
 
 /**
  * Static color utilities for processing apps. 
@@ -12,8 +14,13 @@ public class ColorUtil {
   public static final int RED = color(255, 0, 0);
   public static final int GREEN = color(0, 255,0);
   public static final int BLUE = color(0, 0, 255);
+  public static final int ORANGE = color(255, 165, 0);
+  public static final int YELLOW = color(255, 255, 0);
   public static final int BLACK = color(0);
   public static final int WHITE = color(255);
+  
+  // Color component constants
+  public static final Point4f WHITE_COMPONENTS = colorComponents(WHITE);
   
   public static final int color(float grey) {
     return color(grey, grey, grey, 255);
@@ -56,6 +63,26 @@ public class ColorUtil {
       z = 0;
 
     return ((int) a << 24) | ((int) x << 16) | ((int) y << 8) | (int) z;
+  }
+  
+  public static final int color(Point4f components){
+    return color((int) components.x, 
+                 (int) components.y, 
+                 (int) components.z,
+                 (int) components.w);
+  }
+  
+  public static final Point4f colorComponents(int color) {
+    int BLUE_MASK = Integer.parseInt("000000FF", 16);
+    int GREEN_MASK = BLUE_MASK << 8;
+    int RED_MASK = BLUE_MASK << 16;
+    int ALPHA_MASK = BLUE_MASK << 24;    
+    Point4f components = new Point4f();
+    components.x = (RED_MASK & color) >> 16;
+    components.y = (GREEN_MASK & color) >> 8;
+    components.z = (BLUE_MASK & color) >> 0;
+    components.w = (ALPHA_MASK & color) >>> 24;    
+    return components;
   }
 
 }

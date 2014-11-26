@@ -107,7 +107,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
   public void draw() {
     // Update the app.
-    long elapsedTime = System.currentTimeMillis() % 1000;
+    long elapsedTime = System.currentTimeMillis();
     update(elapsedTime);
     // render the app.
     render(this);

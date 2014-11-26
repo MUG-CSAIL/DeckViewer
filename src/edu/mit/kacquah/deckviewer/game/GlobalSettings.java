@@ -2,6 +2,8 @@ package edu.mit.kacquah.deckviewer.game;
 
 import java.awt.Dimension;
 
+import edu.mit.kacquah.deckviewer.utils.ColorUtil;
+
 /**
  * Global settings for configuring the entire application.
  * @author kojo
@@ -32,7 +34,6 @@ public class GlobalSettings {
   // Length of history for finger position smoothing. 
   public static final int FILTER_HISTORY_LENGTH = 5;
   public static final int FINGER_CIRCLE_RADIUS = 10;
-  
   // Use mouse pointer instead of finger points (for simpler debugging)
   public static final boolean useMousePoint = true;
 
@@ -50,4 +51,9 @@ public class GlobalSettings {
   public static boolean renderDeckOutline = true;
   public static boolean renderDeckCatapults = true;
   public static boolean renderDeckElevators = true;
+  
+  /**
+   * Selection engine constants
+   */
+  public static final int selectionHighlightColor = ColorUtil.ORANGE;
 }

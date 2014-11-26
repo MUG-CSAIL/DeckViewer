@@ -164,7 +164,7 @@ public class Deck implements PAppletRenderObject {
     if (GlobalSettings.renderDeckOutline) {
       p.pushStyle();
       p.noFill();
-      p.stroke(p.color(0, 0, 255));
+      p.stroke(ColorUtil.BLUE);
       deckEdges.render(p);
       p.popStyle();
     }
@@ -174,7 +174,7 @@ public class Deck implements PAppletRenderObject {
       p.pushStyle();
       p.strokeWeight(1);
       p.noFill();
-      p.stroke(p.color(255, 165, 0));
+      p.stroke(ColorUtil.ORANGE);
       for (Catapult c : catapults) {
         c.render(p);
       }
@@ -186,7 +186,7 @@ public class Deck implements PAppletRenderObject {
       p.pushStyle();
       p.strokeWeight(1);
       p.noFill();
-      p.stroke(p.color(255, 165, 0));
+      p.stroke(ColorUtil.ORANGE);
       for (Elevator e : elevators) {
         e.render(p);
       }

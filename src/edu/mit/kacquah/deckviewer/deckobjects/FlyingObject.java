@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import javax.vecmath.Point2f;
 
 import processing.core.*;
+import edu.mit.kacquah.deckviewer.image.DynamicImageFilter;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import edu.mit.kacquah.deckviewer.utils.PImagePool;
 
@@ -18,6 +19,14 @@ public class FlyingObject implements PAppletRenderObject {
     // Load image from image pool
     PImage spriteImage = PImagePool.getImages(name)[0];
     this.planeSprite = new Sprite(spriteImage, pos, rotation);
+  }
+  
+  public void addImageFilter(DynamicImageFilter filter) {
+    planeSprite.addImageFilter(filter);
+  }
+  
+  public void resetImageFilters() {
+    planeSprite.resetImageFilters();
   }
   
   public void setPosition(float x, float y) {
@@ -59,7 +68,7 @@ public class FlyingObject implements PAppletRenderObject {
   
   @Override
   public void update(long elapsedTime) {
-    // TODO Auto-generated method stub
+    planeSprite.update(elapsedTime);
   }
 
   @Override
