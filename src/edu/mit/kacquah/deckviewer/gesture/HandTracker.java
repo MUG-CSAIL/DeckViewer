@@ -95,7 +95,6 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     calibrationView = new StaticTextView(p);
     calibrationView.setText("Calibrating...");
     ((DeckViewerPApplet)p).addStaticView(calibrationView);
-    calibrationView.setIsActive(true);
   }
   
   /**
@@ -165,7 +164,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
         engine.release();
         System.exit(-1);
       }
-    }  
+    }
+    calibrationView.setIsActive(false);
   }
 
   @Override
