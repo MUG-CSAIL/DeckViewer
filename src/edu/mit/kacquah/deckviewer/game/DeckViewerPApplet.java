@@ -58,8 +58,6 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private FlyingObjectManager flyingObjectManager;
 
   // Hand Tracking
-  private HandTrackingEngine engine;
-  private ProcessPacketController packetController;
   private HandTracker handTracker;
 
   // Speech
@@ -123,21 +121,6 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     flyingObjectManager.update(elapsedTime);
 
     // Update hand tracking
-    updateHandTracking(elapsedTime);
-  }
-
-  private void updateHandTracking(long elapsedTime) {
-    if (!engine.isDone()) {
-      try {
-        ProcessPacket packet = engine.step();
-        packetController.show(packet);
-      } catch (GeneralException e) {
-        LOGGER.severe(e.getMessage());
-        engine.release();
-        System.exit(-1);
-      }
-    }
-
     handTracker.update(elapsedTime);
   }
 
@@ -243,26 +226,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    * Starts the hand tracker and debug display.
    */
   private void initHandTracking() {
-    try {
-      engine = new HandTrackingEngine(OPENNI_CONFIG_FILE, CALIB_FILE);
-      packetController = new ProcessPacketController(engine.depthWidth(),
-          engine.depthHeight(), null);
-    } catch (GeneralException ge) {
-      LOGGER.severe(ge.getMessage());
-      System.exit(-1);
-    }
-
-    // Configure depth debug views
-    packetController.showDepthImage(false);
-    packetController.show3DView(false);
-
     // HandTracker
     Dimension tabletopRes = new Dimension(GameConstants.TABLETOP_WIDTH,
         GameConstants.TABLETOP_HEIGHT);
     handTracker = new HandTracker(this, tabletopRes);
-
-    engine.addHandEventListener(handTracker);
-
+    handTracker.initHandTracking(OPENNI_CONFIG_FILE, CALIB_FILE);
   }
 
   /**

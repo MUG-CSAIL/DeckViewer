@@ -4,15 +4,23 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.vecmath.Point2f;
 
+import org.OpenNI.GeneralException;
+
 import processing.core.PApplet;
+import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
+import edu.mit.kacquah.deckviewer.game.GameConstants;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.FilteredPoints;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
+import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
+import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
+import edu.mit.yingyin.tabletop.models.ProcessPacket;
 import edu.mit.yingyin.tabletop.models.HandTracker.DiecticEvent;
 import edu.mit.yingyin.tabletop.models.HandTracker.ManipulativeEvent;
 import edu.mit.yingyin.tabletop.models.HandTracker.ManipulativeEvent.FingerEventType;
@@ -26,8 +34,20 @@ import edu.mit.yingyin.util.SystemUtil;
  * 
  */
 public class HandTracker implements IHandEventListener, PAppletRenderObject {
+  // App utils
+  private static Logger LOGGER = Logger.getLogger(HandTracker.class
+      .getName());
   PApplet parent;
+  
+  /**
+   * Tabletop Kinect members.
+   */
+  private HandTrackingEngine engine;
+  private ProcessPacketController packetController;
 
+  /**
+   * IHandEventListener members.
+   */
   private final Dimension tabletopRes;
   private List<ManipulativeEvent> feList;
 
@@ -65,6 +85,27 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     filteredPoints.setAutoResize(true);
     useFilteredPoints = true;
   }
+  
+  /**
+   * Starts the hand tracker and debug display.
+   */
+  public void initHandTracking(String openNiConfigFile, String calibFile) {
+    try {
+      engine = new HandTrackingEngine(openNiConfigFile, calibFile);
+      packetController = new ProcessPacketController(engine.depthWidth(),
+          engine.depthHeight(), null);
+    } catch (GeneralException ge) {
+      LOGGER.severe(ge.getMessage());
+      System.exit(-1);
+    }
+
+    // Configure depth debug views
+    packetController.showDepthImage(false);
+    packetController.show3DView(false);
+
+    engine.addHandEventListener(this);
+
+  }
 
   public void toggleShowFingers(boolean newState) {
     this.showFingers = newState;
@@ -98,9 +139,21 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     return false;
   }
 
+  /**
+   * Timestep the handtracking engine and update its listeners.
+   */
   @Override
   public void update(long elapsedTime) {
-    // TODO Auto-generated method stub
+    if (!engine.isDone()) {
+      try {
+        ProcessPacket packet = engine.step();
+        packetController.show(packet);
+      } catch (GeneralException e) {
+        LOGGER.severe(e.getMessage());
+        engine.release();
+        System.exit(-1);
+      }
+    }  
   }
 
   @Override
