@@ -18,6 +18,7 @@ import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.FilteredPoints;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
+import edu.mit.kacquah.deckviewer.utils.StaticTextView;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
 import edu.mit.yingyin.tabletop.models.ProcessPacket;
@@ -37,7 +38,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   // App utils
   private static Logger LOGGER = Logger.getLogger(HandTracker.class
       .getName());
-  PApplet parent;
+  private PApplet parent;
   
   /**
    * Tabletop Kinect members.
@@ -54,13 +55,13 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   /**
    * When true, dots for fingers are rendered on app.
    */
-  boolean showFingers;
+  private boolean showFingers;
 
   /**
    * Filter points over a window for smoother finger tracking.
    */
-  FilteredPoints filteredPoints;
-  boolean useFilteredPoints;
+  private FilteredPoints filteredPoints;
+  private boolean useFilteredPoints;
   
   /**
    * Length of history window to filter points
@@ -69,6 +70,11 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
 
   // Drawing constants
   private int circleRadius;
+  
+  /**
+   * Static view for indicating calibration.
+   */
+  private StaticTextView calibrationView;
 
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
@@ -84,6 +90,12 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     // the number of detected fingers changes.
     filteredPoints.setAutoResize(true);
     useFilteredPoints = true;
+    
+    // Static view notifies when calibration
+    calibrationView = new StaticTextView(p);
+    calibrationView.setText("Calibrating...");
+    ((DeckViewerPApplet)p).addStaticView(calibrationView);
+    calibrationView.setIsActive(true);
   }
   
   /**

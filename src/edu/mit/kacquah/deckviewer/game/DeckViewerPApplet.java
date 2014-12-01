@@ -2,6 +2,7 @@ package edu.mit.kacquah.deckviewer.game;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
@@ -61,11 +62,14 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private HandTracker handTracker;
 
   // Speech
-  SpeechEngine speechEngine;
-  SpeechParser speechParser;
+  private SpeechEngine speechEngine;
+  private SpeechParser speechParser;
 
   // Actions
-  SelectionManager selectionManager;
+  private SelectionManager selectionManager;
+  
+  // Static Views
+  private LinkedList<StaticTextView> staticViews;
 
   public void setup() {
     // Init app state
@@ -80,6 +84,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
     // Init app utils
     PImagePool.setParent(this);
+    
+    // Static views
+    staticViews = new LinkedList<StaticTextView>();
 
     // Setup the deck environment and variables
     initDeckObjects();
@@ -122,6 +129,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
     // Update hand tracking
     handTracker.update(elapsedTime);
+    
+    // Update static views
+    for (StaticTextView view : staticViews) {
+      view.update(elapsedTime);
+    }
   }
 
   public void render(PApplet p) {
@@ -131,6 +143,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
     // Render handtracking
     handTracker.render(p);
+    
+    // Render static views
+    for (StaticTextView view : staticViews) {
+      view.render(this);
+    }
   }
 
   public void keyPressed() {
@@ -253,5 +270,13 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   /****************************************************************************/
   public float scaleRatio() {
     return this.scaleRatio;
+  }
+  
+  public void addStaticView(StaticTextView view) {
+    this.staticViews.add(view);
+  }
+  
+  public boolean removeStaticView(StaticTextView view) {
+    return this.staticViews.remove(view);
   }
 }
