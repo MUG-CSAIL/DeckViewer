@@ -165,7 +165,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     case 'R':
     case 'r':
       // Reset the handtracking background calibration.
-      handTracker.recalibrateBackgroundSubtraction();
+      handTracker.recalibrateBackground();
       break;
     }
   }

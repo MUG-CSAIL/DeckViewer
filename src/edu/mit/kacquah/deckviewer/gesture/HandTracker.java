@@ -138,8 +138,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   /**
    * Resets the background subtraction through the hand tracking engine.
    */
-  public void recalibrateBackgroundSubtraction() {
-    
+  public void recalibrateBackground() {
+    engine.recalibrateBackground();
   }
   
   /**
@@ -147,7 +147,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
    * @return
    */
   public boolean isCalibratingBackground() {
-    return false;
+    return engine.isCalibratingBackground();
   }
 
   /**
@@ -165,7 +165,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
         System.exit(-1);
       }
     }
-    calibrationView.setIsActive(false);
+    calibrationView.setIsActive(this.isCalibratingBackground());
   }
 
   @Override
