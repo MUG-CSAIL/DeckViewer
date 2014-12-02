@@ -111,7 +111,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     }
 
     // Configure depth debug views
-    packetController.showDepthImage(false);
+    packetController.showDepthImage(true);
     packetController.show3DView(false);
 
     engine.addHandEventListener(this);
