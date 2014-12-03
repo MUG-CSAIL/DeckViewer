@@ -262,7 +262,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     speechParser = new SpeechParser();
     speechEngine.setSpeechListener(speechParser);
     
-    speechEngine.startRecognition();
+    if (GlobalSettings.useSpeechRecognition) {
+      speechEngine.startRecognition();
+    }
   }
 
   /****************************************************************************/

@@ -35,13 +35,13 @@ public class GlobalSettings {
   public static final int FILTER_HISTORY_LENGTH = 5;
   public static final int FINGER_CIRCLE_RADIUS = 10;
   // Use mouse pointer instead of finger points (for simpler debugging)
-  public static final boolean useMousePoint = true;
+  public static final boolean useMousePoint = false;
 
   
   /**
    * Grammar configuration for speech recognition.
    */
-  public static final boolean useSpeechRecognition = false;
+  public static final boolean useSpeechRecognition = true;
   public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/";
   public static final String grammarName = "deckviewer";
   
