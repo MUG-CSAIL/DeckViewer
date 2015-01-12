@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.vecmath.Point2f;
+import javax.vecmath.Point3f;
 
 import org.OpenNI.GeneralException;
 
@@ -21,6 +22,7 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import edu.mit.kacquah.deckviewer.utils.StaticTextView;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
+import edu.mit.yingyin.tabletop.models.InteractionSurface;
 import edu.mit.yingyin.tabletop.models.ProcessPacket;
 import edu.mit.yingyin.tabletop.models.HandTracker.DiecticEvent;
 import edu.mit.yingyin.tabletop.models.HandTracker.ManipulativeEvent;
@@ -75,6 +77,9 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
    * Static view for indicating calibration.
    */
   private StaticTextView calibrationView;
+  
+  
+  DiecticEvent de;
 
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
@@ -110,8 +115,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
       System.exit(-1);
     }
 
-    // Configure depth debug views
     packetController.showDepthImage(true);
+    // Configure depth debug views
     packetController.show3DView(false);
 
     engine.addHandEventListener(this);
@@ -198,6 +203,19 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
         }
       }
     }
+    
+    if (de != null && ! isCalibratingBackground()) {
+      p.fill(ColorUtil.ORANGE);
+
+      // Extract intersection points
+      for (int i = 0; i < de.pointingLocationsD().length; ++i) {
+        Point2f intersectionDisplayPoint = scale(de.pointingLocationsD()[i]);
+        Point pointInImageCoord = new Point((int) intersectionDisplayPoint.x, (int) intersectionDisplayPoint.y);
+        SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
+        p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
+            circleRadius * 2);
+      }
+    }
     p.popStyle();
   }
 
@@ -208,7 +226,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     // Extract and scale points for filtering
     Point2f newPoints[] = new Point2f[feList.size()];
     for (int i = 0; i < feList.size(); ++i) {
-      Point2f point = feList.get(i).posDisplay;
+      Point2f point = scale(feList.get(i).posDisplay);
       Point pointInImageCoord = new Point((int) point.x, (int) point.y);
       SwingUtilities.convertPointFromScreen(pointInImageCoord, parent);
       point.x = pointInImageCoord.x;
@@ -221,7 +239,11 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   @Override
   public void fingerPointed(DiecticEvent de) {
     // TODO Auto-generated method stub
-
+    processPointing(de);
+  }
+  
+  public void processPointing(DiecticEvent de) {
+    this.de = de;
   }
   
   /**
