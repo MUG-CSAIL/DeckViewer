@@ -14,4 +14,9 @@ public class GameConstants {
   
   public static final int BACKGROUND_WIDE_WIDTH = 2560;
   public static final int BACKGROUND_WIDE_HEIGHT = 1440;
+  
+  /**
+   * Height for status bar at bottom of screen.
+   */
+  public static final int STATUS_BAR_HEIGHT = 20;
 }

@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.OpenNI.GeneralException;
@@ -14,6 +15,7 @@ import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
+import edu.mit.kacquah.deckviewer.gui.StatusBar;
 import edu.mit.kacquah.deckviewer.speech.Commands;
 import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
 import edu.mit.kacquah.deckviewer.speech.SpeechParser;
@@ -50,8 +52,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   /**
    * App dimensions used to size the application window.
    */
-  private int appWidth;
-  private int appHeight;
+  public int appWidth, appHeight;
   private float scaleRatio;
 
   // Deck Objects and Managers
@@ -70,6 +71,13 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   // Static Views
   private LinkedList<StaticTextView> staticViews;
+  
+  /**
+   * JFrame that contains this app.
+   */
+  private JFrame parentFrame;
+  
+  private StatusBar statusbar;
 
   public void setup() {
     // Init app state
@@ -174,7 +182,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   /* Additional Methods******************************************************** */
   /****************************************************************************/
 
-  private void initScreenSize() {
+  public void initScreenSize() {
     if (GlobalSettings.fitToWindowScreen) {
       fitWindowToScreen();
     } else {
@@ -266,6 +274,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
       speechEngine.startRecognition();
     }
   }
+  
 
   /****************************************************************************/
   /* Accessors *************************************************************** */
@@ -280,5 +289,13 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   public boolean removeStaticView(StaticTextView view) {
     return this.staticViews.remove(view);
+  }
+  
+  public void setParentFrameContainer(JFrame parentFrameContainer) {
+    this.parentFrame = parentFrameContainer;
+  }
+  
+  public void setStatusBar(StatusBar sb) {
+    this.statusbar = sb;
   }
 }
