@@ -36,7 +36,7 @@ import edu.mit.yingyin.util.SystemUtil;
  * @author kojo
  * 
  */
-public class HandTracker implements IHandEventListener, PAppletRenderObject {
+public class HandTracker implements IHandEventListener, PAppletRenderObject, Runnable {
   // App utils
   private static Logger LOGGER = Logger.getLogger(HandTracker.class
       .getName());
@@ -78,8 +78,13 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
    */
   private StaticTextView calibrationView;
   
-  
+  /**
+   * Diectic events
+   */
   DiecticEvent de;
+  
+  Thread handTrackerThread;
+  boolean recalibrateRequest;
 
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
@@ -120,6 +125,10 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
     packetController.show3DView(false);
 
     engine.addHandEventListener(this);
+    
+    // Start the thread for hand tracking
+    handTrackerThread = new Thread(this);
+    handTrackerThread.start();
 
   }
 
@@ -144,7 +153,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
    * Resets the background subtraction through the hand tracking engine.
    */
   public void recalibrateBackground() {
-    engine.recalibrateBackground();
+    recalibrateRequest = true;
   }
   
   /**
@@ -160,16 +169,6 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
    */
   @Override
   public void update(long elapsedTime) {
-    if (!engine.isDone()) {
-      try {
-        ProcessPacket packet = engine.step();
-        packetController.show(packet);
-      } catch (GeneralException e) {
-        LOGGER.severe(e.getMessage());
-        engine.release();
-        System.exit(-1);
-      }
-    }
     calibrationView.setIsActive(this.isCalibratingBackground());
   }
 
@@ -220,9 +219,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
   }
 
   @Override
-  public void fingerPressed(List<ManipulativeEvent> feList) {
-    this.feList = feList;
-    
+  public void fingerPressed(List<ManipulativeEvent> feList) {  
     // Extract and scale points for filtering
     Point2f newPoints[] = new Point2f[feList.size()];
     for (int i = 0; i < feList.size(); ++i) {
@@ -233,17 +230,22 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
       point.y = pointInImageCoord.y;
       newPoints[i] = point;
     }
-    filteredPoints.updatePoints(newPoints);
+    
+    synchronized(this) {
+      this.feList = feList;
+      filteredPoints.updatePoints(newPoints);
+    }
   }
 
   @Override
   public void fingerPointed(DiecticEvent de) {
-    // TODO Auto-generated method stub
     processPointing(de);
   }
   
   public void processPointing(DiecticEvent de) {
-    this.de = de;
+    synchronized(this) {
+      this.de = de;
+    }
   }
   
   /**
@@ -256,5 +258,27 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject {
       return mouse;
     }
     return filteredPoints.getFilteredPoints();
+  }
+
+  @Override
+  public void run() {
+    while (true) {
+      if (!engine.isDone()) {
+        // Update depth view
+        try {
+          ProcessPacket packet = engine.step();
+          packetController.show(packet);
+        } catch (GeneralException e) {
+          LOGGER.severe(e.getMessage());
+          engine.release();
+          System.exit(-1);
+        }
+      }
+      // Recalibrate on request
+      if (recalibrateRequest) {
+        engine.recalibrateBackground();
+        recalibrateRequest = false;
+      }
+    }
   }
 }
