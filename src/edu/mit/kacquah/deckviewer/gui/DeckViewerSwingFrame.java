@@ -52,6 +52,10 @@ public class DeckViewerSwingFrame extends JFrame {
     deckViewer.setStatusBar(sb);
   }
   
+  public final StatusBar getStatusBar() {
+    return sb;
+  }
+  
   /**
    * Show the deckview application.
    */

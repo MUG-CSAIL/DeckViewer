@@ -15,6 +15,7 @@ import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
+import edu.mit.kacquah.deckviewer.gui.DeckViewerSwingFrame;
 import edu.mit.kacquah.deckviewer.gui.StatusBar;
 import edu.mit.kacquah.deckviewer.speech.Commands;
 import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
@@ -112,6 +113,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     selectionManager = new SelectionManager(this, flyingObjectManager, deck,
         handTracker);
     speechParser.setSelectionManager(selectionManager);
+    
+    // Setup status bar.
+    initStatusBar();
   }
 
   /****************************************************************************/
@@ -198,8 +202,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private void fitWindowToScreen() {
     // Dimensions for current virtual screen (all monitors combined).
     Dimension screen = SystemUtil.getVirtualScreenBounds().getSize();
+    screen.height -= GameConstants.STATUS_BAR_HEIGHT * 4;
     float screenRatio = (float) screen.height / (float) screen.width;
-
+    
     float desiredRatio;
     float origWidth;
     if (GlobalSettings.backgroundRatio == BackgroundRatio.NORMAL) {
@@ -273,6 +278,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     if (GlobalSettings.useSpeechRecognition) {
       speechEngine.startRecognition();
     }
+  }
+  
+  private void initStatusBar() {
+    this.statusbar = ((DeckViewerSwingFrame)parentFrame).getStatusBar();
+    this.statusbar.setMessage("Ready for command...");
   }
   
 

@@ -25,7 +25,6 @@ public class StatusBar {
     this.width = width;
     this.height = height;
     initLayeredLabels();
-
   }
   
   private void initLayeredLabels() {
@@ -73,5 +72,23 @@ public class StatusBar {
   public void setMessage(String message) {
     setMessageLeft(message);
   }
+  
+  public void clearMessageLeft() {
+    setMessageLeft("");
+  }
+  
+  public void clearMessageCenter() {
+    setMessageCenter("");
+  }
+  
+  public void clearMessageRight() {
+    setMessageRight("");
+  }
+  
+  public void clearMessage() {
+    setMessageLeft("");
+  }
+  
+  
 }
 
