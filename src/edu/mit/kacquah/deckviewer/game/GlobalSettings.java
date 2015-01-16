@@ -20,14 +20,20 @@ public class GlobalSettings {
   /**
    * When true, the app will resize to fit the window screen.
    */
-  public static boolean fitToWindowScreen  = true;
+  public static final boolean fitToWindowScreen  = true;
   
   /**
    * When not using fitToWindowScreen, these will be the app width/height.
    */
-  public static int desiredWidth = 2560;
-  public static int desiredHeight = 2048;
+  public static final int desiredWidth = 2560;
+  public static final int desiredHeight = 2048;
  
+  /**
+   * Limit the maximum resolution of the app for runtime optimization.
+   */
+  public static final int maxNumPixels = 2000000;
+  public static final boolean limitMaxRes = true;
+  
   /**
    * HandTracking constants.
    */

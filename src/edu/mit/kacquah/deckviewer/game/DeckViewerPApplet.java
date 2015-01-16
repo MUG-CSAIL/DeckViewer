@@ -202,6 +202,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private void fitWindowToScreen() {
     // Dimensions for current virtual screen (all monitors combined).
     Dimension screen = SystemUtil.getVirtualScreenBounds().getSize();
+    // Account for menu bar at bottom of screen.
     screen.height -= GameConstants.STATUS_BAR_HEIGHT * 4;
     float screenRatio = (float) screen.height / (float) screen.width;
     
@@ -226,9 +227,22 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
       appHeight = screen.height;
       appWidth = (int) ((float) appHeight / desiredRatio);
     }
+    
+    // If we're creating a window thats too big, scale it down.
+    if (GlobalSettings.limitMaxRes) {
+      int numPixels = appWidth * appHeight;
+      float pixelRatio = ((float)numPixels) / GlobalSettings.maxNumPixels;
+      if (pixelRatio > 1.0) {
+        float pixelRatioRoot = (float) Math.sqrt(pixelRatio);
+        appWidth =  (int)((float)appWidth/ pixelRatioRoot);
+        appHeight = (int)((float)appHeight / pixelRatioRoot);
+      }
+    }
 
     // The scaling ratio is used to resize all image sprites accordingly.
     scaleRatio = appWidth / origWidth;
+    
+    LOGGER.info("Final screen resolution: " + appWidth + "x" + appHeight);
   }
 
   /**
