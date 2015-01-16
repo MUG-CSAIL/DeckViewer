@@ -317,6 +317,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   public void setParentFrameContainer(JFrame parentFrameContainer) {
     this.parentFrame = parentFrameContainer;
+    this.frame = parentFrameContainer;
   }
   
   public void setStatusBar(StatusBar sb) {
