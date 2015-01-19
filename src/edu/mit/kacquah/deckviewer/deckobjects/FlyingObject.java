@@ -72,7 +72,7 @@ public class FlyingObject implements PAppletRenderObject {
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     // Render plane image.
     planeSprite.render(p);
   }

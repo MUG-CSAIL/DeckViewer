@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.vecmath.Point2f;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Deck;
@@ -171,7 +172,7 @@ public class SelectionManager implements PAppletRenderObject {
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     // TODO Auto-generated method stub
 
   }

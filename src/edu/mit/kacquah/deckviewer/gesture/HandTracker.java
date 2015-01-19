@@ -13,13 +13,14 @@ import javax.vecmath.Point3f;
 import org.OpenNI.GeneralException;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.game.GameConstants;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
+import edu.mit.kacquah.deckviewer.gui.StaticTextView;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.FilteredPoints;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
-import edu.mit.kacquah.deckviewer.utils.StaticTextView;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
 import edu.mit.yingyin.tabletop.models.InteractionSurface;
@@ -81,14 +82,20 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
   /**
    * Diectic events
    */
-  DiecticEvent de;
+  private DiecticEvent de;
   
-  Thread handTrackerThread;
-  boolean recalibrateRequest;
+  /**
+   * Hand tracking thread members.
+   */
+  private Thread handTrackerThread;
+  private boolean recalibrateRequest;
+  
+  private float optimizationRatio;
 
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
     this.tabletopRes = screenResolution;
+    this.optimizationRatio = ((DeckViewerPApplet)p).optimizationRatio();
     showFingers = true;
     
     historyLength = GlobalSettings.FILTER_HISTORY_LENGTH;
@@ -149,6 +156,10 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
         / tabletopRes.height);
   }
   
+  private Point optimizationScale(Point p) {
+    return new Point((int)(p.x * optimizationRatio), (int)(p.y * optimizationRatio));
+  }
+  
   /**
    * Resets the background subtraction through the hand tracking engine.
    */
@@ -173,7 +184,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     p.pushStyle();
     p.noStroke();
     if (feList != null) {
@@ -196,7 +207,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
           }
           Point2f point = scale(fe.posDisplay);
           Point pointInImageCoord = new Point((int) point.x, (int) point.y);
-          SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
+          SwingUtilities.convertPointFromScreen(pointInImageCoord, parent);
           p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
               circleRadius * 2);
         }
@@ -210,7 +221,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
       for (int i = 0; i < de.pointingLocationsD().length; ++i) {
         Point2f intersectionDisplayPoint = scale(de.pointingLocationsD()[i]);
         Point pointInImageCoord = new Point((int) intersectionDisplayPoint.x, (int) intersectionDisplayPoint.y);
-        SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
+        SwingUtilities.convertPointFromScreen(pointInImageCoord, this.parent);
+        pointInImageCoord = optimizationScale(pointInImageCoord);
         p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
             circleRadius * 2);
       }
@@ -226,6 +238,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
       Point2f point = scale(feList.get(i).posDisplay);
       Point pointInImageCoord = new Point((int) point.x, (int) point.y);
       SwingUtilities.convertPointFromScreen(pointInImageCoord, parent);
+      pointInImageCoord = optimizationScale(pointInImageCoord);
       point.x = pointInImageCoord.x;
       point.y = pointInImageCoord.y;
       newPoints[i] = point;

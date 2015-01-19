@@ -1,7 +1,9 @@
-package edu.mit.kacquah.deckviewer.utils;
+package edu.mit.kacquah.deckviewer.gui;
 
+import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PGraphics;
 
 /**
  * A static view that renders with a dimmed background and text. Use to
@@ -45,11 +47,12 @@ public class StaticTextView implements PAppletRenderObject {
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     // Only render when active
     if (!isActive) {
       return;
     }   
+    p.textAlign(p.CENTER, p.CENTER);
     p.pushStyle();
     p.rectMode(p.CORNER);
     p.fill(0, 128);

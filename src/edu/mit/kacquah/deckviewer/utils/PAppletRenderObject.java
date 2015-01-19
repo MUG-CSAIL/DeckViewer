@@ -1,6 +1,7 @@
 package edu.mit.kacquah.deckviewer.utils;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 
 /**
@@ -18,6 +19,7 @@ public interface PAppletRenderObject {
    * Render this object to the given PApplet.
    * @param p
    */
-  public abstract void render(PApplet p);
+//  public abstract void render(PApplet p);
+  public abstract void render(PGraphics p);
 
 }

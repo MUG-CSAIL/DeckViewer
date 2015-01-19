@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 /**
  * Wrapper class for Java.awt.Polygon. Adds convenience methods for rendering
@@ -61,7 +62,7 @@ public class DeckPolygon implements PAppletRenderObject {
    * Renders the outline of the deck.
    */
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     if (points.isEmpty()) {
       return;
     }

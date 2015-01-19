@@ -3,6 +3,7 @@ package edu.mit.kacquah.deckviewer.environment;
 import java.awt.Point;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 /**
@@ -29,7 +30,7 @@ public class Catapult implements PAppletRenderObject{
    * Renders a line representing a catapult.
    */
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     p.line(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
   }
 }

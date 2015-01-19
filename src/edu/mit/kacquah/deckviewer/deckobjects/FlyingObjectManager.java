@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 public class FlyingObjectManager implements PAppletRenderObject {
@@ -66,7 +67,7 @@ public class FlyingObjectManager implements PAppletRenderObject {
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     // Render all flying objects
     for (FlyingObject f : this.flyingObjects) {
       f.render(p);

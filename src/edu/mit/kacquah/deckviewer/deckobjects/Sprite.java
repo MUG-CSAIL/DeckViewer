@@ -106,7 +106,7 @@ public class Sprite implements PAppletRenderObject {
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     p.pushStyle();
     p.pushMatrix();
     p.translate(pos.x, pos.y);

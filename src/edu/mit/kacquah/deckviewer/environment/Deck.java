@@ -8,6 +8,7 @@ import edu.mit.kacquah.deckviewer.game.GameConstants;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.utils.*;
+import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.core.PApplet;
 
@@ -153,7 +154,7 @@ public class Deck implements PAppletRenderObject {
   }
 
   @Override
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     // Set image mode to corners
     p.pushStyle();
     p.imageMode(p.CORNERS);

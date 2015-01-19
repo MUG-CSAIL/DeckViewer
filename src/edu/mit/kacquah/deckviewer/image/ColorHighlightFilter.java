@@ -4,6 +4,7 @@ import javax.vecmath.Point4f;
 import javax.vecmath.Tuple4f;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
@@ -50,7 +51,7 @@ public class ColorHighlightFilter implements DynamicImageFilter {
    * Applies color tint to the renderer.
    */
   @Override
-  public void applyFilter(PApplet p) {
+  public void applyFilter(PGraphics p) {
     p.tint(renderColor);
   }
 

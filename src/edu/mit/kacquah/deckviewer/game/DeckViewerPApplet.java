@@ -16,6 +16,7 @@ import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.gui.DeckViewerSwingFrame;
+import edu.mit.kacquah.deckviewer.gui.StaticTextView;
 import edu.mit.kacquah.deckviewer.gui.StatusBar;
 import edu.mit.kacquah.deckviewer.speech.Commands;
 import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
@@ -78,7 +79,14 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    */
   private JFrame parentFrame;
   
+  /**
+   * Status bar displayed below the app.
+   */
   private StatusBar statusbar;
+  
+  PGraphics pg;
+  public int pgWidth, pgHeight;
+  private float optimizationRatio;
 
   public void setup() {
     // Init app state
@@ -114,8 +122,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
         handTracker);
     speechParser.setSelectionManager(selectionManager);
     
-    // Setup status bar.
+    // Setup status bar
     initStatusBar();
+    
+    // Setup pgraphics
+    initPGraphics();
   }
 
   /****************************************************************************/
@@ -127,7 +138,11 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     long elapsedTime = System.currentTimeMillis();
     update(elapsedTime);
     // render the app.
-    render(this);
+    pg.beginDraw();
+    render(pg);
+    pg.endDraw();
+    // draw pg graphics.
+    image(pg, appWidth/2,appHeight/2,appWidth, appHeight);
   }
 
   public void update(long elapsedTime) {
@@ -148,17 +163,17 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     }
   }
 
-  public void render(PApplet p) {
+  public void render(PGraphics p) {
     // Render all deck objects
-    deck.render(this);
-    flyingObjectManager.render(this);
+    deck.render(pg);
+    flyingObjectManager.render(pg);
 
     // Render handtracking
-    handTracker.render(p);
+    handTracker.render(pg);
     
     // Render static views
     for (StaticTextView view : staticViews) {
-      view.render(this);
+      view.render(pg);
     }
   }
 
@@ -234,15 +249,27 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
       float pixelRatio = ((float)numPixels) / GlobalSettings.maxNumPixels;
       if (pixelRatio > 1.0) {
         float pixelRatioRoot = (float) Math.sqrt(pixelRatio);
-        appWidth =  (int)((float)appWidth/ pixelRatioRoot);
-        appHeight = (int)((float)appHeight / pixelRatioRoot);
+//        appWidth =  (int)((float)appWidth/ pixelRatioRoot);
+//        appHeight = (int)((float)appHeight / pixelRatioRoot);
+        pgWidth = (int)((float)appWidth/ pixelRatioRoot);
+        pgHeight = (int)((float)appHeight / pixelRatioRoot);
+      } else {
+        pgWidth = appWidth;
+        pgHeight = appHeight;
       }
+    } else {
+      pgWidth = appWidth;
+      pgHeight = appHeight;
     }
 
     // The scaling ratio is used to resize all image sprites accordingly.
-    scaleRatio = appWidth / origWidth;
+//    scaleRatio = appWidth / origWidth;
+    scaleRatio = pgWidth / origWidth;
+    // 
+    optimizationRatio = (float)pgWidth / appWidth;
     
     LOGGER.info("Final screen resolution: " + appWidth + "x" + appHeight);
+    LOGGER.info("Final pg resolution: " + pgWidth + "x" + pgHeight);
   }
 
   /**
@@ -253,15 +280,15 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     flyingObjectManager = new FlyingObjectManager();
 
     // For now, we'll just place some random objects on the deck.
-    PVector pos = new PVector(width / 2, height / 2);
+    PVector pos = new PVector(pgWidth / 2, pgHeight / 2);
     FlyingObject flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
 
-    pos = new PVector(width / 3, height / 2);
+    pos = new PVector(pgWidth / 3, pgHeight / 2);
     flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
 
-    pos = new PVector(width / 3 * 2, height / 2);
+    pos = new PVector(pgWidth / 3 * 2, pgHeight / 2);
     flyingObject = new FlyingObject("fmac", pos, 0);
     flyingObjectManager.addFlyingObject(flyingObject);
   }
@@ -299,12 +326,24 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     this.statusbar.setMessage("Ready for command...");
   }
   
+  private void initPGraphics() {
+    pg = createGraphics(pgWidth, pgHeight);
+    pg.background(0);
+    pg.imageMode(CENTER);
+    pg.ellipseMode(CENTER);
+
+  }
+  
 
   /****************************************************************************/
   /* Accessors *************************************************************** */
   /****************************************************************************/
   public float scaleRatio() {
     return this.scaleRatio;
+  }
+  
+  public float optimizationRatio () {
+    return this.optimizationRatio;
   }
   
   public void addStaticView(StaticTextView view) {

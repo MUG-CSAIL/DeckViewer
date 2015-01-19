@@ -3,6 +3,7 @@ package edu.mit.kacquah.deckviewer.environment;
 import java.awt.Point;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
@@ -33,7 +34,7 @@ public class Elevator extends DeckPolygon implements PAppletRenderObject {
   /**
    * Renders the outline and center of deck elevators;
    */
-  public void render(PApplet p) {       
+  public void render(PGraphics p) {       
     // Render Edges
     p.pushStyle();
     p.noFill();
