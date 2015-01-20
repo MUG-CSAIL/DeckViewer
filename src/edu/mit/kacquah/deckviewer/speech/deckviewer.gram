@@ -30,7 +30,7 @@ grammar deckviewer;
 /**
  * Deck objects.
  */
- 
+
 <object> = <aircraft>;
 
 <aircraft> = plane | aircraft | fighter | jet;
@@ -39,18 +39,20 @@ grammar deckviewer;
  * Deck locations.
  */
 
-<location> = <preposition> ( <catapult> | <genericLocation> ); 
+<location> = <preposition> ( <catapult> | <elevator> | <genericLocation> );
 
 <catapult> = catapult (one | two | three | four);
+
+<elevator> = elevator (one | two | three | four);
 
 <genericLocation> = there | here;
 
 /**
  * Connecting...
  */
- 
+
 <action> =  move | place;
- 
+
 /**
  * Public commands.
  */

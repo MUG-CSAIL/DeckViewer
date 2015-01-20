@@ -72,16 +72,14 @@ public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
     speechEngine.setSpeechListener(this);
     speechEngine.setGrammarName(GlobalSettings.grammarName);
     speechEngine.initRecognition();
-    if (GlobalSettings.useSpeechRecognition) {
-      speechEngine.startRecognition();
-    }
+    speechEngine.startRecognition();
+    
   }
 
   @Override
   public void handleSpeechResult(SpeechResult result) {
     System.out.println("...");
 
-    System.out.format("Hypothesis: %s\n", result.getHypothesis());
 
     System.out.println("List of recognized words and their times:");
     for (WordResult r : result.getWords()) {
@@ -93,7 +91,10 @@ public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
       System.out.println(s);
 
     System.out.println("Lattice contains "
-        + result.getLattice().getNodes().size() + " nodes");    
+        + result.getLattice().getNodes().size() + " nodes");  
+    
+    System.out.format("Hypothesis: %s\n", result.getHypothesis());
+
   }
 
   public static void main(String[] args) {

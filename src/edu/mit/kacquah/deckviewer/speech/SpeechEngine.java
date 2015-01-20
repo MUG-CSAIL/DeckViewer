@@ -64,7 +64,7 @@ public class SpeechEngine implements Runnable {
   }
 
   public void initRecognition() {
-    LOGGER.info("Loading models...");
+    LOGGER.info("Loading speech models...");
 
     configuration = new Configuration();
 
@@ -94,6 +94,7 @@ public class SpeechEngine implements Runnable {
   }
   
   public void startRecognition() {
+    LOGGER.info("Starting speech recognition...");
     if (!initialized) {
       throw new IllegalStateException("Need to initializes speech.");
     } else if (isRunning) {
