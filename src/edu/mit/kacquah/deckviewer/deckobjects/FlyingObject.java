@@ -12,13 +12,34 @@ import edu.mit.kacquah.deckviewer.utils.PImagePool;
 
 public class FlyingObject implements PAppletRenderObject {
   private Sprite planeSprite;
-  private String name;
+  private AircraftType type;
   
-  public FlyingObject(String name, PVector pos, float rotation){
-    this.name = name;
+  private FlyingObjectManager parentManager;
+  private int UID;
+  
+  public FlyingObject(AircraftType type, PVector pos, float rotation){
+    this.type = type;
     // Load image from image pool
-    PImage spriteImage = PImagePool.getImages(name)[0];
-    this.planeSprite = new Sprite(spriteImage, pos, rotation);
+    PImage spriteImages[] = PImagePool.getImages(type.name);
+    this.planeSprite = new Sprite(spriteImages, pos, rotation);
+    this.parentManager = null;
+    this.UID = -1;
+  }
+  
+  public void addToFlyingObjectManager (FlyingObjectManager m) {
+    this.parentManager = m;
+    this.UID = m.getNextUID();
+  }
+  
+  public void removeFromFlyingObjectManager(FlyingObjectManager m) {
+    if (this.parentManager == m) {
+      this.parentManager = null;
+      this.UID = -1;
+    }
+  }
+  
+  public int getUID() {
+    return this.UID;
   }
   
   public void addImageFilter(DynamicImageFilter filter) {

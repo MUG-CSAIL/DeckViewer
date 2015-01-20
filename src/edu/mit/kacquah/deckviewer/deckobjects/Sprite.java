@@ -20,25 +20,30 @@ import processing.core.*;
  * 
  */
 public class Sprite implements PAppletRenderObject {
+  public enum Direction {
+    UP(270),
+    DOWN(90),
+    LEFT(180),
+    RIGHT(0);
+    
+    public final int degrees;
+    
+    Direction (int degrees) {
+      this.degrees = degrees;
+    }
+  }
+  
   private PImage spriteImages[];
   private PVector pos;
   private float rotation;
   private int selectedSpriteImage;
   private LinkedList<DynamicImageFilter> imageFilters;
+  
+  private static final int DEFAULT_SPRITE_IMAGE = 1;
 
-  public Sprite(PImage image, PVector position) {
-    this.spriteImages = new PImage[1];
-    this.spriteImages[0] = image;
-    this.selectedSpriteImage = 0;
-    this.pos = position;
-    this.rotation = 0;
-    resetImageFilters();
-  }
-
-  public Sprite(PImage image, PVector position, float rotation) {
-    this.spriteImages = new PImage[1];
-    this.spriteImages[0] = image;
-    this.selectedSpriteImage = 0;
+  public Sprite(PImage image[], PVector position, float rotation) {
+    this.spriteImages = image;
+    this.selectedSpriteImage = DEFAULT_SPRITE_IMAGE;
     this.pos = position;
     this.rotation = rotation;
     resetImageFilters();
@@ -62,7 +67,7 @@ public class Sprite implements PAppletRenderObject {
   }
 
   public void setRotation(float newRot) {
-    this.rotation = newRot;
+    this.rotation = newRot % 360;
   }
 
   public float getRotation() {
@@ -110,7 +115,7 @@ public class Sprite implements PAppletRenderObject {
     p.pushStyle();
     p.pushMatrix();
     p.translate(pos.x, pos.y);
-    p.rotate(rotation);
+    p.rotate((float)Math.toRadians(rotation));
     // Apply filters
     for (DynamicImageFilter f : imageFilters) {
       f.applyFilter(p);

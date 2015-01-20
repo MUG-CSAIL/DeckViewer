@@ -9,17 +9,25 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 public class FlyingObjectManager implements PAppletRenderObject {
   private LinkedList<FlyingObject> flyingObjects;
+  private int nextUID;
 
   public FlyingObjectManager() {
     this.flyingObjects = new LinkedList<FlyingObject>();
+    nextUID = 0;
   }
 
   public void addFlyingObject(FlyingObject f) {
     this.flyingObjects.add(f);
+    f.addToFlyingObjectManager(this);
   }
 
   public void removeFlyingObject(FlyingObject f) {
     this.flyingObjects.remove(f);
+    f.removeFromFlyingObjectManager(this);
+  }
+  
+  public int getNextUID() {
+    return nextUID++;
   }
 
   /**

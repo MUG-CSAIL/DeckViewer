@@ -15,11 +15,11 @@ import processing.core.PImage;
  * app. Only loads each image once into memory.
  * 
  * @author kojo
- *
+ * 
  */
 public class PImagePool {
   private static PApplet parent;
-  
+
   public static ArrayList<String> keyWords = new ArrayList<String>(
       Arrays.asList("fmac", "smac", "fuav", "suav", "predator", "c2", "f18",
           "helicopter", "pegasus", "tanker", "f35", "ugv_service",
@@ -35,9 +35,11 @@ public class PImagePool {
       imageName = "fmac";
     } else if (imageName == "c2" || imageName == "smac") {
       imageName = "smac";
-    } else if (imageName == "pegasus" || imageName == "fuav" || imageName == "peg") {
+    } else if (imageName == "pegasus" || imageName == "fuav"
+        || imageName == "peg") {
       imageName = "fuav";
-    } else if (imageName == "predator" || imageName == "suav" || imageName == "pred") {
+    } else if (imageName == "predator" || imageName == "suav"
+        || imageName == "pred") {
       imageName = "suav";
     } else if (imageName == "f35" || imageName == "vmac") {
       imageName = "f35";
@@ -51,7 +53,7 @@ public class PImagePool {
       File tmp = null;
       do {
         i++;
-        String fileName =  imageName + "_image_" + i + ".png";
+        String fileName = imageName + "_image_" + i + ".png";
         fileName = FileUtil.join(DeckViewerPApplet.RESOURCE_DIR, fileName);
         tmp = new File(fileName);
       } while (tmp.exists());
@@ -59,9 +61,9 @@ public class PImagePool {
 
       PImage[] result = new PImage[i];
       for (int j = 1; j <= i; j++) {
-        result[j - 1] = parent.loadImage("./resources/" + imageName
-            + "_image_" + j + ".png");
-        if (result[j  - 1] == null) {
+        result[j - 1] = parent.loadImage("./resources/" + imageName + "_image_"
+            + j + ".png");
+        if (result[j - 1] == null) {
           // One of the images was unsuccessfully loaded; return null.
           return null;
         }
@@ -74,7 +76,7 @@ public class PImagePool {
       return null;
     }
   }
-  
+
   public static void setParent(PApplet p) {
     parent = p;
   }

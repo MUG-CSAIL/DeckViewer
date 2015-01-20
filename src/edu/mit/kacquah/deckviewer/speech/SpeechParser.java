@@ -19,7 +19,6 @@ public class SpeechParser implements ISpeechEventListener {
   private SelectionManager selectionManager;
 
   public SpeechParser() {
-
   }
 
   public void setSelectionManager(SelectionManager m) {
