@@ -2,6 +2,8 @@ package edu.mit.kacquah.deckviewer.game;
 
 import java.awt.Dimension;
 import java.awt.Point;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
@@ -83,6 +85,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    * Status bar presented under app.
    */
   private StatusBar statusbar;
+  private NumberFormat numberFormater = new DecimalFormat("#0.00");     
+
 
   public void setup() {
     // Init app state
@@ -155,6 +159,14 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     for (StaticTextView view : staticViews) {
       view.update(elapsedTime);
     }
+    
+    // Update status bar
+    updateStatusBar();
+  }
+  
+  private void updateStatusBar() {
+    // FrameRate on right
+    statusbar.setMessageRight("FrameRate: " + numberFormater.format(frameRate));
   }
 
   public void render(PApplet p) {
