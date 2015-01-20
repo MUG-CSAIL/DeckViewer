@@ -1,5 +1,6 @@
-package edu.mit.kacquah.deckviewer.utils;
+package edu.mit.kacquah.deckviewer.gui;
 
+import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import processing.core.PApplet;
 import processing.core.PFont;
 

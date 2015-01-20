@@ -16,6 +16,7 @@ import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.gui.DeckViewerSwingFrame;
+import edu.mit.kacquah.deckviewer.gui.StaticTextView;
 import edu.mit.kacquah.deckviewer.gui.StatusBar;
 import edu.mit.kacquah.deckviewer.speech.Commands;
 import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
@@ -78,13 +79,21 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    */
   private JFrame parentFrame;
   
+  /**
+   * Status bar presented under app.
+   */
   private StatusBar statusbar;
 
   public void setup() {
     // Init app state
     initScreenSize();
-    // size(GameConstants.BACKGROUND_WIDTH, GameConstants.BACKGROUND_HEIGHT);
-    size(appWidth, appHeight);
+    // Linux can't use opengl.
+    // TODO(KoolJBlack): determine linux opengl bug.
+    if (System.getProperty("os.name").equals("Linux")) {
+      size(appWidth, appHeight);
+    } else {
+      size(appWidth, appHeight, OPENGL);
+    }
     frameRate(30);
 
     // Rendering modes
