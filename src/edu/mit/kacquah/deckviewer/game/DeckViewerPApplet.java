@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 
 import org.OpenNI.GeneralException;
 
+import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.environment.Deck;
@@ -72,6 +73,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
   // Actions
   private SelectionManager selectionManager;
+  private ActionManager actionManager;
   
   // Static Views
   private LinkedList<StaticTextView> staticViews;
@@ -86,6 +88,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    */
   private StatusBar statusbar;
   private NumberFormat numberFormater = new DecimalFormat("#0.00");     
+  
 
 
   public void setup() {
@@ -125,7 +128,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     // Setup Actions
     selectionManager = new SelectionManager(this, flyingObjectManager, deck,
         handTracker);
-    speechParser.setSelectionManager(selectionManager);
+    actionManager = new ActionManager(this, selectionManager);
+    speechParser.setActionManager(actionManager);
     
     // Setup status bar.
     initStatusBar();
@@ -271,7 +275,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    */
   private void initDeckObjects() {
     deck = new Deck(this);
-    flyingObjectManager = new FlyingObjectManager();
+    flyingObjectManager = new FlyingObjectManager(this);
 
     // For now, we'll just place some random objects on the deck.
     PVector pos = new PVector(width / 2, height / 2);

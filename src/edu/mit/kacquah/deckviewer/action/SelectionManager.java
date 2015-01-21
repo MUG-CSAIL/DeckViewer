@@ -28,15 +28,15 @@ public class SelectionManager implements PAppletRenderObject {
       .getName());
 
   // References
-  PApplet parent;
-  FlyingObjectManager flyingObjectManager;
-  Deck deck;
-  HandTracker handTracker;
+  private PApplet parent;
+  private FlyingObjectManager flyingObjectManager;
+  private Deck deck;
+  private HandTracker handTracker;
 
   // Selection state.
-  boolean hasSelection;
-  String currentAction;
-  LinkedList<FlyingObject> selectedObjects;
+  private boolean hasSelection;
+  private String currentAction;
+  private  LinkedList<FlyingObject> selectedObjects;
 
   public SelectionManager(PApplet p, FlyingObjectManager f, Deck d,
       HandTracker t) {

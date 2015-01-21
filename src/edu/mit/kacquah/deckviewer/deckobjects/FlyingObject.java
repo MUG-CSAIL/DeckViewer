@@ -6,7 +6,9 @@ import java.awt.Rectangle;
 import javax.vecmath.Point2f;
 
 import processing.core.*;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.image.DynamicImageFilter;
+import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import edu.mit.kacquah.deckviewer.utils.PImagePool;
 
@@ -16,6 +18,9 @@ public class FlyingObject implements PAppletRenderObject {
   
   private FlyingObjectManager parentManager;
   private int UID;
+  
+  private PFont font;
+  private int fontSize;
   
   public FlyingObject(AircraftType type, PVector pos, float rotation){
     this.type = type;
@@ -29,6 +34,8 @@ public class FlyingObject implements PAppletRenderObject {
   public void addToFlyingObjectManager (FlyingObjectManager m) {
     this.parentManager = m;
     this.UID = m.getNextUID();
+    this.font = m.font;
+    this.fontSize = m.fontSize;
   }
   
   public void removeFromFlyingObjectManager(FlyingObjectManager m) {
@@ -96,6 +103,23 @@ public class FlyingObject implements PAppletRenderObject {
   public void render(PApplet p) {
     // Render plane image.
     planeSprite.render(p);
+    if (GlobalSettings.renderAircraftUIDs) {
+      p.pushStyle();
+      p.pushMatrix();
+      Rectangle bounds = this.planeSprite.getBounds();
+      p.translate(bounds.x + bounds.width*8/10, bounds.y + bounds.height/10);
+      p.textFont(font);
+      // Border outline
+      p.textSize(this.fontSize * 1.4f);
+      p.fill(ColorUtil.BLACK);
+      p.text(this.UID, 0, 0);
+      // Text Fill
+      p.textSize(this.fontSize);
+      p.fill(ColorUtil.WHITE);
+      p.text(this.UID, 0, 0);
+      p.popMatrix();
+      p.popStyle();
+    }
   }
 
 }

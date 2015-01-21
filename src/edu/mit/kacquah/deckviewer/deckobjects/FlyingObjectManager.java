@@ -5,15 +5,23 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
+import processing.core.PFont;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 public class FlyingObjectManager implements PAppletRenderObject {
   private LinkedList<FlyingObject> flyingObjects;
   private int nextUID;
+  public final PFont font;
+  public final int fontSize;
+  private PApplet parent;
 
-  public FlyingObjectManager() {
+  public FlyingObjectManager(PApplet p) {
     this.flyingObjects = new LinkedList<FlyingObject>();
-    nextUID = 0;
+    this.nextUID = 1;
+    this.fontSize = 20;
+    this.font = p.createFont("Arial", this.fontSize);
+    this.parent = p;
+    p.textAlign(p.CENTER, p.CENTER);
   }
 
   public void addFlyingObject(FlyingObject f) {

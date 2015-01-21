@@ -54,12 +54,17 @@ public class GlobalSettings {
   /**
    * Deck rendering configuration.
    */
-  public static boolean renderDeckOutline = true;
-  public static boolean renderDeckCatapults = true;
-  public static boolean renderDeckElevators = true;
+  public static final boolean renderDeckOutline = true;
+  public static final boolean renderDeckCatapults = true;
+  public static final boolean renderDeckElevators = true;
   
   /**
    * Selection engine constants
    */
   public static final int selectionHighlightColor = ColorUtil.ORANGE;
+  
+  /**
+   * FlyingObject constants.
+   */
+  public static final boolean renderAircraftUIDs = true;
 }
