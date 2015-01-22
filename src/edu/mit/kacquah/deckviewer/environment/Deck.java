@@ -1,7 +1,9 @@
 package edu.mit.kacquah.deckviewer.environment;
 
 import java.awt.Point;
+import java.util.logging.Logger;
 
+import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.game.GameConstants;
@@ -12,6 +14,10 @@ import processing.core.PImage;
 import processing.core.PApplet;
 
 public class Deck implements PAppletRenderObject {
+  // Utils
+  private static Logger LOGGER = Logger.getLogger(Deck.class
+      .getName());
+  
   // Parent PApplet that owns the deck.
   private DeckViewerPApplet parent;
   private final float scaleRatio;
@@ -28,8 +34,27 @@ public class Deck implements PAppletRenderObject {
 
   // Deck objects and managers
   private FlyingObjectManager flyingObjectManager;
+  
+  // Singleton
+  private static Deck instance;
+  
+  public static Deck initInstance(PApplet parent) {
+    if (instance != null) {
+      LOGGER.severe("Already initialized Deck instance");
+    } else {
+      instance = new Deck(parent);
+    }
+    return instance;
+  }
+  
+  public static Deck getInstance() {
+    if (instance == null) {
+      LOGGER.severe("Cannot get uninitialized Deck instance");
+    }
+    return instance;
+  }
 
-  public Deck(PApplet p) {
+  private Deck(PApplet p) {
     this.parent = (DeckViewerPApplet) p;
     this.scaleRatio = parent.scaleRatio();
     String fileName;
@@ -119,8 +144,6 @@ public class Deck implements PAppletRenderObject {
     elevators[1] = el2;
     elevators[2] = el3;
     elevators[3] = el4;
-    
-    
   }
 
   /**

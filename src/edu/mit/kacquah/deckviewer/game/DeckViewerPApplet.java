@@ -278,7 +278,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    * Initialize the deck parameters and flight objects.
    */
   private void initDeckObjects() {
-    deck = new Deck(this);
+    deck = Deck.initInstance(this);
     flyingObjectManager = new FlyingObjectManager(this);
 
     // For now, we'll just place some random objects on the deck.
