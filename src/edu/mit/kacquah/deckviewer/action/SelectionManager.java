@@ -13,6 +13,7 @@ import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
+import edu.mit.kacquah.deckviewer.speech.ActionError;
 import edu.mit.kacquah.deckviewer.speech.SpeechParser;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
@@ -22,7 +23,7 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
  * @author kojo
  * 
  */
-public class SelectionManager implements PAppletRenderObject {
+public class SelectionManager implements PAppletRenderObject {  
   // Utils
   private static Logger LOGGER = Logger.getLogger(SelectionManager.class
       .getName());
@@ -35,8 +36,10 @@ public class SelectionManager implements PAppletRenderObject {
 
   // Selection state.
   private boolean hasSelection;
-  private String currentAction;
   private  LinkedList<FlyingObject> selectedObjects;
+  
+  // Error status
+  ActionError currentError;
 
   public SelectionManager(PApplet p, FlyingObjectManager f, Deck d,
       HandTracker t) {
@@ -58,18 +61,13 @@ public class SelectionManager implements PAppletRenderObject {
   public void setFlyingObjectManager(FlyingObjectManager m) {
     this.flyingObjectManager = m;
   }
-
-  /**
-   * Initiates selection of deck object(s) with a given action. Returns true or
-   * false depending on selection success.
-   * 
-   * @param action
-   */
-  public boolean selectWithAction(String action) {
+  
+  public boolean selectAircraftAtFingerLocation() {
     // Get finer points
     Point2f fingerPoints[] = handTracker.getFilteredPoints();
     if (fingerPoints.length == 0) {
-      LOGGER.severe("Cannot select without finger points.");
+      currentError = ActionError.NO_FINGERS_ON_SCREEN;
+      LOGGER.severe(currentError.description);
       return false;
     }
 
@@ -79,15 +77,67 @@ public class SelectionManager implements PAppletRenderObject {
     LinkedList<FlyingObject> potentialObjects = flyingObjectManager.intersectsPoint(fingerPoint);
 
     if (potentialObjects.size() == 0) {
-      LOGGER.severe("Selection failed to find any aircraft.");
+      currentError = ActionError.SELECTION_FAILED;
+      LOGGER.severe(currentError.description);
       return false;
     }
     
     // Clean last selection and update new selection.
-    clearSelection();
-    selectObjects(potentialObjects, action);
+    selectObjects(potentialObjects);
     return true;
   }
+  
+  public Point getCurrentFingerPoint() {
+    // Get finer points
+    Point2f fingerPoints[] = handTracker.getFilteredPoints();
+    if (fingerPoints.length == 0) {
+      currentError = ActionError.NO_FINGERS_ON_SCREEN;
+      LOGGER.severe(currentError.description);
+      return null;
+    }
+
+    // Take the first finger point for the target.
+    Point fingerPointTarget = new Point((int) fingerPoints[0].x,
+        (int) fingerPoints[0].y);
+    
+    if (!deck.contains(fingerPointTarget)) {
+      currentError = ActionError.TARGET_NOT_ON_DECK;
+      LOGGER.severe(currentError.description);
+      return null;
+    } else {
+      return fingerPointTarget;
+    }
+  }
+
+  /**
+   * Initiates selection of deck object(s) with a given action. Returns true or
+   * false depending on selection success.
+   * 
+   * @param action
+   */
+//  public boolean selectWithAction(String action) {
+//    // Get finer points
+//    Point2f fingerPoints[] = handTracker.getFilteredPoints();
+//    if (fingerPoints.length == 0) {
+//      LOGGER.severe("Cannot select without finger points.");
+//      return false;
+//    }
+//
+//    // Take the first finger point for selection.
+//    Point fingerPoint = new Point((int) fingerPoints[0].x,
+//        (int) fingerPoints[0].y);
+//    LinkedList<FlyingObject> potentialObjects = flyingObjectManager.intersectsPoint(fingerPoint);
+//
+//    if (potentialObjects.size() == 0) {
+//      LOGGER.severe("Selection failed to find any aircraft.");
+//      return false;
+//    }
+//    
+//    // Clean last selection and update new selection.
+//    clearSelection();
+//    selectObjects(potentialObjects, action);
+//    return true;
+//  }
 
   /**
    * Initiates execution of an action on selected deck object(s) with a given
@@ -96,51 +146,56 @@ public class SelectionManager implements PAppletRenderObject {
    * 
    * @param target
    */
-  public boolean executeActionWithTarget(String target) {
-    if (!hasSelection) {
-      LOGGER.severe("Need to select aircraft first.");
-      return false;
-    }
-
-    // Get finer points
-    Point2f fingerPoints[] = handTracker.getFilteredPoints();
-    if (fingerPoints.length == 0) {
-      LOGGER.severe("Cannot select without finger points.");
-      return false;
-    }
-
-    // Take the first finger point for the target.
-    Point fingerPointTarget = new Point((int) fingerPoints[0].x,
-        (int) fingerPoints[0].y);
-
-    if (!deck.contains(fingerPointTarget)) {
-      LOGGER.severe("Target must be located on arcraft deck.");
-      return false;
-    }
-
-    // Attempt to move object and test for intersections.
-    FlyingObject selectedObject = selectedObjects.get(0);
-    Point2f oldPosition = selectedObject.getPosition();
-    selectedObject.setPosition(fingerPointTarget.x, fingerPointTarget.y);
-    LinkedList<FlyingObject> possibleIntersections = flyingObjectManager
-        .intersectsFlyingObjects(selectedObject);
-    if (possibleIntersections.size() > 1) {
-      selectedObject.setPosition(oldPosition.x, oldPosition.y);
-      LOGGER.severe("Cannot place aircraft in position with intersections.");
-      return false;
-    }
-
-    // Clear selection after executing action.
-    clearSelection();
-
-    return true;
-  }
+//  public boolean executeActionWithTarget(String target) {
+//    if (!hasSelection) {
+//      LOGGER.severe("Need to select aircraft first.");
+//      return false;
+//    }
+//
+//    // Get finer points
+//    Point2f fingerPoints[] = handTracker.getFilteredPoints();
+//    if (fingerPoints.length == 0) {
+//      LOGGER.severe("Cannot select without finger points.");
+//      return false;
+//    }
+//
+//    // Take the first finger point for the target.
+//    Point fingerPointTarget = new Point((int) fingerPoints[0].x,
+//        (int) fingerPoints[0].y);
+//
+//    if (!deck.contains(fingerPointTarget)) {
+//      LOGGER.severe("Target must be located on arcraft deck.");
+//      return false;
+//    }
+//
+//    // Attempt to move object and test for intersections.
+//    FlyingObject selectedObject = selectedObjects.get(0);
+//    Point2f oldPosition = selectedObject.getPosition();
+//    selectedObject.setPosition(fingerPointTarget.x, fingerPointTarget.y);
+//    LinkedList<FlyingObject> possibleIntersections = flyingObjectManager
+//        .intersectsFlyingObjects(selectedObject);
+//    if (possibleIntersections.size() > 1) {
+//      selectedObject.setPosition(oldPosition.x, oldPosition.y);
+//      LOGGER.severe("Cannot place aircraft in position with intersections.");
+//      return false;
+//    }
+//
+//    // Clear selection after executing action.
+//    clearSelection();
+//
+//    return true;
+//  }
   
-  private void selectObjects(LinkedList<FlyingObject> objects, String action) {
+  /**
+   * Selects flying objects and updates state.
+   * @param objects
+   */
+  private void selectObjects(LinkedList<FlyingObject> objects) {
+    clearSelection();
     // Update state.
     selectedObjects = objects;
-    currentAction = action;
     hasSelection = true;
+    currentError = ActionError.SUCCESS;
     // Highlight the objects.
     for (FlyingObject o : selectedObjects) {
       o.addImageFilter(new ColorHighlightFilter(
@@ -161,7 +216,19 @@ public class SelectionManager implements PAppletRenderObject {
     // Update state.
     hasSelection = false;
     selectedObjects = null;
-    currentAction = null;
+    currentError = ActionError.NO_ERROR;
+  }
+  
+  public boolean hasSelection() {
+    return this.hasSelection;
+  }
+  
+  public ActionError getError() {
+    return this.currentError;
+  }
+  
+  LinkedList<FlyingObject> getSelection() {
+    return this.selectedObjects;
   }
 
   @Override

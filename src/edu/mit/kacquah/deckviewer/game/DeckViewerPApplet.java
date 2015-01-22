@@ -128,7 +128,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     // Setup Actions
     selectionManager = new SelectionManager(this, flyingObjectManager, deck,
         handTracker);
-    actionManager = new ActionManager(this, selectionManager);
+    actionManager = new ActionManager(this, selectionManager,
+        flyingObjectManager);
     speechParser.setActionManager(actionManager);
     
     // Setup status bar.
@@ -169,6 +170,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   }
   
   private void updateStatusBar() {
+    // Action status on left
+    statusbar.setMessageLeft(actionManager.getStatus());
     // FrameRate on right
     statusbar.setMessageRight("FrameRate: " + numberFormater.format(frameRate));
   }
@@ -192,12 +195,12 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     case 'S':
     case 's':
       // Select a flying object.
-      selectionManager.selectWithAction(Commands.MOVE);
+      speechParser.createMoveAction("Move this aircraft (keyboard)");
       break;
     case 'E':
     case 'e':
       // Execute an action.
-      selectionManager.executeActionWithTarget(Commands.TO);
+      speechParser.createLocationAction("over there (keyboard)");
       break;
     case 'R':
     case 'r':

@@ -63,7 +63,6 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
    * Filter points over a window for smoother finger tracking.
    */
   private FilteredPoints filteredPoints;
-  private boolean useFilteredPoints;
   
   /**
    * Length of history window to filter points
@@ -81,10 +80,10 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
   /**
    * Diectic events
    */
-  DiecticEvent de;
+  private DiecticEvent de;
   
-  Thread handTrackerThread;
-  boolean recalibrateRequest;
+  private Thread handTrackerThread;
+  private boolean recalibrateRequest;
 
   public HandTracker(PApplet p, Dimension screenResolution) {
     this.parent = p;
@@ -99,7 +98,6 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
     // Enabling auto resize allows us to always track a new set of fingers when
     // the number of detected fingers changes.
     filteredPoints.setAutoResize(true);
-    useFilteredPoints = true;
     
     // Static view notifies when calibration
     calibrationView = new StaticTextView(p);
@@ -177,38 +175,23 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
     p.pushStyle();
     p.noStroke();
     if (feList != null) {
-      if (useFilteredPoints) {
-        p.fill(ColorUtil.RED);
-        Point2f[] points = filteredPoints.getFilteredPoints();
-        for (Point2f point : points) {
-          Point pointInImageCoord = new Point((int) point.x, (int) point.y);
-          //SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
-          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
-              circleRadius * 2);
-        }
-      } else {
-        for (ManipulativeEvent fe : feList) {
-          FingerEventType type = fe.type;
-          if (type == FingerEventType.PRESSED) {
-            p.fill(ColorUtil.RED);
-          } else {
-            p.fill(ColorUtil.GREEN);
-          }
-          Point2f point = scale(fe.posDisplay);
-          Point pointInImageCoord = new Point((int) point.x, (int) point.y);
-          SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
-          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
-              circleRadius * 2);
-        }
+      p.fill(ColorUtil.RED);
+      Point2f[] points = getFilteredPoints();
+      for (Point2f point : points) {
+        Point pointInImageCoord = new Point((int) point.x, (int) point.y);
+        //SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
+        p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
+            circleRadius * 2);
       }
     }
     
-    if (de != null && ! isCalibratingBackground()) {
+    DiecticEvent tempDe = this.getDiecticEvent();
+    if (tempDe != null && ! isCalibratingBackground()) {
       p.fill(ColorUtil.ORANGE);
 
       // Extract intersection points
-      for (int i = 0; i < de.pointingLocationsD().length; ++i) {
-        Point2f intersectionDisplayPoint = scale(de.pointingLocationsD()[i]);
+      for (int i = 0; i < tempDe.pointingLocationsD().length; ++i) {
+        Point2f intersectionDisplayPoint = scale(tempDe.pointingLocationsD()[i]);
         Point pointInImageCoord = new Point((int) intersectionDisplayPoint.x, (int) intersectionDisplayPoint.y);
         SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
         p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
@@ -257,7 +240,15 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
       Point2f mouse[] = {new Point2f(parent.mouseX, parent.mouseY) };
       return mouse;
     }
-    return filteredPoints.getFilteredPoints();
+    synchronized (this) {
+      return filteredPoints.getFilteredPoints();
+    }
+  }
+  
+  public DiecticEvent getDiecticEvent() {
+    synchronized (this) {
+      return this.de;
+    }
   }
 
   @Override

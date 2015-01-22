@@ -60,7 +60,7 @@ public class ActionCommand {
   }
   
   public enum LocationType {
-    POINTING, ELEVATOR, CATAPULT, DECK_REGION;
+    POINTING, ELEVATOR, CATAPULT;
   }
   
   /****************************************************************************/
@@ -70,9 +70,11 @@ public class ActionCommand {
   public AircraftType aircraftType;
   public LocationType locationType;
   public int locationNumber;
+  public final String text;
   
-  public ActionCommand(ActionCommandType type) {
+  public ActionCommand(ActionCommandType type, String text) {
     this.commandType = type;
+    this.text = text;
     this.locationNumber = -1;
   }
   
@@ -83,7 +85,17 @@ public class ActionCommand {
    * @return
    */
   public static ActionCommand mergeActionCommands(ActionCommand first, ActionCommand second) {
-    return new ActionCommand(null);
+    if (first.commandType == ActionCommandType.MOVE
+        && second.commandType == ActionCommandType.LOCATION) {
+      ActionCommand result = new ActionCommand(ActionCommandType.MOVE_TO_LOCATION, first.text + "||" +second.text);
+      result.aircraftType = first.aircraftType;
+      result.locationType = second.locationType;
+      result.locationNumber = second.locationNumber;
+      return result;
+    } else {
+      return null;
+    }
+    
   }
   
   

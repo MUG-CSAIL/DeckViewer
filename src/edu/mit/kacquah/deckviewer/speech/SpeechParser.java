@@ -18,17 +18,16 @@ import edu.mit.kacquah.deckviewer.speech.SpeechEngine.ISpeechEventListener;
  * 
  */
 public class SpeechParser implements ISpeechEventListener {
-  private static Logger LOGGER = Logger.getLogger(SpeechParser.class
-      .getName());
+  private static Logger LOGGER = Logger.getLogger(SpeechParser.class.getName());
   ActionManager actionManager;
-  
+
   public SpeechParser() {
   }
 
-//  public void setSelectionManager(SelectionManager m) {
-//    this.selectionManager = m;
-//  }
-  
+  // public void setSelectionManager(SelectionManager m) {
+  // this.selectionManager = m;
+  // }
+
   public void setActionManager(ActionManager m) {
     this.actionManager = m;
   }
@@ -36,7 +35,7 @@ public class SpeechParser implements ISpeechEventListener {
   @Override
   public void handleSpeechResult(SpeechResult result) {
     String command = result.getHypothesis().toLowerCase();
-    
+
     boolean success;
 
     // Since commands come in two types (action + selection) or (location), we
@@ -48,32 +47,36 @@ public class SpeechParser implements ISpeechEventListener {
     } else {
       success = false;
     }
-    
+
     if (!success) {
       // We don't understand this command...
       LOGGER.severe("Unable to parse command:" + command);
     }
   }
-  
+
   /**
    * Creats a move action for the ActionManager.
+   * 
    * @param command
    * @return
    */
   public boolean createMoveAction(String command) {
-    ActionCommand actionCommand = new ActionCommand(ActionCommandType.MOVE);
+    ActionCommand actionCommand = new ActionCommand(ActionCommandType.MOVE,
+        command);
     actionCommand.aircraftType = AircraftType.F18;
     actionManager.processActionCommand(actionCommand);
     return true;
   }
-  
+
   /**
    * Creates a location action for the ActionManager.
+   * 
    * @param command
    * @return
    */
   public boolean createLocationAction(String command) {
-    ActionCommand actionCommand = new ActionCommand(ActionCommandType.LOCATION);
+    ActionCommand actionCommand = new ActionCommand(ActionCommandType.LOCATION,
+        command);
     // Determine location
     int number = 0;
     if (command.contains(ActionCommand.CATAPULT)) {
@@ -96,7 +99,7 @@ public class SpeechParser implements ISpeechEventListener {
     actionManager.processActionCommand(actionCommand);
     return true;
   }
-  
+
   private int getNumberFromCommmand(String command) {
     if (command.contains(ActionCommand.ONE)) {
       return 1;
