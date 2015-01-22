@@ -79,6 +79,7 @@ public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
   @Override
   public void handleSpeechResult(SpeechResult result) {
     System.out.println("...");
+    
 
 
     System.out.println("List of recognized words and their times:");

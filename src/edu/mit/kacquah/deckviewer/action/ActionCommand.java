@@ -56,7 +56,7 @@ public class ActionCommand {
    *
    */
   public enum ActionCommandType {
-    MOVE, LOCATION;
+    MOVE, LOCATION, MOVE_TO_LOCATION;
   }
   
   public enum LocationType {
