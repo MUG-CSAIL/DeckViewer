@@ -62,6 +62,29 @@ public class SelectionManager implements PAppletRenderObject {
     this.flyingObjectManager = m;
   }
   
+  /**
+   * Selects an aircraft with a particular UID.
+   * @param number
+   * @return
+   */
+  public boolean selectAircraftWithNumber(int number) {
+    FlyingObject selectedObject = flyingObjectManager.getAircraftWithUID(number);
+    if (selectedObject == null) {
+      currentError = ActionError.NO_AIRCRAFT_NUMBER;
+      LOGGER.severe(currentError.description);
+      return false;
+    }
+    LinkedList<FlyingObject> potentialObjects = new LinkedList<FlyingObject>();
+    potentialObjects.add(selectedObject);
+    // Clean last selection and update new selection.
+    selectObjects(potentialObjects);
+    return true;
+  }
+  
+  /**
+   * Selects an aircraft at a specific location.
+   * @return
+   */
   public boolean selectAircraftAtFingerLocation() {
     // Get finer points
     Point2f fingerPoints[] = handTracker.getFilteredPoints();
@@ -87,6 +110,10 @@ public class SelectionManager implements PAppletRenderObject {
     return true;
   }
   
+  /**
+   * Returns the current position of the fingers. Checks for on deck.
+   * @return
+   */
   public Point getCurrentFingerPoint() {
     // Get finer points
     Point2f fingerPoints[] = handTracker.getFilteredPoints();

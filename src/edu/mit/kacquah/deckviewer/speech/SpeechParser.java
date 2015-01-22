@@ -63,7 +63,12 @@ public class SpeechParser implements ISpeechEventListener {
   public boolean createMoveAction(String command) {
     ActionCommand actionCommand = new ActionCommand(ActionCommandType.MOVE,
         command);
-    actionCommand.aircraftType = AircraftType.F18;
+    int number = getNumberFromCommmand(command);
+    if (number != -1) {
+      actionCommand.aircraftNumber = number;
+    } else {
+      actionCommand.aircraftType = AircraftType.F18;
+    }
     actionManager.processActionCommand(actionCommand);
     return true;
   }
@@ -109,6 +114,18 @@ public class SpeechParser implements ISpeechEventListener {
       return 3;
     } else if (command.contains(ActionCommand.FOUR)) {
       return 4;
+    } else if (command.contains(ActionCommand.FIVE)) {
+      return 5;
+    } else if (command.contains(ActionCommand.SIX)) {
+      return 6;
+    } else if (command.contains(ActionCommand.SEVEN)) {
+      return 7;
+    } else if (command.contains(ActionCommand.EIGHT)) {
+      return 8;
+    } else if (command.contains(ActionCommand.NINE)) {
+      return 9;
+    } else if (command.contains(ActionCommand.TEN)) {
+      return 10;
     } else {
       return -1;
     }

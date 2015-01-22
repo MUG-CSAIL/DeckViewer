@@ -1,25 +1,27 @@
 to catapult two
-over catapult two
-place that jet
-move that aircraft
-place that plane
-move this plane
-over here
-over there
-to catapult three
-over catapult four
-to here
-place this jet
-over catapult one
-place that fighter
-move this aircraft
-to catapult one
-move that jet
-move this fighter
-to catapult four
+over elevator two
+move aircraft number three
 to there
-over catapult three
+move aircraft number zero
+move this aircraft
+over catapult one
+over there
+move aircraft number six
+move aircraft number four
 place this aircraft
-place this fighter
-move this jet
-place this plane
+move aircraft number seven
+over catapult two
+to elevator one
+over elevator one
+over catapult four
+to elevator three
+to catapult one
+place aircraft number one
+place aircraft number six
+to elevator two
+over catapult three
+to catapult four
+over elevator four
+move aircraft number eight
+to catapult three
+place aircraft number four

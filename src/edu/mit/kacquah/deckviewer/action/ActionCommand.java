@@ -68,6 +68,7 @@ public class ActionCommand {
   /****************************************************************************/  
   public final ActionCommandType commandType;
   public AircraftType aircraftType;
+  public int aircraftNumber;
   public LocationType locationType;
   public int locationNumber;
   public final String text;
@@ -76,6 +77,7 @@ public class ActionCommand {
     this.commandType = type;
     this.text = text;
     this.locationNumber = -1;
+    this.aircraftNumber = -1;
   }
   
   /**

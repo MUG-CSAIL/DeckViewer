@@ -8,7 +8,8 @@ public enum ActionError {
   NO_SELECTION("Must select aircraft."),
   ACTION_MANAGER_ERROR("Problem with actionManager"),
   TARGET_NOT_ON_DECK("Target must be located on arcraft deck."),
-  AIRCRAFT_COLLISIONS("Cannot place aircraft in position with intersections.");
+  AIRCRAFT_COLLISIONS("Cannot place aircraft in position with intersections."),
+  NO_AIRCRAFT_NUMBER("Cannot find aircraft with number.");
   
   public final String description;
   ActionError(String description) {

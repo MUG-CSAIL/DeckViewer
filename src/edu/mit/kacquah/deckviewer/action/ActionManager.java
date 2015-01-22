@@ -60,9 +60,13 @@ public class ActionManager {
   private void processMoveCommand(ActionCommand actionCommand) {
     boolean success;
     // Select aircraft
-    success = selectionManager.selectAircraftAtFingerLocation();
+    if (actionCommand.aircraftNumber != -1) {
+      success = selectionManager.selectAircraftWithNumber(actionCommand.aircraftNumber);
+    } else {
+      success = selectionManager.selectAircraftAtFingerLocation();
+    }
     if (success) {
-      // Move commands simply become the last action command if selection successuful.
+      // Move commands simply become the last action command if selection successful.
       updateActionCommand(actionCommand);
     } else {
       // Report error

@@ -69,6 +69,20 @@ public class FlyingObjectManager implements PAppletRenderObject {
     }
     return result; 
   }
+  
+  /**
+   * Returns aircraft with specific UID or null if can't find one.
+   * @param number
+   * @return
+   */
+  public FlyingObject getAircraftWithUID(int number) {
+    for (FlyingObject f : this.flyingObjects) {
+      if (f.getUID() == number) {
+        return f;
+      }
+    }
+    return null;
+  }
 
   @Override
   public void update(long elapsedTime) {
