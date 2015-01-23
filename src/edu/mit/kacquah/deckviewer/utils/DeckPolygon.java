@@ -5,6 +5,8 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 
+import javax.vecmath.Point2f;
+
 import processing.core.PApplet;
 
 /**
@@ -40,6 +42,10 @@ public class DeckPolygon implements PAppletRenderObject {
   
   public boolean contains(Point p) {
     return polygon.contains(p);
+  }
+  
+  public boolean contains(Point2f p) {
+    return polygon.contains(new Point((int)p.x, (int)p.y));
   }
   
   public Rectangle getBounds() {

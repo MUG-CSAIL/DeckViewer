@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 public class FlyingObjectManager implements PAppletRenderObject {
@@ -69,6 +70,19 @@ public class FlyingObjectManager implements PAppletRenderObject {
     }
     return result; 
   }
+  
+  /**
+   * Returns deck objects that intersect polygon.
+   * @return
+   */
+  public LinkedList<FlyingObject> intersectsPolygon(DeckPolygon p) {
+    LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
+    for (FlyingObject f : this.flyingObjects) {
+      if (p.contains(f.getPosition())) {
+        result.add(f);
+      }
+    }
+    return result;   }
   
   /**
    * Returns aircraft with specific UID or null if can't find one.

@@ -1,6 +1,7 @@
 package edu.mit.kacquah.deckviewer.environment;
 
 import java.awt.Point;
+import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import edu.mit.kacquah.deckviewer.action.ActionManager;
@@ -38,6 +39,12 @@ public class Deck implements PAppletRenderObject {
   // Singleton
   private static Deck instance;
   
+  // Parking regions and spots
+  private LinkedList <ParkingSpot> parkingSpots;
+  private LinkedList <ParkingRegion> parkingRegions;
+  private int nextParkingSpotID, nextParkingRegionID;
+  
+  
   public static Deck initInstance(PApplet parent) {
     if (instance != null) {
       LOGGER.severe("Already initialized Deck instance");
@@ -72,12 +79,19 @@ public class Deck implements PAppletRenderObject {
     float origHeight = deckImage.height;
     deckImage.resize((int) (origWidth * parent.scaleRatio()),
         (int) (origHeight * parent.scaleRatio()));
+    
+    // Lists
+    this.parkingRegions = new LinkedList<ParkingRegion>();
+    this.parkingSpots = new LinkedList<ParkingSpot>();
+    this.nextParkingSpotID = 0;
+    this.nextParkingRegionID = 0;
 
     // Deck environment
     initDeckEnvironment();
+    initDeckParking();
   }
 
-  public void initDeckEnvironment() {
+  private void initDeckEnvironment() {
     // The deck outline.
     deckEdges = new DeckPolygon();
     deckEdges.addPoint(182 * scaleRatio, 616 * scaleRatio);
@@ -144,6 +158,43 @@ public class Deck implements PAppletRenderObject {
     elevators[1] = el2;
     elevators[2] = el3;
     elevators[3] = el4;
+    
+  }
+  
+  private void initDeckParking() {
+    
+  }
+  
+  /**
+   * Get the flying object manager on this deck.
+   * @return
+   */
+  public FlyingObjectManager getFlyingObjectManager() {
+    return this.flyingObjectManager;
+  }
+  
+  /**
+   * Adds a parking region to the deck.
+   * @param parkingRegion
+   */
+  public void addParkingRegion(ParkingRegion parkingRegion) {
+    this.parkingRegions.add(parkingRegion);
+  }
+  
+  /**
+   * Adds a parking spot to the deck.
+   * @param parkingSpot
+   */
+  public void addParkingSpot(ParkingSpot parkingSpot) {
+    this.parkingSpots.add(parkingSpot);
+  }
+  
+  public int nextParkingRegionID() {
+    return this.nextParkingRegionID++;
+  }
+  
+  public int nextParkingSpotID() {
+    return this.nextParkingSpotID++;
   }
 
   /**
