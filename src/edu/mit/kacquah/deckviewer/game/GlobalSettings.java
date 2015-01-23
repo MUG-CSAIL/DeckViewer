@@ -47,7 +47,7 @@ public class GlobalSettings {
   /**
    * Grammar configuration for speech recognition.
    */
-  public static final boolean useSpeechRecognition = false;
+  public static final boolean useSpeechRecognition = true;
   public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/";
   public static final String grammarName = "deckviewer";
   

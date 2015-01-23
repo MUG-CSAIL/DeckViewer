@@ -201,7 +201,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     case 'E':
     case 'e':
       // Execute an action.
-      speechParser.createLocationAction("over there (keyboard)");
+      speechParser.createLocationAction("to elevator four (keyboard)");
       break;
     case 'R':
     case 'r':
@@ -280,6 +280,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private void initDeckObjects() {
     deck = Deck.initInstance(this);
     flyingObjectManager = new FlyingObjectManager(this);
+    deck.setFlyingObjectManager(flyingObjectManager);
 
     // For now, we'll just place some random objects on the deck.
     PVector pos = new PVector(width / 2, height / 2);

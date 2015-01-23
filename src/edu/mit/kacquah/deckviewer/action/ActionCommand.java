@@ -1,6 +1,7 @@
 package edu.mit.kacquah.deckviewer.action;
 
 import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 
 public class ActionCommand {
   /**
@@ -60,7 +61,7 @@ public class ActionCommand {
   }
   
   public enum LocationType {
-    POINTING, ELEVATOR, CATAPULT;
+    POINTING, CATAPULT, ELEVATOR, PARKING_REGION;
   }
   
   /****************************************************************************/
@@ -70,6 +71,7 @@ public class ActionCommand {
   public AircraftType aircraftType;
   public int aircraftNumber;
   public LocationType locationType;
+  public ParkingRegionType parkingRegionType;
   public int locationNumber;
   public final String text;
   

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.game.GameConstants;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
@@ -44,16 +45,27 @@ public class Deck implements PAppletRenderObject {
   private LinkedList <ParkingRegion> parkingRegions;
   private int nextParkingSpotID, nextParkingRegionID;
   
-  
+  /**
+   * Create the singleton instance of the deck.
+   * @param parent
+   * @return
+   */
   public static Deck initInstance(PApplet parent) {
     if (instance != null) {
       LOGGER.severe("Already initialized Deck instance");
     } else {
       instance = new Deck(parent);
+      // Create deck environment
+      instance.initDeckEnvironment();
+      instance.initDeckParking();
     }
     return instance;
   }
   
+  /**
+   * Get the singleton instance of the deck. Must be called after initInstance.
+   * @return
+   */
   public static Deck getInstance() {
     if (instance == null) {
       LOGGER.severe("Cannot get uninitialized Deck instance");
@@ -85,12 +97,11 @@ public class Deck implements PAppletRenderObject {
     this.parkingSpots = new LinkedList<ParkingSpot>();
     this.nextParkingSpotID = 0;
     this.nextParkingRegionID = 0;
-
-    // Deck environment
-    initDeckEnvironment();
-    initDeckParking();
   }
 
+  /**
+   * Initialize deck objects.
+   */
   private void initDeckEnvironment() {
     // The deck outline.
     deckEdges = new DeckPolygon();
@@ -157,12 +168,65 @@ public class Deck implements PAppletRenderObject {
     elevators[0] = el1;
     elevators[1] = el2;
     elevators[2] = el3;
-    elevators[3] = el4;
-    
+    elevators[3] = el4; 
   }
   
+  /**
+   * Initialize deck parking regions.
+   */
   private void initDeckParking() {
-    
+    // Catapults
+    ParkingRegion cat1 = new ParkingRegion(ParkingRegionType.CATAPULT_1, catapults[0].takeoffDirection());
+    ParkingRegion cat2 = new ParkingRegion(ParkingRegionType.CATAPULT_2, catapults[1].takeoffDirection());
+    ParkingRegion cat3 = new ParkingRegion(ParkingRegionType.CATAPULT_3, catapults[2].takeoffDirection());
+    ParkingRegion cat4 = new ParkingRegion(ParkingRegionType.CATAPULT_4, catapults[3].takeoffDirection());
+    cat1.addParkingSpot(catapults[0].startPoint());
+    cat2.addParkingSpot(catapults[1].startPoint());
+    cat3.addParkingSpot(catapults[2].startPoint());
+    cat4.addParkingSpot(catapults[3].startPoint());
+    catapults[0].setCatapultParking(cat1);
+    catapults[1].setCatapultParking(cat2);
+    catapults[2].setCatapultParking(cat3);
+    catapults[3].setCatapultParking(cat4);
+    // Elevators
+    ParkingRegion el1 = new ParkingRegion(ParkingRegionType.ELEVATOR_1, elevators[0].elevatorDirection());
+    ParkingRegion el2 = new ParkingRegion(ParkingRegionType.ELEVATOR_2, elevators[1].elevatorDirection());
+    ParkingRegion el3 = new ParkingRegion(ParkingRegionType.ELEVATOR_3, elevators[2].elevatorDirection());
+    ParkingRegion el4 = new ParkingRegion(ParkingRegionType.ELEVATOR_4, elevators[3].elevatorDirection());
+    el1.addParkingSpot(elevators[0].elevatorCenter());
+    el2.addParkingSpot(elevators[1].elevatorCenter());
+    el3.addParkingSpot(elevators[2].elevatorCenter());
+    el4.addParkingSpot(elevators[3].elevatorCenter());
+    elevators[0].setElevatorParking(el1);
+    elevators[1].setElevatorParking(el2);
+    elevators[2].setElevatorParking(el3);
+    elevators[3].setElevatorParking(el4);
+  }
+  
+  /**
+   * Set flying object manager on deck.
+   * @param m
+   */
+  public void setFlyingObjectManager(FlyingObjectManager m) {
+    this.flyingObjectManager = m;
+  }
+  
+  /**
+   * Catapult by number.
+   * @param number
+   * @return
+   */
+  public Catapult getCatapult(int number) {
+    return this.catapults[number - 1];
+  }
+  
+  /**
+   * Elevator by number.
+   * @param number
+   * @return
+   */
+  public Elevator getElevator(int number) {
+    return this.elevators[number - 1];
   }
   
   /**

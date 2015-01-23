@@ -7,8 +7,12 @@ import java.util.logging.Logger;
 import javax.vecmath.Point2f;
 
 import edu.mit.kacquah.deckviewer.action.ActionCommand.ActionCommandType;
+import edu.mit.kacquah.deckviewer.action.ActionCommand.LocationType;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
+import edu.mit.kacquah.deckviewer.environment.Catapult;
+import edu.mit.kacquah.deckviewer.environment.Deck;
+import edu.mit.kacquah.deckviewer.environment.Elevator;
 import edu.mit.kacquah.deckviewer.speech.ActionError;
 import processing.core.PApplet;
 
@@ -26,10 +30,14 @@ public class ActionManager {
   // Status state
   private String statusMessage;
   
+  // Deck
+  private Deck deck;
+  
   public ActionManager(PApplet p, SelectionManager sel, FlyingObjectManager fly) {
     this.parent = p;
     this.selectionManager = sel;
     this.flyingObjectManager = fly;
+    this.deck = Deck.getInstance();
     resetStatus();
   }
   
@@ -38,25 +46,18 @@ public class ActionManager {
    * @param actionCommand
    */
   public void processActionCommand(ActionCommand actionCommand) {
-    if (lastActionComplete()) {
-      // Start new action command.
-      if (actionCommand.commandType == ActionCommandType.MOVE) {
-        processMoveCommand(actionCommand);
-      } else if (actionCommand.commandType == ActionCommandType.LOCATION) {
-        // Cannot process location command without move command first.
-        LOGGER.severe(ActionError.NO_SELECTION.description);
-        updateStatusWithError(ActionError.NO_SELECTION);
-      }
-    } else {
-      // Start new action command.
-      if (actionCommand.commandType == ActionCommandType.MOVE) {
-        processMoveCommand(actionCommand);
-      } else if (actionCommand.commandType == ActionCommandType.LOCATION) {
-        processLocationCommand(actionCommand);
-      }
+    // Start new action command.
+    if (actionCommand.commandType == ActionCommandType.MOVE) {
+      processMoveCommand(actionCommand);
+    } else if (actionCommand.commandType == ActionCommandType.LOCATION) {
+      processLocationCommand(actionCommand);
     }
   }
   
+  /**
+   * Process command for selecting an aircraft to move.
+   * @param actionCommand
+   */
   private void processMoveCommand(ActionCommand actionCommand) {
     boolean success;
     // Select aircraft
@@ -74,7 +75,15 @@ public class ActionManager {
     }
   }
   
+  /**
+   * Process command for moving selected aircraft to a specific location on deck.
+   * @param actionCommand
+   */
   private void processLocationCommand(ActionCommand actionCommand) {
+    if (previousActionCommand.commandType != ActionCommandType.MOVE) {
+      // Cannot process location command without move command first.
+      updateStatusWithError(ActionError.NO_SELECTION);
+    }
     // Merge with previous action
     ActionCommand result = ActionCommand.mergeActionCommands(
         previousActionCommand, actionCommand);
@@ -82,12 +91,33 @@ public class ActionManager {
       processMoveToLocationCommand(result);
     } else {
       // Something went wrong...
-      LOGGER.severe(ActionError.ACTION_MANAGER_ERROR.description);
       updateStatusWithError(ActionError.ACTION_MANAGER_ERROR);
     }
   }
   
+  /**
+   * Process command for moving selected aircraft to a specific location on deck.
+   * @param actionCommand
+   */
   private void processMoveToLocationCommand(ActionCommand actionCommand) {
+    if (actionCommand.locationType == LocationType.POINTING) {
+      // Move to a spot being pointed at.
+      moveToPointing(actionCommand);
+    } else if (actionCommand.locationType == LocationType.CATAPULT) {
+      // Move to catapult.
+      moveToCatapult(actionCommand);
+    } else if (actionCommand.locationType == LocationType.ELEVATOR) {
+      // Move to elevator
+      moveToElevator(actionCommand);
+    } else if (actionCommand.locationType == LocationType.PARKING_REGION) {
+     //TODO(KoolJBlack): Implement move to parking regions. 
+    }
+  }
+  
+  /**
+   * Attempts to move the selected aircraft to a region pointed to on deck.
+   */
+  private void moveToPointing(ActionCommand actionCommand) {
     // Get the current finger point
     Point fingerPointTarget = selectionManager.getCurrentFingerPoint();
     if (fingerPointTarget == null) {
@@ -95,7 +125,6 @@ public class ActionManager {
       updateStatusWithError(selectionManager.getError());
       return;
     }
-    
     // Attempt to move object and test for intersections.
     LinkedList<FlyingObject> potentialObjects = selectionManager.getSelection();
     FlyingObject selectedObject = potentialObjects.get(0);
@@ -105,13 +134,50 @@ public class ActionManager {
         .intersectsFlyingObjects(selectedObject);
     if (possibleIntersections.size() > 1) {
       selectedObject.setPosition(oldPosition.x, oldPosition.y);
-      LOGGER.severe(ActionError.AIRCRAFT_COLLISIONS.description);
+      updateStatusWithError(ActionError.AIRCRAFT_COLLISIONS);
       return;
     }
-
     // Clear selection after executing action.
     selectionManager.clearSelection();
     updateActionCommand(actionCommand);
+  }
+  
+  /**
+   * Attempts to move the selected aircraft to a catapult.
+   */
+  private void moveToCatapult(ActionCommand actionCommand) {
+    Catapult catapult = deck.getCatapult(actionCommand.locationNumber);
+    // Attempt to move object and test for success.
+    LinkedList<FlyingObject> potentialObjects = selectionManager.getSelection();
+    FlyingObject selectedObject = potentialObjects.get(0);
+    boolean success = catapult.parkAircraft(selectedObject);
+    if (success) {
+      // Clear selection after executing action.
+      selectionManager.clearSelection();
+      updateActionCommand(actionCommand);
+    } else {
+      // Report error
+      updateStatusWithError(ActionError.AIRCRAFT_COLLISIONS);
+    }
+  }
+  
+  /**
+   * Attempts to move the selected aircraft to an elevator.
+   */
+  private void moveToElevator(ActionCommand actionCommand) {
+    Elevator elevator = deck.getElevator(actionCommand.locationNumber);
+    // Attempt to move object and test for success.
+    LinkedList<FlyingObject> potentialObjects = selectionManager.getSelection();
+    FlyingObject selectedObject = potentialObjects.get(0);
+    boolean success = elevator.parkAircraft(selectedObject);
+    if (success) {
+      // Clear selection after executing action.
+      selectionManager.clearSelection();
+      updateActionCommand(actionCommand);
+    } else {
+      // Report error
+      updateStatusWithError(ActionError.AIRCRAFT_COLLISIONS);
+    }
   }
   
   /**
@@ -137,6 +203,7 @@ public class ActionManager {
   }
   
   private void updateStatusWithError(ActionError e) {
+    LOGGER.severe(e.description);
     this.statusMessage = e.description;
   }
   
