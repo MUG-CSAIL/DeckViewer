@@ -284,7 +284,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 
     // For now, we'll just place some random objects on the deck.
     PVector pos = new PVector(width / 2, height / 2);
-    FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+    FlyingObject flyingObject = new FlyingObject(AircraftType.C2, pos, Sprite.Direction.UP.degrees);
     flyingObjectManager.addFlyingObject(flyingObject);
 
     pos = new PVector(width / 3, height / 2);

@@ -19,7 +19,14 @@ public class ParkingRegion {
     CATAPULT_1(ActionCommand.CATAPULT_1),
     CATAPULT_2(ActionCommand.CATAPULT_2),
     CATAPULT_3(ActionCommand.CATAPULT_3),
-    CATAPULT_4(ActionCommand.CATAPULT_4);
+    CATAPULT_4(ActionCommand.CATAPULT_4),
+    FANTAIL(ActionCommand.FANTAIL),
+    STREET(ActionCommand.STREET),
+    POINT(ActionCommand.POINT),
+    PATIO(ActionCommand.PATIO),
+    CROTCH(ActionCommand.CROTCH),
+    CORRAL(ActionCommand.CORRAL),
+    JUNK_YARD(ActionCommand.JUNK_YARD);
     
     public final String name;
     ParkingRegionType(String name) {

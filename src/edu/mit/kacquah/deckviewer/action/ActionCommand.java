@@ -45,7 +45,15 @@ public class ActionCommand {
   public static final String ELEVATOR_1 = "elevator one";
   public static final String ELEVATOR_2 = "elevator two";
   public static final String ELEVATOR_3 = "elevator three";
-  public static final String ELEVATOR_4 = "elevator four";  
+  public static final String ELEVATOR_4 = "elevator four";
+  // Parking Regions
+  public static final String FANTAIL = "fantail";
+  public static final String STREET = "street";
+  public static final String POINT = "point";
+  public static final String PATIO = "patio";
+  public static final String CROTCH = "crotch";
+  public static final String CORRAL = "corral";
+  public static final String JUNK_YARD = "junk yard";
   // Generic locations
   public static final String POINTING_LOCATION = "pointing_location";
   public static final String THERE = "there";
