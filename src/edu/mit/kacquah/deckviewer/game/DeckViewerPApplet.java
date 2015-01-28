@@ -310,68 +310,27 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    * Places aircraft around well defined regions on deck.
    */
   public void testConfig2() {
-    ParkingRegion el1_and_cat = deck.getParkingRegion(ParkingRegionType.BTWN_EL1_AND_CAT);
-    for (int i = 0; i < el1_and_cat.numberParkingSpots(); ++i) {
+    fillParkingRegionWithAircraft(ParkingRegionType.BTWN_EL1_AND_CAT);
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2);
+    fillParkingRegionWithAircraft(ParkingRegionType.BHND_TOWER);
+    fillParkingRegionWithAircraft(ParkingRegionType.FRNT_TOWER);
+    fillParkingRegionWithAircraft(ParkingRegionType.STREET);
+    fillParkingRegionWithAircraft(ParkingRegionType.SIXPACK);
+    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL);
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL4);
+  }
+  
+  /**
+   * Fills all spots of a parking region on deck with aircraft.
+   * @param type
+   */
+  private void fillParkingRegionWithAircraft(ParkingRegionType type) {
+    ParkingRegion parkingRegion = deck.getParkingRegion(type);
+    for (int i = 0; i < parkingRegion.numberParkingSpots(); ++i) {
       PVector pos = new PVector();
       FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
       flyingObjectManager.addFlyingObject(flyingObject);
-      el1_and_cat.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion el1_and_el2 = deck.getParkingRegion(ParkingRegionType.OVER_EL1_AND_EL2);
-    for (int i = 0; i < el1_and_el2.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      el1_and_el2.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion bhnd_tower = deck.getParkingRegion(ParkingRegionType.BHND_TOWER);
-    for (int i = 0; i < bhnd_tower.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      bhnd_tower.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion frnt_tower = deck.getParkingRegion(ParkingRegionType.FRNT_TOWER);
-    for (int i = 0; i < frnt_tower.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      frnt_tower.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion street = deck.getParkingRegion(ParkingRegionType.STREET);
-    for (int i = 0; i < street.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      street.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion sixpack = deck.getParkingRegion(ParkingRegionType.SIXPACK);
-    for (int i = 0; i < sixpack.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      sixpack.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion fantail = deck.getParkingRegion(ParkingRegionType.FANTAIL);
-    for (int i = 0; i < fantail.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      fantail.getNextFreeParkingSpot().park(flyingObject);
-    }
-    
-    ParkingRegion over_el4 = deck.getParkingRegion(ParkingRegionType.OVER_EL4);
-    for (int i = 0; i < over_el4.numberParkingSpots(); ++i) {
-      PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
-      flyingObjectManager.addFlyingObject(flyingObject);
-      over_el4.getNextFreeParkingSpot().park(flyingObject);
+      parkingRegion.getNextFreeParkingSpot().park(flyingObject);
     }
   }
 
