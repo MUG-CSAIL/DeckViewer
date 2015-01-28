@@ -16,6 +16,8 @@ import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.*;
 import edu.mit.kacquah.deckviewer.environment.Deck;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.gui.DeckViewerSwingFrame;
@@ -281,7 +283,15 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     deck = Deck.initInstance(this);
     flyingObjectManager = new FlyingObjectManager(this);
     deck.setFlyingObjectManager(flyingObjectManager);
-
+    
+//    testConfig1();
+    testConfig2();
+  }
+  
+  /**
+   * Create 3 aircraft on the center of the deck.
+   */
+  private void testConfig1() {
     // For now, we'll just place some random objects on the deck.
     PVector pos = new PVector(width / 2, height / 2);
     FlyingObject flyingObject = new FlyingObject(AircraftType.C2, pos, Sprite.Direction.UP.degrees);
@@ -294,6 +304,75 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     pos = new PVector(width / 3 * 2, height / 2);
     flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.LEFT.degrees);
     flyingObjectManager.addFlyingObject(flyingObject);
+  }
+  
+  /**
+   * Places aircraft around well defined regions on deck.
+   */
+  public void testConfig2() {
+    ParkingRegion el1_and_cat = deck.getParkingRegion(ParkingRegionType.BTWN_EL1_AND_CAT);
+    for (int i = 0; i < el1_and_cat.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      el1_and_cat.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion el1_and_el2 = deck.getParkingRegion(ParkingRegionType.OVER_EL1_AND_EL2);
+    for (int i = 0; i < el1_and_el2.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      el1_and_el2.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion bhnd_tower = deck.getParkingRegion(ParkingRegionType.BHND_TOWER);
+    for (int i = 0; i < bhnd_tower.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      bhnd_tower.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion frnt_tower = deck.getParkingRegion(ParkingRegionType.FRNT_TOWER);
+    for (int i = 0; i < frnt_tower.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      frnt_tower.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion street = deck.getParkingRegion(ParkingRegionType.STREET);
+    for (int i = 0; i < street.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      street.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion sixpack = deck.getParkingRegion(ParkingRegionType.SIXPACK);
+    for (int i = 0; i < sixpack.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      sixpack.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion fantail = deck.getParkingRegion(ParkingRegionType.FANTAIL);
+    for (int i = 0; i < fantail.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      fantail.getNextFreeParkingSpot().park(flyingObject);
+    }
+    
+    ParkingRegion over_el4 = deck.getParkingRegion(ParkingRegionType.OVER_EL4);
+    for (int i = 0; i < over_el4.numberParkingSpots(); ++i) {
+      PVector pos = new PVector();
+      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      flyingObjectManager.addFlyingObject(flyingObject);
+      over_el4.getNextFreeParkingSpot().park(flyingObject);
+    }
   }
 
   /**

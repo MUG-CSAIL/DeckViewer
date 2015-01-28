@@ -82,7 +82,8 @@ public class FlyingObjectManager implements PAppletRenderObject {
         result.add(f);
       }
     }
-    return result;   }
+    return result;   
+  }
   
   /**
    * Returns aircraft with specific UID or null if can't find one.

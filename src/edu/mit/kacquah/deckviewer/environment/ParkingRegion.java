@@ -20,13 +20,22 @@ public class ParkingRegion {
     CATAPULT_2(ActionCommand.CATAPULT_2),
     CATAPULT_3(ActionCommand.CATAPULT_3),
     CATAPULT_4(ActionCommand.CATAPULT_4),
+    
     FANTAIL(ActionCommand.FANTAIL),
+    OVER_EL1_AND_EL2(ActionCommand.OVER_EL1_AND_EL2),
+    BTWN_EL1_AND_CAT(ActionCommand.BTWN_EL1_AND_CAT),
+    BHND_TOWER(ActionCommand.BHND_TOWER),
+    OVER_EL4(ActionCommand.OVER_EL4),
+    FRNT_TOWER(ActionCommand.FRNT_TOWER),
+
     STREET(ActionCommand.STREET),
+    SIXPACK(ActionCommand.SIXPACK),
     POINT(ActionCommand.POINT),
     PATIO(ActionCommand.PATIO),
     CROTCH(ActionCommand.CROTCH),
     CORRAL(ActionCommand.CORRAL),
     JUNK_YARD(ActionCommand.JUNK_YARD);
+    
     
     public final String name;
     ParkingRegionType(String name) {
@@ -105,7 +114,7 @@ public class ParkingRegion {
    * if there are no free parking spots in this parking space.
    * @return
    */
-  public ParkingSpot getFirstFreeParkingSpot() {
+  public ParkingSpot getNextFreeParkingSpot() {
     for (ParkingSpot p : parkingSpots) {
       if (!p.isOccupied()) {
         return p;

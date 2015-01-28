@@ -59,7 +59,7 @@ public class Catapult implements PAppletRenderObject{
    * @return
    */
   public boolean parkAircraft(FlyingObject f) {
-    ParkingSpot parkingSpot = catapultParking.getFirstFreeParkingSpot();
+    ParkingSpot parkingSpot = catapultParking.getNextFreeParkingSpot();
     if (parkingSpot == null) {
       return false;
     }

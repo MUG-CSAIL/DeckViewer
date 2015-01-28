@@ -69,7 +69,7 @@ public class Elevator extends DeckPolygon implements PAppletRenderObject {
    * @return
    */
   public boolean parkAircraft(FlyingObject f) {
-    ParkingSpot parkingSpot = elevatorParking.getFirstFreeParkingSpot();
+    ParkingSpot parkingSpot = elevatorParking.getNextFreeParkingSpot();
     if (parkingSpot == null) {
       return false;
     }

@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
+import edu.mit.kacquah.deckviewer.deckobjects.Sprite.Direction;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.game.GameConstants;
@@ -201,6 +202,85 @@ public class Deck implements PAppletRenderObject {
     elevators[1].setElevatorParking(el2);
     elevators[2].setElevatorParking(el3);
     elevators[3].setElevatorParking(el4);
+    
+    // Between Elevator 1 and the Catapults
+    ParkingRegion el1_and_cat = new ParkingRegion(
+        ParkingRegionType.BTWN_EL1_AND_CAT, -150);
+    parkingRegions.add(el1_and_cat);
+    el1_and_cat.addParkingSpot(scale(1860, 826));
+    el1_and_cat.addParkingSpot(scale(1800, 866));
+    el1_and_cat.addParkingSpot(scale(1740, 916));
+    
+    // Over Elevator One and Two
+    ParkingRegion el1_and_el2 = new ParkingRegion(
+        ParkingRegionType.OVER_EL1_AND_EL2, Direction.UP.degrees);
+    parkingRegions.add(el1_and_el2);
+    el1_and_el2.addParkingSpot(scale(1650, 916));
+    el1_and_el2.addParkingSpot(scale(1570, 916));
+    el1_and_el2.addParkingSpot(scale(1490, 916));
+    el1_and_el2.addParkingSpot(scale(1410, 916));
+    el1_and_el2.addParkingSpot(scale(1330, 916));
+    el1_and_el2.addParkingSpot(scale(1250, 916));
+    el1_and_el2.addParkingSpot(scale(1170, 916));
+    
+    // Behind the Tower
+    ParkingRegion bhnd_tower = new ParkingRegion(ParkingRegionType.BHND_TOWER,
+        Direction.UP.degrees);
+    parkingRegions.add(bhnd_tower);
+    bhnd_tower.addParkingSpot(scale(730, 916));
+    bhnd_tower.addParkingSpot(scale(640, 916));
+    bhnd_tower.addParkingSpot(scale(550, 916));
+    
+    // In front of the Tower
+    ParkingRegion frnt_tower =  new ParkingRegion(ParkingRegionType.FRNT_TOWER,
+        Direction.UP.degrees);
+    parkingRegions.add(frnt_tower);
+    frnt_tower.addParkingSpot(scale(925, 826));
+    frnt_tower.addParkingSpot(scale(1025, 826));
+    
+    // Near the Sixpack and the Corral
+    ParkingRegion street = new ParkingRegion(ParkingRegionType.STREET,
+        Direction.UP.degrees);
+    parkingRegions.add(street);
+    street.addParkingSpot(scale(1525, 786));
+    street.addParkingSpot(scale(1455, 786));
+    street.addParkingSpot(scale(1385, 786));
+    street.addParkingSpot(scale(1315, 786));
+    street.addParkingSpot(scale(1245, 786));
+    street.addParkingSpot(scale(1175, 786));
+
+    // Near the Street and the Corral
+    ParkingRegion sixpack = new ParkingRegion(ParkingRegionType.SIXPACK,
+        Direction.DOWN.degrees);
+    parkingRegions.add(sixpack);
+    sixpack.addParkingSpot(scale(1490, 696));
+    sixpack.addParkingSpot(scale(1420, 696));
+    sixpack.addParkingSpot(scale(1350, 696));
+    sixpack.addParkingSpot(scale(1280, 696));
+    sixpack.addParkingSpot(scale(1210, 696));
+    sixpack.addParkingSpot(scale(1140, 696));
+    
+    // Fantail
+    ParkingRegion fantail = new ParkingRegion(ParkingRegionType.FANTAIL,
+        Direction.RIGHT.degrees);
+    parkingRegions.add(fantail);
+    fantail.addParkingSpot(scale(220, 646));
+    fantail.addParkingSpot(scale(235, 730));
+    fantail.addParkingSpot(scale(250, 816));
+    fantail.addParkingSpot(scale(315, 596));
+    fantail.addParkingSpot(scale(330, 681));
+    fantail.addParkingSpot(scale(345, 766));
+    fantail.addParkingSpot(scale(410, 546));
+    fantail.addParkingSpot(scale(425, 631));
+    fantail.addParkingSpot(scale(440, 716));
+    
+    // Over Elevator 4
+    ParkingRegion over_el4 = new ParkingRegion(ParkingRegionType.OVER_EL4,
+        Direction.DOWN.degrees);
+    parkingRegions.add(over_el4);
+    over_el4.addParkingSpot(scale(515, 526));
+    over_el4.addParkingSpot(scale(585, 526));
+    over_el4.addParkingSpot(scale(655, 526));
   }
   
   /**
@@ -243,6 +323,20 @@ public class Deck implements PAppletRenderObject {
    */
   public void addParkingRegion(ParkingRegion parkingRegion) {
     this.parkingRegions.add(parkingRegion);
+  }
+  
+  /**
+   * Returns a parking region of given type or null if not found.
+   * @param type
+   * @return
+   */
+  public ParkingRegion getParkingRegion(ParkingRegionType type) {
+    for (ParkingRegion p: parkingRegions) {
+      if (p.type == type) {
+        return p;
+      }
+    }
+    return null;
   }
   
   /**
