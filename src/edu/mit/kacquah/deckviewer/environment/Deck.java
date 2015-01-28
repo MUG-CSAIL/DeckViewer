@@ -22,7 +22,7 @@ public class Deck implements PAppletRenderObject {
   
   // Parent PApplet that owns the deck.
   private DeckViewerPApplet parent;
-  private final float scaleRatio;
+  public final float scaleRatio;
 
   // Deck background image.
   private PImage deckImage;

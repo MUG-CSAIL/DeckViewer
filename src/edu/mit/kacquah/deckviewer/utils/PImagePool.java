@@ -28,26 +28,27 @@ public class PImagePool {
 
   private static HashMap<String, PImage[]> loadedImages = new HashMap<String, PImage[]>();
 
-  public static PImage[] getImages(String imageName) {
+  public static PImage[] getImages(String imageName, float scaleRatio) {
+    String loadedImagesName = imageName + "-" + scaleRatio;
     if (imageName == "tanker" || imageName == "Tanker") {
       imageName = "fmac";
-    } else if (imageName == "f18" || imageName == "fmac") {
+    } else if (imageName == "F18" || imageName == "fmac") {
       imageName = "fmac";
-    } else if (imageName == "c2" || imageName == "smac") {
+    } else if (imageName == "C2" || imageName == "smac") {
       imageName = "smac";
-    } else if (imageName == "pegasus" || imageName == "fuav"
+    } else if (imageName == "Pegasus" || imageName == "fuav"
         || imageName == "peg") {
       imageName = "fuav";
     } else if (imageName == "predator" || imageName == "suav"
         || imageName == "pred") {
       imageName = "suav";
-    } else if (imageName == "f35" || imageName == "vmac") {
+    } else if (imageName == "F35" || imageName == "vmac") {
       imageName = "f35";
     }
     if (keyWords.contains(imageName)) {
       // Check to see if we've already loaded image list
-      if (loadedImages.containsKey(imageName)) {
-        return loadedImages.get(imageName);
+      if (loadedImages.containsKey(loadedImagesName)) {
+        return loadedImages.get(loadedImagesName);
       }
       int i = 0;
       File tmp = null;
@@ -59,18 +60,25 @@ public class PImagePool {
       } while (tmp.exists());
       i--;
 
-      PImage[] result = new PImage[i];
+      PImage[] results = new PImage[i];
       for (int j = 1; j <= i; j++) {
-        result[j - 1] = parent.loadImage("./resources/" + imageName + "_image_"
+        PImage result;
+         result = parent.loadImage("./resources/" + imageName + "_image_"
             + j + ".png");
-        if (result[j - 1] == null) {
+        //  Scale image to correct size
+         float width = result.width;
+         float height = result.height;
+         result.resize((int)(width * scaleRatio), (int)(height * scaleRatio));
+         // Set output
+         results[j - 1] = result;
+        if (results[j - 1] == null) {
           // One of the images was unsuccessfully loaded; return null.
           return null;
         }
       }
       // Store the result for later.
-      loadedImages.put(imageName, result);
-      return result;
+      loadedImages.put(loadedImagesName, results);
+      return results;
     } else {
       // Keyword not found, so return null.
       return null;

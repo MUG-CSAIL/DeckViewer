@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import javax.vecmath.Point2f;
 
 import processing.core.*;
+import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.image.DynamicImageFilter;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
@@ -25,7 +26,7 @@ public class FlyingObject implements PAppletRenderObject {
   public FlyingObject(AircraftType type, PVector pos, float rotation){
     this.type = type;
     // Load image from image pool
-    PImage spriteImages[] = PImagePool.getImages(type.name);
+    PImage spriteImages[] = PImagePool.getImages(type.name, Deck.getInstance().scaleRatio);
     this.planeSprite = new Sprite(spriteImages, pos, rotation);
     this.parentManager = null;
     this.UID = -1;
@@ -106,17 +107,14 @@ public class FlyingObject implements PAppletRenderObject {
     if (GlobalSettings.renderAircraftUIDs) {
       p.pushStyle();
       p.pushMatrix();
+      // Text 
       Rectangle bounds = this.planeSprite.getBounds();
-      p.translate(bounds.x + bounds.width*8/10, bounds.y + bounds.height/10);
+      p.translate(bounds.x + bounds.width*5/10, bounds.y + bounds.height*0/10);
       p.textFont(font);
-      // Border outline
-      p.textSize(this.fontSize * 1.4f);
-      p.fill(ColorUtil.BLACK);
-      p.text(this.UID, 0, 0);
-      // Text Fill
+      String text = this.type.name + "--" + this.UID;
       p.textSize(this.fontSize);
       p.fill(ColorUtil.WHITE);
-      p.text(this.UID, 0, 0);
+      p.text(text, 0, 0);
       p.popMatrix();
       p.popStyle();
     }

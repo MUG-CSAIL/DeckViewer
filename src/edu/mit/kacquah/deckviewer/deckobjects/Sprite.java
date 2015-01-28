@@ -40,6 +40,8 @@ public class Sprite implements PAppletRenderObject {
   private LinkedList<DynamicImageFilter> imageFilters;
   
   private static final int DEFAULT_SPRITE_IMAGE = 1;
+  
+  private float scaleRatio;
 
   public Sprite(PImage image[], PVector position, float rotation) {
     this.spriteImages = image;

@@ -19,7 +19,7 @@ public class FlyingObjectManager implements PAppletRenderObject {
   public FlyingObjectManager(PApplet p) {
     this.flyingObjects = new LinkedList<FlyingObject>();
     this.nextUID = 1;
-    this.fontSize = 20;
+    this.fontSize = 14;
     this.font = p.createFont("Arial", this.fontSize);
     this.parent = p;
     p.textAlign(p.CENTER, p.CENTER);

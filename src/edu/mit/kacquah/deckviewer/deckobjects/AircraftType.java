@@ -6,10 +6,10 @@ package edu.mit.kacquah.deckviewer.deckobjects;
  *
  */
 public enum AircraftType {
-  F18("f18"),
-  C2("c2"),
-  F35("f35"),
-  X47B("pegasus");
+  F18("F18"),
+  C2("C2"),
+  F35("F35"),
+  X47B("Pegasus");
   
   public final String name;
   
