@@ -77,7 +77,7 @@ public class Sprite implements PAppletRenderObject {
   }
 
   public void setSelectedSpriteImage(int newSelection) {
-    if (newSelection < spriteImages.length) {
+    if (newSelection < spriteImages.length && newSelection >= 0) {
       this.selectedSpriteImage = newSelection;
     }
   }

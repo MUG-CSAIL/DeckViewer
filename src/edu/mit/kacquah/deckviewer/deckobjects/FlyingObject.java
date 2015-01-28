@@ -95,6 +95,14 @@ public class FlyingObject implements PAppletRenderObject {
     return planeSprite.getBounds().intersects(other.getBounds());
   }
   
+  public void wingsOpen() {
+    planeSprite.setSelectedSpriteImage(0);
+  }
+  
+  public void wingsClosed() {
+    planeSprite.setSelectedSpriteImage(1);
+  }
+  
   @Override
   public void update(long elapsedTime) {
     planeSprite.update(elapsedTime);
