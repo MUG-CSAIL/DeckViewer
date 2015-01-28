@@ -123,6 +123,12 @@ public class ParkingRegion {
     return null;
   }
   
-  
-
+  /**
+   * Parking spot by index
+   * @param index
+   * @return
+   */
+  public ParkingSpot getParkingSpot(int index) {
+    return this.parkingSpots.get(index);
+  }
 }
