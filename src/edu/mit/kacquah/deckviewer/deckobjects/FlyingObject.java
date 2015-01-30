@@ -6,8 +6,10 @@ import java.awt.Rectangle;
 import javax.vecmath.Point2f;
 
 import processing.core.*;
+import edu.mit.kacquah.deckviewer.action.SelectionManager.SelectionStatus;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
+import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
 import edu.mit.kacquah.deckviewer.image.DynamicImageFilter;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
@@ -22,6 +24,8 @@ public class FlyingObject implements PAppletRenderObject {
   
   private PFont font;
   private int fontSize;
+  
+  private SelectionStatus selectionStatus;
   
   public FlyingObject(AircraftType type, PVector pos, float rotation){
     this.type = type;
@@ -56,6 +60,33 @@ public class FlyingObject implements PAppletRenderObject {
   
   public void resetImageFilters() {
     planeSprite.resetImageFilters();
+  }
+  
+  /**
+   * Updates the seleciton status. Certain selection statuses will automatically
+   * apply image filters to the sprite.
+   * @param newStatus
+   */
+  public void setSelectionStatus(SelectionStatus newStatus) {
+    this.resetImageFilters();
+    this.selectionStatus = newStatus;
+    switch (newStatus) {
+    case SELECTED:
+      this.addImageFilter(new ColorHighlightFilter(
+          GlobalSettings.selectionStatusSelectedColor));
+      break;
+    case HOVERIRNG:
+      this.addImageFilter(new ColorHighlightFilter(
+          GlobalSettings.selectionStatusHoveringColor));
+      break;
+    case ERROR:
+      this.addImageFilter(new ColorHighlightFilter(
+          GlobalSettings.selectionStatusErrorColor));
+      break;
+    case NONE:
+      // Do nothing
+      break;
+    }
   }
   
   public void setPosition(float x, float y) {
@@ -95,13 +126,21 @@ public class FlyingObject implements PAppletRenderObject {
     return planeSprite.getBounds().intersects(other.getBounds());
   }
   
+  /**
+   * Opens the aircraft's wings.
+   */
   public void wingsOpen() {
     planeSprite.setSelectedSpriteImage(0);
   }
   
+  /**
+   * Closes the aircraft's wings.
+   */
   public void wingsClosed() {
     planeSprite.setSelectedSpriteImage(1);
   }
+  
+  
   
   @Override
   public void update(long elapsedTime) {

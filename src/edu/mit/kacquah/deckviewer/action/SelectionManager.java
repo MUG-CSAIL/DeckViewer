@@ -23,7 +23,14 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
  * @author kojo
  * 
  */
-public class SelectionManager implements PAppletRenderObject {  
+public class SelectionManager implements PAppletRenderObject { 
+  public enum SelectionStatus {
+    SELECTED,
+    HOVERIRNG,
+    ERROR,
+    NONE;
+  }
+  
   // Utils
   private static Logger LOGGER = Logger.getLogger(SelectionManager.class
       .getName());
@@ -225,8 +232,7 @@ public class SelectionManager implements PAppletRenderObject {
     currentError = ActionError.SUCCESS;
     // Highlight the objects.
     for (FlyingObject o : selectedObjects) {
-      o.addImageFilter(new ColorHighlightFilter(
-          GlobalSettings.selectionHighlightColor));
+      o.setSelectionStatus(SelectionStatus.SELECTED);
     }
   }
 
@@ -237,7 +243,7 @@ public class SelectionManager implements PAppletRenderObject {
     // Remove highlights.
     if (selectedObjects != null) {
       for (FlyingObject o : selectedObjects) {
-        o.resetImageFilters();
+        o.setSelectionStatus(SelectionStatus.NONE);
       }
     }
     // Update state.

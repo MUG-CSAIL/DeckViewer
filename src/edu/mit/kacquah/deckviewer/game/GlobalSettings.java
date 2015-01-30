@@ -41,7 +41,7 @@ public class GlobalSettings {
   public static final int FILTER_HISTORY_LENGTH = 5;
   public static final int FINGER_CIRCLE_RADIUS = 10;
   // Use mouse pointer instead of finger points (for simpler debugging)
-  public static final boolean useMousePoint = false;
+  public static final boolean useMousePoint = true;
 
   
   /**
@@ -61,7 +61,9 @@ public class GlobalSettings {
   /**
    * Selection engine constants
    */
-  public static final int selectionHighlightColor = ColorUtil.ORANGE;
+  public static final int selectionStatusSelectedColor = ColorUtil.ORANGE;
+  public static final int selectionStatusHoveringColor = ColorUtil.GREEN;
+  public static final int selectionStatusErrorColor = ColorUtil.RED;
   
   /**
    * FlyingObject constants.

@@ -35,7 +35,7 @@ public class ColorHighlightFilter implements DynamicImageFilter {
   @Override
   public void updateFilter(long elapsedTime) {
     // Update angle
-    angle += (elapsedTime - lastElapsedTime) /1000.0 * OSCILLATION_RATE;
+    angle = elapsedTime /1000.0 * OSCILLATION_RATE;
     angle %= Math.PI * 2;
     lastElapsedTime = elapsedTime;
     // Compute color
