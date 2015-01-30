@@ -5,16 +5,20 @@ import java.util.LinkedList;
 
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 
+import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
+import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
-public class ParkingSpot extends DeckPolygon {
+public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
   protected ParkingRegion parkingRegion;
   protected int parkingSpotID;
   protected Deck deck;
   protected Point center;
 
   protected FlyingObject parkedAircraft;
+  
+  protected boolean renderOutline;
 
   // Constants
   protected static final int RADIUS = 30;
@@ -26,6 +30,7 @@ public class ParkingSpot extends DeckPolygon {
     addPoint(center.x - RADIUS, center.y + RADIUS);
     addPoint(center.x - RADIUS, center.y - RADIUS);
     this.parkingRegion = parkingRegion;
+    this.renderOutline = false;
     addToDeck();
   }
 
@@ -115,5 +120,16 @@ public class ParkingSpot extends DeckPolygon {
   public FlyingObject parkedAircraft() {
     return this.parkedAircraft;
   }
+  
+  @Override
+  public void update(long elapsedTime) {
+    super.update(elapsedTime);
+  }
 
+  @Override
+  public void render(PApplet p) {
+    if (renderOutline) {
+      super.render(p);
+    }
+  }
 }

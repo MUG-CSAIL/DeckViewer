@@ -63,9 +63,6 @@ public class DeckPolygon implements PAppletRenderObject {
     // Nothing to update
   }
 
-  /**
-   * Renders the outline of the deck.
-   */
   @Override
   public void render(PApplet p) {
     if (points.isEmpty()) {

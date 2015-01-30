@@ -3,9 +3,11 @@ package edu.mit.kacquah.deckviewer.environment;
 import java.awt.Point;
 import java.util.LinkedList;
 
+import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.action.ActionCommand;
+import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
-public class ParkingRegion {
+public class ParkingRegion implements PAppletRenderObject {
   /**
    * Names of defined parking regions on deck.
    * @author kojo
@@ -130,5 +132,17 @@ public class ParkingRegion {
    */
   public ParkingSpot getParkingSpot(int index) {
     return this.parkingSpots.get(index);
+  }
+
+  @Override
+  public void update(long elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void render(PApplet p) {
+    // TODO Auto-generated method stub
+    
   }
 }

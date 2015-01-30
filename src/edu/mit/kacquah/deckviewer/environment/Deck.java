@@ -392,7 +392,13 @@ public class Deck implements PAppletRenderObject {
 
   @Override
   public void update(long elapsedTime) {
-
+    // Update parking spots and parking regions
+    for (ParkingRegion region : parkingRegions) {
+      region.update(elapsedTime);
+    }
+    for (ParkingSpot spot : parkingSpots) {
+      spot.update(elapsedTime);
+    }
   }
 
   @Override
@@ -436,6 +442,13 @@ public class Deck implements PAppletRenderObject {
       p.popStyle();
     }
 
+    // Render parking spots and parking regions
+    for (ParkingRegion region : parkingRegions) {
+      region.render(p);
+    }
+    for (ParkingSpot spot : parkingSpots) {
+      spot.render(p);
+    }
   }
 
 }
