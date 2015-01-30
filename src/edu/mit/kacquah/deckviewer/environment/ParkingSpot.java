@@ -3,19 +3,21 @@ package edu.mit.kacquah.deckviewer.environment;
 import java.awt.Point;
 import java.util.LinkedList;
 
+import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
+
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 
 public class ParkingSpot extends DeckPolygon {
-  private ParkingRegion parkingRegion;
-  private int parkingSpotID;
-  private Deck deck;
-  private Point center;
+  protected ParkingRegion parkingRegion;
+  protected int parkingSpotID;
+  protected Deck deck;
+  protected Point center;
 
-  private FlyingObject parkedAircraft;
+  protected FlyingObject parkedAircraft;
 
   // Constants
-  private static final int RADIUS = 30;
+  protected static final int RADIUS = 30;
 
   public ParkingSpot(Point center, ParkingRegion parkingRegion) {
     this.center = center;
@@ -61,6 +63,33 @@ public class ParkingSpot extends DeckPolygon {
     this.parkedAircraft.setPosition(this.center.x, this.center.y);
     return true;
   }
+  
+  /**
+   * Checks to see if there is a parked aircraft here and if its still on the spot.
+   * @return
+   */
+  public boolean hasParkedAircraft() {
+    if (parkedAircraft != null && contains(parkedAircraft.getPosition())) {
+      return true;
+    } else {
+      // Clear last parked aircraft.
+      parkedAircraft = null;
+      return false;
+    }
+  }
+  
+  /**
+   * Checks to see if any aircraft are on top of this spot.
+   * @return
+   */
+  public boolean isCovered() {
+    LinkedList<FlyingObject> intersections = deck.getFlyingObjectManager()
+        .intersectsPolygon(this);
+    if (intersections.size() != 0) {
+      return true;
+    }
+    return false;
+  }
 
   /**
    * Returns true if another aircraft is on this parking spot.
@@ -69,16 +98,11 @@ public class ParkingSpot extends DeckPolygon {
    */
   public boolean isOccupied() {
     // Check parked aircraft to see if it's still on the spot.
-    if (parkedAircraft != null && contains(parkedAircraft.getPosition())) {
+    if (hasParkedAircraft()) {
       return true;
-    } else {
-      // Clear last parked aircraft.
-      parkedAircraft = null;
     }
     // Check any flying objects on deck to see if they are on the spot {
-    LinkedList<FlyingObject> intersections = deck.getFlyingObjectManager()
-        .intersectsPolygon(this);
-    if (intersections.size() != 0) {
+    if (isCovered()) {
       return true;
     }
     return false;

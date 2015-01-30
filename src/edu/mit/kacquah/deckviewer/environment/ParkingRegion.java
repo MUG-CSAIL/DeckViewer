@@ -45,7 +45,7 @@ public class ParkingRegion {
   
   private int parkingRegionID;
   private float angle;
-  private LinkedList<ParkingSpot> parkingSpots;
+  protected LinkedList<ParkingSpot> parkingSpots;
   
   private Deck deck;
   

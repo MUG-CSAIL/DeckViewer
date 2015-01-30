@@ -285,7 +285,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     deck.setFlyingObjectManager(flyingObjectManager);
     
 //    testConfig1();
-    testConfig2();
+//    testConfig2();
+    testConfig3();
   }
   
   /**
@@ -318,6 +319,16 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     fillParkingRegionWithAircraft(ParkingRegionType.SIXPACK);
     fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL);
     fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL4);
+  }
+  
+  /**
+   * Aircraft on catapult queues.
+   */
+  public void testConfig3() {
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_1);
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_2);
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_3);
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4);
   }
   
   /**

@@ -14,7 +14,7 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
  */
 public class Catapult implements PAppletRenderObject{
   private Point startPoint, endPoint;
-  private int catapultNumber;
+  public final int catapultNumber;
   private ParkingRegion catapultParking;
 
   public Catapult(Point start, Point end, int number) {
@@ -32,11 +32,19 @@ public class Catapult implements PAppletRenderObject{
   }
   
   /**
-   * Starting point of aircraft for takeoff.
+   * Starting point of catapult.
    * @return
    */
   public Point startPoint() {
     return this.startPoint;
+  }
+  
+  /**
+   * End point of catapult.
+   * @return
+   */
+  public Point endPoint() {
+    return this.endPoint;
   }
   
   /**

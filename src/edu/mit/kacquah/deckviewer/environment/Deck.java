@@ -177,18 +177,29 @@ public class Deck implements PAppletRenderObject {
    */
   private void initDeckParking() {
     // Catapults
-    ParkingRegion cat1 = new ParkingRegion(ParkingRegionType.CATAPULT_1, catapults[0].takeoffDirection());
-    ParkingRegion cat2 = new ParkingRegion(ParkingRegionType.CATAPULT_2, catapults[1].takeoffDirection());
-    ParkingRegion cat3 = new ParkingRegion(ParkingRegionType.CATAPULT_3, catapults[2].takeoffDirection());
-    ParkingRegion cat4 = new ParkingRegion(ParkingRegionType.CATAPULT_4, catapults[3].takeoffDirection());
-    cat1.addParkingSpot(catapults[0].startPoint());
-    cat2.addParkingSpot(catapults[1].startPoint());
-    cat3.addParkingSpot(catapults[2].startPoint());
-    cat4.addParkingSpot(catapults[3].startPoint());
-    catapults[0].setCatapultParking(cat1);
-    catapults[1].setCatapultParking(cat2);
-    catapults[2].setCatapultParking(cat3);
-    catapults[3].setCatapultParking(cat4);
+//    ParkingRegion cat1 = new ParkingRegion(ParkingRegionType.CATAPULT_1, catapults[0].takeoffDirection());
+//    ParkingRegion cat2 = new ParkingRegion(ParkingRegionType.CATAPULT_2, catapults[1].takeoffDirection());
+//    ParkingRegion cat3 = new ParkingRegion(ParkingRegionType.CATAPULT_3, catapults[2].takeoffDirection());
+//    ParkingRegion cat4 = new ParkingRegion(ParkingRegionType.CATAPULT_4, catapults[3].takeoffDirection());
+//    cat1.addParkingSpot(catapults[0].startPoint());
+//    cat2.addParkingSpot(catapults[1].startPoint());
+//    cat3.addParkingSpot(catapults[2].startPoint());
+//    cat4.addParkingSpot(catapults[3].startPoint());
+//    catapults[0].setCatapultParking(cat1);
+//    catapults[1].setCatapultParking(cat2);
+//    catapults[2].setCatapultParking(cat3);
+//    catapults[3].setCatapultParking(cat4);
+    
+    // Catapult Queues
+    CatapultQueue cat1Queue = new CatapultQueue(ParkingRegionType.CATAPULT_1, catapults[0]);
+    CatapultQueue cat2Queue = new CatapultQueue(ParkingRegionType.CATAPULT_2, catapults[1]);
+    CatapultQueue cat3Queue = new CatapultQueue(ParkingRegionType.CATAPULT_3, catapults[2]);
+    CatapultQueue cat4Queue = new CatapultQueue(ParkingRegionType.CATAPULT_4, catapults[3]);
+    parkingRegions.add(cat1Queue);
+    parkingRegions.add(cat2Queue);
+    parkingRegions.add(cat3Queue);
+    parkingRegions.add(cat4Queue);
+    
     // Elevators
     ParkingRegion el1 = new ParkingRegion(ParkingRegionType.ELEVATOR_1, elevators[0].elevatorDirection());
     ParkingRegion el2 = new ParkingRegion(ParkingRegionType.ELEVATOR_2, elevators[1].elevatorDirection());
