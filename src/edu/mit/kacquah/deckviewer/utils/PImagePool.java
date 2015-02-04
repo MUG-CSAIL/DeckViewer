@@ -24,7 +24,7 @@ public class PImagePool {
       Arrays.asList("fmac", "smac", "fuav", "suav", "predator", "c2", "f18",
           "helicopter", "pegasus", "tanker", "f35", "ugv_service",
           "ugv_weapons", "ugv_fuel", "white", "red", "green", "yellow",
-          "purple", "brown", "blue"));
+          "purple", "brown", "blue", "vmac"));
 
   private static HashMap<String, PImage[]> loadedImages = new HashMap<String, PImage[]>();
 
@@ -43,7 +43,7 @@ public class PImagePool {
         || imageName == "pred") {
       imageName = "suav";
     } else if (imageName == "F35" || imageName == "vmac") {
-      imageName = "f35";
+      imageName = "vmac";
     }
     if (keyWords.contains(imageName)) {
       // Check to see if we've already loaded image list

@@ -122,7 +122,7 @@ public class Sprite implements PAppletRenderObject {
     for (DynamicImageFilter f : imageFilters) {
       f.applyFilter(p);
     }
-    // Draw image
+    // Draw image 
     p.image(spriteImages[selectedSpriteImage], 0, 0);
     p.popMatrix();
     p.popStyle();

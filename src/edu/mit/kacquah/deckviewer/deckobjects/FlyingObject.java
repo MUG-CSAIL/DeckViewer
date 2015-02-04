@@ -159,6 +159,7 @@ public class FlyingObject implements PAppletRenderObject {
       p.translate(bounds.x + bounds.width*5/10, bounds.y + bounds.height*0/10);
       p.textFont(font);
       String text = this.type.name + "--" + this.UID;
+//      String text = this.type.name;
       p.textSize(this.fontSize);
       p.fill(ColorUtil.WHITE);
       p.text(text, 0, 0);
