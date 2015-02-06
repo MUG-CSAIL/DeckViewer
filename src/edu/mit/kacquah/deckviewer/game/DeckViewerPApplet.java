@@ -23,8 +23,7 @@ import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.gui.DeckViewerSwingFrame;
 import edu.mit.kacquah.deckviewer.gui.StaticTextView;
 import edu.mit.kacquah.deckviewer.gui.StatusBar;
-import edu.mit.kacquah.deckviewer.speech.Commands;
-import edu.mit.kacquah.deckviewer.speech.SpeechParser;
+import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechParser;
 import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechRecognizer;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechSynthesizer;
 import edu.mit.kacquah.deckviewer.utils.*;
@@ -340,8 +339,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_1, 1);
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_2, 1);
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_3, 2);
-    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4, 3);
-    
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4, 3); 
   }
   
   /**
@@ -367,7 +365,6 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     if (number > parkingRegion.numberParkingSpots()) {
       number = parkingRegion.numberParkingSpots();
     }
-
     for (int i = 0; i < number; ++i) {
       PVector pos = new PVector();
       FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);

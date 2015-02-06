@@ -13,7 +13,6 @@ import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Catapult;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.Elevator;
-import edu.mit.kacquah.deckviewer.speech.ActionError;
 import processing.core.PApplet;
 
 public class ActionManager {
@@ -84,6 +83,7 @@ public class ActionManager {
         || previousActionCommand.commandType != ActionCommandType.MOVE) {
       // Cannot process location command without move command first.
       updateStatusWithError(ActionError.NO_SELECTION);
+      return;
     }
     // Merge with previous action
     ActionCommand result = ActionCommand.mergeActionCommands(

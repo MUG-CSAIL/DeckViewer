@@ -1,4 +1,4 @@
-package edu.mit.kacquah.deckviewer.speech;
+package edu.mit.kacquah.deckviewer.speech.recognizer;
 
 import java.util.logging.Logger;
 
@@ -40,9 +40,9 @@ public class SpeechParser implements ISpeechEventListener {
 
     // Since commands come in two types (action + selection) or (location), we
     // simply check for text unique to each sequence and handle appropriately.
-    if (command.contains(Commands.MOVE) || command.contains(Commands.PLACE)) {
+    if (command.contains(ActionCommand.MOVE) || command.contains(ActionCommand.PLACE)) {
       success = createMoveAction(command);
-    } else if (command.contains(Commands.TO) || command.contains(Commands.OVER)) {
+    } else if (command.contains(ActionCommand.TO) || command.contains(ActionCommand.OVER)) {
       success = createLocationAction(command);
     } else {
       success = false;

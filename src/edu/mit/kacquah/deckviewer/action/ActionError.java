@@ -1,4 +1,4 @@
-package edu.mit.kacquah.deckviewer.speech;
+package edu.mit.kacquah.deckviewer.action;
 
 public enum ActionError {
   NO_ERROR("No Error."),

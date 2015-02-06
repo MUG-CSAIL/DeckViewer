@@ -13,8 +13,7 @@ import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
-import edu.mit.kacquah.deckviewer.speech.ActionError;
-import edu.mit.kacquah.deckviewer.speech.SpeechParser;
+import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechParser;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 /**
