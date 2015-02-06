@@ -9,7 +9,7 @@ import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.action.ActionCommand.ActionCommandType;
 import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
-import edu.mit.kacquah.deckviewer.speech.SpeechEngine.ISpeechEventListener;
+import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechRecognizer.ISpeechEventListener;
 
 /**
  * Parser for processing speech commands.

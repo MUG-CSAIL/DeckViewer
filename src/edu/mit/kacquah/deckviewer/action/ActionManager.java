@@ -80,7 +80,8 @@ public class ActionManager {
    * @param actionCommand
    */
   private void processLocationCommand(ActionCommand actionCommand) {
-    if (previousActionCommand.commandType != ActionCommandType.MOVE) {
+    if (lastActionComplete()
+        || previousActionCommand.commandType != ActionCommandType.MOVE) {
       // Cannot process location command without move command first.
       updateStatusWithError(ActionError.NO_SELECTION);
     }

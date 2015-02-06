@@ -1,4 +1,4 @@
-package edu.mit.kacquah.deckviewer.speech;
+package edu.mit.kacquah.deckviewer.speech.recognizer;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import edu.cmu.sphinx.api.SpeechResult;
 import edu.cmu.sphinx.result.WordResult;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
-import edu.mit.kacquah.deckviewer.speech.SpeechEngine.ISpeechEventListener;
+import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechRecognizer.ISpeechEventListener;
 import processing.core.PApplet;
 
 public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
@@ -15,7 +15,7 @@ public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
       .getName());
 
   // Speech
-  SpeechEngine speechEngine;
+  SpeechRecognizer speechEngine;
 
   public void setup() {
     size(400, 400);
@@ -67,7 +67,7 @@ public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
   /****************************************************************************/
 
   private void initSpeech() {
-    speechEngine = new SpeechEngine();
+    speechEngine = new SpeechRecognizer();
     speechEngine.setGrammarPath(GlobalSettings.grammarPath);
     speechEngine.setSpeechListener(this);
     speechEngine.setGrammarName(GlobalSettings.grammarName);

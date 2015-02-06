@@ -8,6 +8,9 @@
 	<classpathentry kind="lib" path="lib/sphinx4.jar"/>
 	<classpathentry kind="lib" path="lib/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="lib/jogl-all.jar"/>
+	<classpathentry kind="lib" path="lib/FreeTTS/freetts.jar"/>
+	<classpathentry kind="lib" path="lib/FreeTTS/jsapi.jar"/>
+	<classpathentry kind="lib" path="lib/FreeTTS/freetts-jsapi10.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/tabletop_kinect"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

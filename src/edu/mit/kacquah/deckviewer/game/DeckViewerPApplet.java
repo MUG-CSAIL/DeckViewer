@@ -24,8 +24,9 @@ import edu.mit.kacquah.deckviewer.gui.DeckViewerSwingFrame;
 import edu.mit.kacquah.deckviewer.gui.StaticTextView;
 import edu.mit.kacquah.deckviewer.gui.StatusBar;
 import edu.mit.kacquah.deckviewer.speech.Commands;
-import edu.mit.kacquah.deckviewer.speech.SpeechEngine;
 import edu.mit.kacquah.deckviewer.speech.SpeechParser;
+import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechRecognizer;
+import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechSynthesizer;
 import edu.mit.kacquah.deckviewer.utils.*;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
@@ -70,8 +71,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private HandTracker handTracker;
 
   // Speech
-  private SpeechEngine speechEngine;
+  private SpeechRecognizer speechRecognizer;
   private SpeechParser speechParser;
+  private SpeechSynthesizer speechSynthesizer;
 
   // Actions
   private SelectionManager selectionManager;
@@ -91,8 +93,6 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private StatusBar statusbar;
   private NumberFormat numberFormater = new DecimalFormat("#0.00");     
   
-
-
   public void setup() {
     // Init app state
     initScreenSize();
@@ -388,19 +388,24 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   }
 
   /**
-   * Setup speech recognition for app.
+   * Setup speech recognition and synthesis for app.
    */
   private void initSpeech() {
-    speechEngine = new SpeechEngine();
-    speechEngine.setGrammarPath(GlobalSettings.grammarPath);
-    speechEngine.setGrammarName(GlobalSettings.grammarName);
-    speechEngine.initRecognition();
+    speechRecognizer = new SpeechRecognizer();
+    speechRecognizer.setGrammarPath(GlobalSettings.grammarPath);
+    speechRecognizer.setGrammarName(GlobalSettings.grammarName);
+    speechRecognizer.initRecognition();
 
     speechParser = new SpeechParser();
-    speechEngine.setSpeechListener(speechParser);
+    speechRecognizer.setSpeechListener(speechParser);
     
     if (GlobalSettings.useSpeechRecognition) {
-      speechEngine.startRecognition();
+      speechRecognizer.startRecognition();
+    }
+    
+    speechSynthesizer = SpeechSynthesizer.getInstance(GlobalSettings.speechSynthesisVoice);
+    if (GlobalSettings.useSpeechSynthesis) {
+      speechSynthesizer.initSpeech();
     }
   }
   

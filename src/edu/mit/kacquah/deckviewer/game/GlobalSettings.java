@@ -48,7 +48,9 @@ public class GlobalSettings {
    * Grammar configuration for speech recognition.
    */
   public static final boolean useSpeechRecognition = true;
-  public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/";
+  public static final boolean useSpeechSynthesis = true;
+  public static final String speechSynthesisVoice = "mbrola_us1";
+  public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/recognizer";
   public static final String grammarName = "deckviewer";
   
   /**
@@ -56,7 +58,7 @@ public class GlobalSettings {
    */
   public static final boolean renderDeckOutline = true;
   public static final boolean renderDeckCatapults = true;
-  public static final boolean renderDeckElevators = true;
+  public static final boolean renderDeckElevators = false;
   
   /**
    * Selection engine constants
