@@ -1,5 +1,7 @@
 package edu.mit.kacquah.deckviewer.action.exec;
 
-public class ExecAction {
+import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
+public abstract class ExecAction implements PAppletRenderObject{
+  abstract public boolean isDone();
 }

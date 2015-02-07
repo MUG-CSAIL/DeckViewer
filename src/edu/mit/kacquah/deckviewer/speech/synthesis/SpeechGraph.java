@@ -9,6 +9,11 @@ import javax.speech.synthesis.SpeakableListener;
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
+/**
+ * Graph for implementing spoken conversations using speech nodes.
+ * @author kojo
+ *
+ */
 public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListener {
   /**
    * Yeild states for what to do when synthesizing or waiting for speech responses.

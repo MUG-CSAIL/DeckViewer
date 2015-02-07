@@ -4,6 +4,11 @@ import java.util.logging.Logger;
 
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph.YieldStatus;
 
+/**
+ * Node for carrying out speech conversations.
+ * @author kojo
+ *
+ */
 public abstract class SpeechNode {
   // Parent
   private SpeechGraph parentGraph;
