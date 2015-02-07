@@ -221,4 +221,16 @@ public class ActionManager implements PAppletRenderObject {
     return this.statusMessage;
   }
 
+  @Override
+  public void update(long elapsedTime) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void render(PApplet p) {
+    // TODO Auto-generated method stub
+    
+  }
+
 }
