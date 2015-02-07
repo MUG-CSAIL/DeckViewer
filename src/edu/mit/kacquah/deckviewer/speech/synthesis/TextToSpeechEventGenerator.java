@@ -73,8 +73,7 @@ public class TextToSpeechEventGenerator implements SpeakableListener {
 
   @Override
   public void speakablePaused(SpeakableEvent arg0) {
-    // TODO Auto-generated method stub
-    
+    alertListeners(arg0);        
   }
 
   @Override
