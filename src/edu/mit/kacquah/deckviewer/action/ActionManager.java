@@ -13,9 +13,10 @@ import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Catapult;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.Elevator;
+import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import processing.core.PApplet;
 
-public class ActionManager {
+public class ActionManager implements PAppletRenderObject {
   // Utils
   private static Logger LOGGER = Logger.getLogger(ActionManager.class
       .getName());
