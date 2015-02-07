@@ -8,6 +8,7 @@ import javax.vecmath.Point2f;
 
 import edu.mit.kacquah.deckviewer.action.ActionCommand.ActionCommandType;
 import edu.mit.kacquah.deckviewer.action.ActionCommand.LocationType;
+import edu.mit.kacquah.deckviewer.action.exec.ExecActionStack;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Catapult;
@@ -22,10 +23,13 @@ public class ActionManager implements PAppletRenderObject {
       .getName());
   private PApplet parent;
   
-  // Action State
+  // ActionCommand State
   private SelectionManager selectionManager;
   private FlyingObjectManager flyingObjectManager;
   private ActionCommand previousActionCommand;
+  
+  // ActionStack
+  private ExecActionStack execActionStack;
   
   // Status state
   private String statusMessage;
@@ -38,6 +42,7 @@ public class ActionManager implements PAppletRenderObject {
     this.selectionManager = sel;
     this.flyingObjectManager = fly;
     this.deck = Deck.getInstance();
+    this.execActionStack = new ExecActionStack();
     resetStatus();
   }
   
@@ -223,14 +228,12 @@ public class ActionManager implements PAppletRenderObject {
 
   @Override
   public void update(long elapsedTime) {
-    // TODO Auto-generated method stub
-    
+    execActionStack.update(elapsedTime);
   }
 
   @Override
   public void render(PApplet p) {
-    // TODO Auto-generated method stub
-    
+    execActionStack.render(p);
   }
 
 }

@@ -10,14 +10,14 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
  * @author kojo
  *
  */
-public class ActionStack implements PAppletRenderObject {
+public class ExecActionStack implements PAppletRenderObject {
   
   /**
    * Stack of actions being executed.
    */
   LinkedList<ExecAction> execStack;
   
-  public ActionStack() {
+  public ExecActionStack() {
     execStack = new LinkedList<ExecAction>();
   }
   
