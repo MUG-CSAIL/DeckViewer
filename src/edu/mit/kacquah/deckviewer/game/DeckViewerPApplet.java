@@ -198,7 +198,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   }
 
   public void keyPressed() {
-    switch (key) {
+    switch (Character.toLowerCase(key)) {
     case 'S':
     case 's':
       // Select a flying object.
@@ -208,7 +208,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     case 'E':
     case 'e':
       // Execute an action.
-      speechParser.createLocationAction("to elevator four (keyboard)");
+      speechParser.createLocationAction("to the fantail");
       break;
     case 'R':
     case 'r':
@@ -337,15 +337,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4);
   }
   
-  public void scene1() {
-   
-//    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 5);
-    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL, 3);
-    fillParkingRegionWithAircraft(ParkingRegionType.FRNT_TOWER, 2);
-    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_1, 1);
-    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_2, 1);
-    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_3, 2);
-    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4, 3); 
+  public void scene1() {   
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2); 
   }
   
   /**
@@ -356,7 +349,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     ParkingRegion parkingRegion = deck.getParkingRegion(type);
     for (int i = 0; i < parkingRegion.numberParkingSpots(); ++i) {
       PVector pos = new PVector();
-      FlyingObject flyingObject=  new FlyingObject(AircraftType.F35, pos, Sprite.Direction.UP.degrees);
+      FlyingObject flyingObject=  new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
       flyingObjectManager.addFlyingObject(flyingObject);
       parkingRegion.getNextFreeParkingSpot().park(flyingObject);
     }

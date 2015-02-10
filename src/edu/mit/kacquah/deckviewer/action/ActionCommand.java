@@ -135,6 +135,7 @@ public class ActionCommand {
       result.aircraftType = first.aircraftType;
       result.locationType = second.locationType;
       result.locationNumber = second.locationNumber;
+      result.parkingRegionType = second.parkingRegionType;
       return result;
     } else {
       LOGGER.severe("Could not merge ActionCommands " + first.toString() + " and " + second.toString());

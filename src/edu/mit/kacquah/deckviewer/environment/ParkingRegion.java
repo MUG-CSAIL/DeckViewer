@@ -2,6 +2,7 @@ package edu.mit.kacquah.deckviewer.environment;
 
 import java.awt.Point;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.action.ActionCommand;
@@ -55,11 +56,15 @@ public class ParkingRegion implements PAppletRenderObject {
           return t;
         }
       }
+      LOGGER.severe("Could not find parking region type with name: " + name);
       return null;
     }
   }
   
   
+  // App utils
+  private static Logger LOGGER = Logger.getLogger(ParkingRegion.class
+      .getName());
   
   private int parkingRegionID;
   private float angle;
@@ -140,6 +145,32 @@ public class ParkingRegion implements PAppletRenderObject {
     }
     return null;
   }
+  
+  /**
+   * Returns the specified amount of free parking spots in theis parking region,
+   * ignoring any spot that is a "block spot". Will return null for every non
+   * free parking spot requested.
+   * 
+   * @return
+   */
+  public LinkedList<ParkingSpot> getFreeParkingSpots(int number, LinkedList<ParkingSpot> blockSpots) {
+    LinkedList <ParkingSpot> spots = new LinkedList<ParkingSpot>();
+    int spotCount = 0;
+    if (blockSpots == null) {
+      blockSpots = new LinkedList<ParkingSpot>();
+    }
+    for (ParkingSpot p : parkingSpots) {
+      if (!p.isOccupied() && !blockSpots.contains(p)) {
+        spots.add(p);
+        spotCount =+ 1;
+      }
+    }
+    for (int i = spotCount; i < number; i++) {
+      spots.add(null);
+    }
+    return spots;
+  }
+  
   
   /**
    * Parking spot by index

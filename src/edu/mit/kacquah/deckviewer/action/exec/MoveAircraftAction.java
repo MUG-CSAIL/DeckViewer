@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
+import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph;
@@ -27,6 +28,11 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
 
     @Override
     public void preSpeechProcess() {
+      //TODO(KoolJBlack) Works for only one aircraft right now.
+      
+      // Find parking spots
+      findParkingSpots();
+      
       // Check the path
       if (checkPath()) {
 
@@ -43,6 +49,16 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
     public void postSpeechProcess() {
       // Not called
     }
+    
+    /**
+     * Finds parking spots for each movable aircraft. If a parking spot is not
+     * found in the target area, the aircraft is assigned to null.
+     */
+    public void findParkingSpots() {
+      int numMoveAircraft = moveAircraft.size();
+      moveToParkingSpots = moveToParkingRegion.getFreeParkingSpots(numMoveAircraft, null);
+    }
+    
 
     /**
      * Checks the path from the move aircraft to the destination. If there are
@@ -62,6 +78,12 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
      * @return
      */
     private boolean checkTartet() {
+      // Check to see if any of the parking spaces were null.
+      for (ParkingSpot p: moveToParkingSpots) {
+        if (p == null) {
+          return true;
+        }
+      }
       return false;
     }
   }
@@ -74,6 +96,13 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
 
     @Override
     public void preSpeechProcess() {
+      // Move aircraft to their destinations
+      for (int i = 0; i < moveAircraft.size(); ++i) {
+        FlyingObject o = moveAircraft.get(i);
+        ParkingSpot p = moveToParkingSpots.get(i);
+        p.park(o);
+      }
+      // Yeild to give confirmation
       yieldWait();
     }
 
@@ -102,12 +131,16 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
    */
   private LinkedList<ParkingSpot> moveToParkingSpots;
 
-  private ParkingRegion targetParkingRegion;
+  /**
+   * Parking regions specified as the target.
+   */
+  private ParkingRegion moveToParkingRegion;
+  
 
   public MoveAircraftAction(ExecActionStack actionStack, ParkingRegion target,
       LinkedList<FlyingObject> selectedAircraft) {
     this.actionStack = actionStack;
-    this.targetParkingRegion = target;
+    this.moveToParkingRegion = target;
     this.moveAircraft = selectedAircraft;
   }
 
