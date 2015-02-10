@@ -34,9 +34,13 @@ grammar deckviewer;
  * Deck objects.
  */
 
-<object> = <aircraft>;
+<object> = <aircraftSingular> | <aircraftPlural>;
 
-<aircraft> =  <pronoun> ( aircraft | f eighteen | c twowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww;
+<aircraft> = aircraft;
+
+<aircraftSingular> = this  ( aircraft | f eighteen | c two);
+
+<aircraftPlural> = these ( aircrafts | f eighteens | c twos);
 
 /**
  * Deck locations.

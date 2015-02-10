@@ -1,45 +1,42 @@
 yes
-move this f eighteen
+move these f eighteens
 to there
 no
-move this c two
-place aircraft number oh
-place c two number two
-to elevator three
-place this f eighteen
-place f eighteen number eight
+move this aircraft
+over catapult two
+to the crotch
+ok
+place this c two
+over elevator four
 over there
-move c two number oh
+move aircraft number eight
+place these aircrafts
+place aircraft number one
 to the street
 to catapult two
 to elevator one
-place aircraft number three
-over catapult three
-place this aircraft
-over catapult one
-over catapult four
-place c two number zero
-to the crotch
-to the six pack
-move this aircraft
-over the junk yard
-move c two number six
-move c two number four
-over catapult two
-to the junk yard
-place this c two
-move aircraft number five
-over elevator two
-over the six pack
 place aircraft number four
-place c two number four
-over elevator three
-over elevator four
-to the point
-to elevator four
-move aircraft number oh
-to catapult one
+over catapult three
+place this f eighteen
+place aircraft number eight
 over elevator one
-place c two number one
-to catapult three
-move aircraft number one
+place aircraft number five
+move these c twos
+to the six pack
+move this c two
+over the junk yard
+move aircraft number zero
+move aircraft number six
+over the street
+to elevator four
+over the six pack
+to the junk yard
+move this f eighteen
+move these aircrafts
+place aircraft number three
+to elevator two
+over the point
+to the point
+move aircraft number three
+to catapult one
+over catapult one
