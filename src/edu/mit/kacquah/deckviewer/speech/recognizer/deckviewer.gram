@@ -36,7 +36,7 @@ grammar deckviewer;
 
 <object> = <aircraft>;
 
-<aircraft> =  aircraft | f eighteen | c two;
+<aircraft> =  <pronoun> ( aircraft | f eighteen | c two );
 
 /**
  * Deck locations.
@@ -69,7 +69,7 @@ grammar deckviewer;
  * Public commands.
  */
 
- <moveCommand> = ( <action> <pronoun> <object> ) | 
+ <moveCommand> = ( <action> <object> ) | 
                  ( <action> <aircraft> number <digit>);
 
  <locationCommand> = ( <location> );

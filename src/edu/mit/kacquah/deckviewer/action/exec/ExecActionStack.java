@@ -71,6 +71,17 @@ public class ExecActionStack implements PAppletRenderObject {
       popStackTop();
     }
   }
+  
+  /**
+   * Notifies all actions on the stack of a new affirmative response.
+   * @param yes
+   */
+  public void notifyAffirmative(boolean yes) {
+    for (ExecAction a: execStack) {
+      a.setLastAffirmative(yes);
+    }
+  }
+  
 
   @Override
   public void update(long elapsedTime) {

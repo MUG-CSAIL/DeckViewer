@@ -8,6 +8,9 @@ import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.action.ActionCommand.ActionCommandType;
 import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
+import edu.mit.kacquah.deckviewer.environment.Deck;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechRecognizer.ISpeechEventListener;
 
@@ -70,6 +73,8 @@ public class SpeechParser implements ISpeechEventListener {
     int number = getNumberFromCommmand(command);
     if (number != -1) {
       actionCommand.aircraftNumber = number;
+    } else if (command.contains(ActionCommand.C2)) {
+      actionCommand.aircraftType = AircraftType.C2;
     } else {
       actionCommand.aircraftType = AircraftType.F18;
     }
@@ -100,13 +105,32 @@ public class SpeechParser implements ISpeechEventListener {
       actionCommand.locationType = ActionCommand.LocationType.POINTING;
     } else {
       actionCommand.locationType = ActionCommand.LocationType.PARKING_REGION;
-      return false;
+      ParkingRegionType region =  parseParkingRegionType(command);
+      if (region == null) {
+        LOGGER.severe("ParkingRegion did not parse");
+        return false;
+      }
+      actionCommand.parkingRegionType = region;
     }
     if (number == -1) {
       return false;
     }
     actionManager.processActionCommand(actionCommand);
     return true;
+  }
+  
+  /**
+   * Determins the parking region destination in this command.
+   * @param command
+   * @return
+   */
+  public ParkingRegionType parseParkingRegionType(String command) {
+    int index = command.indexOf(ActionCommand.THE);
+    if (index == -1) {
+      return null;
+    }
+    command = command.substring(index + ActionCommand.THE.length() + 1);
+    return ParkingRegionType.stringToParkingRegion(command);
   }
   
   /**

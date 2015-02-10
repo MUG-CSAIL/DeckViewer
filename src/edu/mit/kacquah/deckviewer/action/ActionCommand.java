@@ -26,6 +26,10 @@ public class ActionCommand {
   public static final String TO = "to";
   public static final String OVER = "over";
   /**
+   * Adjectives
+   */
+  public static final String THE = "the";
+  /**
    * Afffirmative
    */
   public static final String YES = "yes";

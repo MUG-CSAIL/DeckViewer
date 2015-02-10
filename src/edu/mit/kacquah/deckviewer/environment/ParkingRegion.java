@@ -43,7 +43,23 @@ public class ParkingRegion implements PAppletRenderObject {
     ParkingRegionType(String name) {
       this.name = name;
     }
+    
+    /**
+     * Returns corresponding parking region given name or null.
+     * @param name
+     * @return
+     */
+    public static ParkingRegionType stringToParkingRegion(String name) {
+      for (ParkingRegionType t: ParkingRegionType.values()) {
+        if (t.name.equals(name)) {
+          return t;
+        }
+      }
+      return null;
+    }
   }
+  
+  
   
   private int parkingRegionID;
   private float angle;

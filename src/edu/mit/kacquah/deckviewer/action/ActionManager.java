@@ -9,11 +9,13 @@ import javax.vecmath.Point2f;
 import edu.mit.kacquah.deckviewer.action.ActionCommand.ActionCommandType;
 import edu.mit.kacquah.deckviewer.action.ActionCommand.LocationType;
 import edu.mit.kacquah.deckviewer.action.exec.ExecActionStack;
+import edu.mit.kacquah.deckviewer.action.exec.MoveAircraftAction;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Catapult;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.Elevator;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import processing.core.PApplet;
 
@@ -29,7 +31,7 @@ public class ActionManager implements PAppletRenderObject {
   private ActionCommand previousActionCommand;
   
   // ActionStack
-  private ExecActionStack execActionStack;
+  private ExecActionStack actionStack;
   
   // Status state
   private String statusMessage;
@@ -42,7 +44,7 @@ public class ActionManager implements PAppletRenderObject {
     this.selectionManager = sel;
     this.flyingObjectManager = fly;
     this.deck = Deck.getInstance();
-    this.execActionStack = new ExecActionStack();
+    this.actionStack = new ExecActionStack();
     resetStatus();
   }
   
@@ -56,6 +58,10 @@ public class ActionManager implements PAppletRenderObject {
       processMoveCommand(actionCommand);
     } else if (actionCommand.commandType == ActionCommandType.LOCATION) {
       processLocationCommand(actionCommand);
+    } else if(actionCommand.commandType == ActionCommandType.AFFIRMATIVE) {
+      processAffirmativeCommand(actionCommand);
+    } else {
+      LOGGER.severe("Unknown ActionCommand:" + actionCommand.toString());
     }
   }
   
@@ -117,8 +123,16 @@ public class ActionManager implements PAppletRenderObject {
       // Move to elevator
       moveToElevator(actionCommand);
     } else if (actionCommand.locationType == LocationType.PARKING_REGION) {
-     //TODO(KoolJBlack): Implement move to parking regions. 
+      moveToParkingRegion(actionCommand);
     }
+  }
+  
+  /**
+   * Passes incoming affirmative information to the action stack.
+   * @param actionCommand
+   */
+  private void processAffirmativeCommand(ActionCommand actionCommand) {
+    actionStack.notifyAffirmative(actionCommand.affirmative);
   }
   
   /**
@@ -188,6 +202,23 @@ public class ActionManager implements PAppletRenderObject {
   }
   
   /**
+   * Attempts to move the selected aircraft(s) to a parking region.
+   * Creates a MoveAircraftAction and adds it to the stack.
+   * @param actionCommand
+   */
+  public void moveToParkingRegion(ActionCommand actionCommand) {
+    ParkingRegion parkingRegion = Deck.getInstance().getParkingRegion(
+        actionCommand.parkingRegionType);
+    // Get and clear selection.
+    LinkedList<FlyingObject> selectedObjects = selectionManager.getSelection();
+    selectionManager.clearSelection();
+    // Start execution
+    MoveAircraftAction action = new MoveAircraftAction(actionStack,
+        parkingRegion, selectedObjects);
+    actionStack.addNewAction(action);
+  }
+  
+  /**
    * Denotes to whether the last stored action command is a complete action.
    * @return
    */
@@ -228,12 +259,12 @@ public class ActionManager implements PAppletRenderObject {
 
   @Override
   public void update(long elapsedTime) {
-    execActionStack.update(elapsedTime);
+    actionStack.update(elapsedTime);
   }
 
   @Override
   public void render(PApplet p) {
-    execActionStack.render(p);
+    actionStack.render(p);
   }
 
 }

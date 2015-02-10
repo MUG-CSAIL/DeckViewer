@@ -12,4 +12,5 @@ public interface ExecAction{
   public void update(long elapsedTime);
   public void render(PApplet p);
   public boolean isDone();
+  public boolean setLastAffirmative(boolean yes);
 }
