@@ -11,12 +11,12 @@ import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph.YieldStatus;
  */
 public abstract class SpeechNode {
   // Parent
-  private SpeechGraph parentGraph;
+  protected SpeechGraph parentGraph;
   
   protected static Logger LOGGER = Logger.getLogger(SpeechNode.class.getName());
   
   /**
-   * Text for speech synthesis. Must be set befor yielding for speech.
+   * Text for speech synthesis. Must be set before yielding for speech.
    */
   protected String speechText;
   
@@ -65,7 +65,7 @@ public abstract class SpeechNode {
    */
   abstract public void preSpeechProcess() ;
   /**
-   * Called after speech is spoken.
+   * Called after speech is spoken. Must make yield call before returning.
    */
   abstract public void postSpeechProcess() ;
   

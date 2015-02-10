@@ -22,11 +22,11 @@ public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListe
    */
   public enum YieldStatus{
     NO_STATUS,
-    YIELD_NEXT, // Load next node in graph
-    YIELD_NEXT_UPDATE, // Load next node in graph on next update
-    YIELD_WAIT, // Wait until current synthesis ends
-    YIELD_AFFIRMATIVE, // Wait until current synthesis ends and receive yes/no
-    YIELD_DONE; // This speech node is done processing.
+    YIELD_NEXT, // Load next node in graph. PostSpeech is not called.
+    YIELD_NEXT_UPDATE, // Load next node in graph on next update. PostSpeech is not called.
+    YIELD_WAIT, // Wait until current synthesis ends, then call PostSpeech.
+    YIELD_AFFIRMATIVE, // Wait until current synthesis ends and receive yes/no, then call PostSpeech.
+    YIELD_DONE; // This speech node is done processing. PostSpeech is not called.
   }
   
   protected enum Affirmative {
@@ -46,7 +46,7 @@ public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListe
   
   // Internal state
   protected boolean isDone;
-  protected YieldStatus yeildStatus;
+  protected YieldStatus yieldStatus;
   protected Affirmative lastAffirmative;
   protected SpeechWaitStatus speechWaitStatus; 
   
@@ -58,7 +58,7 @@ public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListe
   public SpeechGraph() {
     // Init state
     this.isDone = false;
-    this.yeildStatus = YieldStatus.NO_STATUS;
+    this.yieldStatus = YieldStatus.NO_STATUS;
     this.lastAffirmative = Affirmative.NO_STATUS;
     this.speechWaitStatus = SpeechWaitStatus.DO_PRE_SPEECH;
     // Set the root node
@@ -71,7 +71,7 @@ public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListe
    * Set the next speech node.
    * @param speechNode
    */
-  protected void setNextSpeechNode(SpeechNode speechNode) {
+  public void setNextSpeechNode(SpeechNode speechNode) {
     this.nextNode = speechNode;
   }
   
@@ -152,7 +152,7 @@ public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListe
    * @param s
    */
   public void setYieldStatus(YieldStatus s) {
-    this.yeildStatus = s;
+    this.yieldStatus = s;
     // Are we done?
     if (s == YieldStatus.YIELD_DONE) {
       this.isDone = true;
@@ -169,8 +169,8 @@ public abstract class SpeechGraph implements PAppletRenderObject, SpeakableListe
    * Returns and resets yield status.
    */
   protected YieldStatus checkYieldStatus() {
-    YieldStatus ans = this.yeildStatus;
-    this.yeildStatus = YieldStatus.NO_STATUS;
+    YieldStatus ans = this.yieldStatus;
+    this.yieldStatus = YieldStatus.NO_STATUS;
     return ans;
   }
   

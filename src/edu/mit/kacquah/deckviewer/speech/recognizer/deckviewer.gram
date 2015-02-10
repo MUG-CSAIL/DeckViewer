@@ -21,7 +21,10 @@ grammar deckviewer;
           six   |
           seven |
           eight |
-          nine  ;
+          nine  |
+          ten   ;
+
+<oneToFour> = (one | two | three | four);
 
 <preposition> = to | over;
 
@@ -33,17 +36,26 @@ grammar deckviewer;
 
 <object> = <aircraft>;
 
-<aircraft> =  aircraft;
+<aircraft> =  aircraft | f eighteen | c two;
 
 /**
  * Deck locations.
  */
 
-<location> = <preposition> ( <catapult> | <elevator> | <genericLocation> );
+<location> = <preposition> ( <catapult> | <elevator> | <parkingRegions> | <genericLocation> );
 
-<catapult> = catapult (one | two | three | four);
+<catapult> = catapult <oneToFour>;
 
-<elevator> = elevator (one | two | three | four);
+<elevator> = elevator <oneToFour>;
+
+<parkingRegions> = the ( fantail    | 
+                         street     | 
+                         six pack   | 
+                         point      | 
+                         patio      | 
+                         crotch     | 
+                         corral     | 
+                         junk yard);
 
 <genericLocation> = there;
 
@@ -57,8 +69,11 @@ grammar deckviewer;
  * Public commands.
  */
 
- <moveCommand> = ( <action> <pronoun> <object> ) | ( <action> <aircraft> number <digit>);
+ <moveCommand> = ( <action> <pronoun> <object> ) | 
+                 ( <action> <aircraft> number <digit>);
 
  <locationCommand> = ( <location> );
+ 
+ <affirmativeCommand> = yes | ok | no;
 
-public <command> =  <moveCommand> | <locationCommand>  ;
+public <command> =  <moveCommand> | <locationCommand> | <affirmativeCommand>;

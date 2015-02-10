@@ -40,10 +40,14 @@ public class SpeechParser implements ISpeechEventListener {
 
     // Since commands come in two types (action + selection) or (location), we
     // simply check for text unique to each sequence and handle appropriately.
-    if (command.contains(ActionCommand.MOVE) || command.contains(ActionCommand.PLACE)) {
+    if (command.contains(ActionCommand.MOVE)) {
       success = createMoveAction(command);
     } else if (command.contains(ActionCommand.TO) || command.contains(ActionCommand.OVER)) {
       success = createLocationAction(command);
+    } else if (command.contains(ActionCommand.YES)
+        || command.contains(ActionCommand.OK)
+        || command.contains(ActionCommand.NO)) {
+      success = createAffirmativeCommand(command);
     } else {
       success = false;
     }
@@ -92,10 +96,10 @@ public class SpeechParser implements ISpeechEventListener {
       number = getNumberFromCommmand(command);
       actionCommand.locationType = ActionCommand.LocationType.ELEVATOR;
       actionCommand.locationNumber = number;
-    } else if (command.contains(ActionCommand.THERE)
-        || command.contains(ActionCommand.HERE)) {
+    } else if (command.contains(ActionCommand.THERE)) {
       actionCommand.locationType = ActionCommand.LocationType.POINTING;
     } else {
+      actionCommand.locationType = ActionCommand.LocationType.PARKING_REGION;
       return false;
     }
     if (number == -1) {
@@ -104,7 +108,38 @@ public class SpeechParser implements ISpeechEventListener {
     actionManager.processActionCommand(actionCommand);
     return true;
   }
+  
+  /**
+   * Creates an affirmative command.
+   * @param command
+   * @return
+   */
+  private boolean createAffirmativeCommand(String command) {
+    ActionCommand actionCommand = new ActionCommand(ActionCommandType.AFFIRMATIVE,
+        command);
+    // Determine Affirmative.
+    switch(command.toLowerCase()) {
+      case ActionCommand.YES:
+        actionCommand.affirmative = true;
+        break;
+      case ActionCommand.OK:
+        actionCommand.affirmative = true;
+        break;
+      case ActionCommand.NO:
+        actionCommand.affirmative = false;
+        break;
+      default:
+        return false;
+    } 
+    actionManager.processActionCommand(actionCommand);
+    return true;
+  }
 
+  /**
+   * Parses a number from a speech command.
+   * @param command
+   * @return
+   */
   private int getNumberFromCommmand(String command) {
     if (command.contains(ActionCommand.ONE)) {
       return 1;

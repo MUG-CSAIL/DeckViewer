@@ -1,7 +1,10 @@
 package edu.mit.kacquah.deckviewer.action;
 
+import java.util.logging.Logger;
+
 import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
+import edu.mit.kacquah.deckviewer.speech.recognizer.PushToTalkPApplet;
 
 public class ActionCommand {
   /**
@@ -23,14 +26,22 @@ public class ActionCommand {
   public static final String TO = "to";
   public static final String OVER = "over";
   /**
+   * Afffirmative
+   */
+  public static final String YES = "yes";
+  public static final String OK = "ok";
+  public static final String NO = "no";
+  
+  /**
    * Actions
    */
   public static final String MOVE = "move";
-  public static final String PLACE = "place";
   /**
    * Deck Objects
    */
   public static final String AIRCRAFT = "aircraft";
+  public static final String F18 = "f eighteen";
+  public static final String C2 = "c two";
   /**
    * Deck Locations
    */
@@ -64,7 +75,7 @@ public class ActionCommand {
   // Generic locations
   public static final String POINTING_LOCATION = "pointing_location";
   public static final String THERE = "there";
-  public static final String HERE = "here";
+
   
   /**
    * Denotes to the type of action command.
@@ -72,16 +83,25 @@ public class ActionCommand {
    *
    */
   public enum ActionCommandType {
-    MOVE, LOCATION, MOVE_TO_LOCATION;
+    MOVE, LOCATION, MOVE_TO_LOCATION, AFFIRMATIVE;
   }
   
+  /**
+   * Denotes to the location target.
+   * @author kojo
+   *
+   */
   public enum LocationType {
     POINTING, CATAPULT, ELEVATOR, PARKING_REGION;
   }
   
   /****************************************************************************/
   /* Members **************************************************************** */
-  /****************************************************************************/  
+  /****************************************************************************/
+  // App utils
+  private static Logger LOGGER = Logger.getLogger(ActionCommand.class
+      .getName());
+  
   public final ActionCommandType commandType;
   public AircraftType aircraftType;
   public int aircraftNumber;
@@ -89,6 +109,7 @@ public class ActionCommand {
   public ParkingRegionType parkingRegionType;
   public int locationNumber;
   public final String text;
+  public boolean affirmative;
   
   public ActionCommand(ActionCommandType type, String text) {
     this.commandType = type;
@@ -112,6 +133,7 @@ public class ActionCommand {
       result.locationNumber = second.locationNumber;
       return result;
     } else {
+      LOGGER.severe("Could not merge ActionCommands " + first.toString() + " and " + second.toString());
       return null;
     }
     

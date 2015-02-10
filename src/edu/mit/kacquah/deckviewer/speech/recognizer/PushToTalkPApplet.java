@@ -99,7 +99,7 @@ public class PushToTalkPApplet extends PApplet implements ISpeechEventListener {
   }
 
   public static void main(String[] args) {
-    String[] newArgs = new String[] { "edu.mit.kacquah.deckviewer.speech.PushToTalkPApplet" };
+    String[] newArgs = new String[] { "edu.mit.kacquah.deckviewer.speech.recognizer.PushToTalkPApplet" };
     PApplet.main(newArgs);
   }
 
