@@ -21,6 +21,9 @@ public class ColorUtil {
   
   // Color component constants
   public static final Point4f WHITE_COMPONENTS = colorComponents(WHITE);
+  public static final Point4f RED_COMPONENTS = colorComponents(RED);
+  public static final Point4f GREEN_COMPONENTS = colorComponents(GREEN);
+  public static final Point4f BLUE_COMPONENTS = colorComponents(BLUE);
   
   public static final int color(float grey) {
     return color(grey, grey, grey, 255);

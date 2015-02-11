@@ -180,7 +180,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
           continue;
         }
         Point center = spot.center;
-        BlinkingCircle circle = new BlinkingCircle(center, 10, ColorUtil.RED);
+        BlinkingCircle circle = new BlinkingCircle(center, 15, ColorUtil.RED);
         remainingParkingSpots.addRenderObject(circle);
         
       }
