@@ -70,13 +70,22 @@ public class SpeechParser implements ISpeechEventListener {
   public boolean createMoveAction(String command) {
     ActionCommand actionCommand = new ActionCommand(ActionCommandType.MOVE,
         command);
+    // Determine aircraft type
     int number = getNumberFromCommmand(command);
-    if (number != -1) {
+    if (command.contains("number")) {
       actionCommand.aircraftNumber = number;
     } else if (command.contains(ActionCommand.C2)) {
       actionCommand.aircraftType = AircraftType.C2;
-    } else {
+    } else if (command.contains(ActionCommand.F18)) {
       actionCommand.aircraftType = AircraftType.F18;
+    } else if (command.contains(ActionCommand.AIRCRAFT)) {
+      actionCommand.aircraftType = AircraftType.AIRCRAFT;
+    }
+    // Check for multiple selection
+    if (command.contains(ActionCommand.THESE)) {
+      actionCommand.multipleSelection = true;
+    } else {
+      actionCommand.multipleSelection = false;
     }
     actionManager.processActionCommand(actionCommand);
     return true;

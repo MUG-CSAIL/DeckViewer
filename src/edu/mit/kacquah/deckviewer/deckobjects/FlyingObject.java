@@ -8,6 +8,7 @@ import javax.vecmath.Point2f;
 import processing.core.*;
 import edu.mit.kacquah.deckviewer.action.SelectionManager.SelectionStatus;
 import edu.mit.kacquah.deckviewer.environment.Deck;
+import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
 import edu.mit.kacquah.deckviewer.image.DynamicImageFilter;
@@ -17,7 +18,7 @@ import edu.mit.kacquah.deckviewer.utils.PImagePool;
 
 public class FlyingObject implements PAppletRenderObject {
   private Sprite planeSprite;
-  private AircraftType type;
+  public final AircraftType type;
   
   private FlyingObjectManager parentManager;
   private int UID;
@@ -26,6 +27,8 @@ public class FlyingObject implements PAppletRenderObject {
   private int fontSize;
   
   private SelectionStatus selectionStatus;
+  
+  private ParkingSpot parkingSpot;
   
   public FlyingObject(AircraftType type, PVector pos, float rotation){
     this.type = type;
@@ -60,6 +63,14 @@ public class FlyingObject implements PAppletRenderObject {
   
   public void resetImageFilters() {
     planeSprite.resetImageFilters();
+  }
+  
+  public void setParkingSpot(ParkingSpot s) {
+    this.parkingSpot = s;
+  }
+  
+  public ParkingSpot getParkingSpot() {
+    return this.parkingSpot;
   }
   
   /**

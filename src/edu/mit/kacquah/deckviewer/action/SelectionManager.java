@@ -7,9 +7,12 @@ import java.util.logging.Logger;
 import javax.vecmath.Point2f;
 
 import processing.core.PApplet;
+import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Deck;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
+import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
@@ -88,10 +91,12 @@ public class SelectionManager implements PAppletRenderObject {
   }
   
   /**
-   * Selects an aircraft at a specific location.
+   * Selects aircraft at a specific location. Multiple selection will select
+   * additional surrounding aircraft.
+   * 
    * @return
    */
-  public boolean selectAircraftAtFingerLocation() {
+  public boolean selectAircraftAtFingerLocation(boolean multipleSelection, AircraftType typeRestriction) {
     // Get finer points
     Point2f fingerPoints[] = handTracker.getFilteredPoints();
     if (fingerPoints.length == 0) {
@@ -111,9 +116,35 @@ public class SelectionManager implements PAppletRenderObject {
       return false;
     }
     
+    if (multipleSelection) {
+      potentialObjects = selectSurroundingObjects(potentialObjects, typeRestriction);
+    }
+    
     // Clean last selection and update new selection.
     selectObjects(potentialObjects);
     return true;
+  }
+  
+  /**
+   * Selects aircraft surrounding this aircraft.
+   * @param potentialObjects
+   */
+  private LinkedList<FlyingObject> selectSurroundingObjects(
+      LinkedList<FlyingObject> potentialObjects, AircraftType typeRestriction) {
+    // We start of with one selected aircraft.
+    FlyingObject centerAircraft = potentialObjects.get(0);
+    ParkingSpot parkingSpot = centerAircraft.getParkingSpot();
+    
+    if (parkingSpot != null) {
+      /**
+       * If the aircraft is on a parking spot, select all aircraft within the parking region;
+       */
+      ParkingRegion parkingRegion = parkingSpot.parkingRegion();
+      return parkingRegion.getParkedAircraft(typeRestriction);
+    } else {
+      // Not implemented yet
+      throw new UnsupportedOperationException();
+    }
   }
   
   /**

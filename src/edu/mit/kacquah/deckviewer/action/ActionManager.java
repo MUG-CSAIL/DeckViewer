@@ -75,7 +75,8 @@ public class ActionManager implements PAppletRenderObject {
     if (actionCommand.aircraftNumber != -1) {
       success = selectionManager.selectAircraftWithNumber(actionCommand.aircraftNumber);
     } else {
-      success = selectionManager.selectAircraftAtFingerLocation();
+      success = selectionManager.selectAircraftAtFingerLocation(
+          actionCommand.multipleSelection, actionCommand.aircraftType);
     }
     if (success) {
       // Move commands simply become the last action command if selection successful.

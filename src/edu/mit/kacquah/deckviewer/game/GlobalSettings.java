@@ -66,6 +66,8 @@ public class GlobalSettings {
   public static final int selectionStatusSelectedColor = ColorUtil.ORANGE;
   public static final int selectionStatusHoveringColor = ColorUtil.GREEN;
   public static final int selectionStatusErrorColor = ColorUtil.RED;
+  // Radius for selecting multiple aircraft
+  public static final float selectionRadius = 60;
   
   /**
    * FlyingObject constants.

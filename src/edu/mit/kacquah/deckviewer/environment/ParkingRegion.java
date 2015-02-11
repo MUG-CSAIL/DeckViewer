@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.action.ActionCommand;
+import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
+import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
 public class ParkingRegion implements PAppletRenderObject {
@@ -162,7 +164,10 @@ public class ParkingRegion implements PAppletRenderObject {
     for (ParkingSpot p : parkingSpots) {
       if (!p.isOccupied() && !blockSpots.contains(p)) {
         spots.add(p);
-        spotCount =+ 1;
+        spotCount += 1;
+      }
+      if (spotCount == number) {
+        return spots;
       }
     }
     for (int i = spotCount; i < number; i++) {
@@ -171,6 +176,23 @@ public class ParkingRegion implements PAppletRenderObject {
     return spots;
   }
   
+  /**
+   * Returns all parked aircraft parked in this region;
+   * @return
+   */
+  public LinkedList<FlyingObject> getParkedAircraft(AircraftType typeRestriction) {
+    LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
+    for (ParkingSpot p: parkingSpots){
+      if (p.hasParkedAircraft()) {
+        FlyingObject f = p.parkedAircraft();
+        if (typeRestriction != null && f.type != typeRestriction) {
+          continue;
+        }
+        result.add(f);
+      }
+    }
+    return result;
+  }
   
   /**
    * Parking spot by index

@@ -27,9 +27,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
     }
 
     @Override
-    public void preSpeechProcess() {
-      //TODO(KoolJBlack) Works for only one aircraft right now.
-      
+    public void preSpeechProcess() {      
       // Find parking spots
       findParkingSpots();
       

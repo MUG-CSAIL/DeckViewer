@@ -33,6 +33,14 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
     this.renderOutline = false;
     addToDeck();
   }
+  
+  /**
+   * Parking region for this parking spot.
+   * @return
+   */
+  public ParkingRegion parkingRegion() {
+    return this.parkingRegion;
+  }
 
   /**
    * Adds parking spot to deck;
@@ -66,6 +74,7 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
     this.parkedAircraft = o;
     this.parkedAircraft.setRotation(this.parkingRegion.getAngle());
     this.parkedAircraft.setPosition(this.center.x, this.center.y);
+    this.parkedAircraft.setParkingSpot(this);
     return true;
   }
   
@@ -78,6 +87,9 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
       return true;
     } else {
       // Clear last parked aircraft.
+      if (parkedAircraft != null) {
+        parkedAircraft.setParkingSpot(null);
+      }
       parkedAircraft = null;
       return false;
     }
@@ -118,7 +130,10 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
    * @return
    */
   public FlyingObject parkedAircraft() {
-    return this.parkedAircraft;
+    if (hasParkedAircraft()) {
+      return this.parkedAircraft;
+    }
+    return null;
   }
   
   @Override

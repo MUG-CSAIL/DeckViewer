@@ -21,6 +21,11 @@ public class ActionCommand {
   public static final String NINE = "nine";
   public static final String TEN = "ten";
   /**
+   * Pronoun
+   */
+  public static final String THESE = "these";
+  public static final String THIS = "this";
+  /**
    * Prepositions
    */
   public static final String TO = "to";
@@ -108,6 +113,7 @@ public class ActionCommand {
   
   public final ActionCommandType commandType;
   public AircraftType aircraftType;
+  public boolean multipleSelection;
   public int aircraftNumber;
   public LocationType locationType;
   public ParkingRegionType parkingRegionType;
@@ -133,6 +139,7 @@ public class ActionCommand {
         && second.commandType == ActionCommandType.LOCATION) {
       ActionCommand result = new ActionCommand(ActionCommandType.MOVE_TO_LOCATION, first.text + "||" +second.text);
       result.aircraftType = first.aircraftType;
+      result.multipleSelection = first.multipleSelection;
       result.locationType = second.locationType;
       result.locationNumber = second.locationNumber;
       result.parkingRegionType = second.parkingRegionType;
