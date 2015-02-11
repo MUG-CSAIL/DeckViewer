@@ -147,7 +147,7 @@ public class SpeechParser implements ISpeechEventListener {
    * @param command
    * @return
    */
-  private boolean createAffirmativeCommand(String command) {
+  public boolean createAffirmativeCommand(String command) {
     ActionCommand actionCommand = new ActionCommand(ActionCommandType.AFFIRMATIVE,
         command);
     // Determine Affirmative.

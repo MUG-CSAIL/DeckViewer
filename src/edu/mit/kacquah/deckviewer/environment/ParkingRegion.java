@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
+import javax.vecmath.Point2f;
+
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.action.ActionCommand;
 import edu.mit.kacquah.deckviewer.deckobjects.AircraftType;
@@ -84,10 +86,24 @@ public class ParkingRegion implements PAppletRenderObject {
   }
   
   /**
+   * Returns the centroid of all parking spots in this parking region
+   * @return
+   */
+  public Point getCentroid() {
+    Point2f centroid = new Point2f();
+    for (ParkingSpot spot: parkingSpots) {
+      centroid.x += spot.center.x;
+      centroid.y += spot.center.y;
+    }
+    centroid.scale(1.0f/parkingSpots.size());
+    return new Point((int)centroid.x, (int)centroid.y);
+  }
+  
+  /**
    * Returns text name of this parking region.
    * @return
    */
-  public String getParkingRegionName() {
+  public String name() {
     return this.type.name;
   }
   
@@ -201,6 +217,14 @@ public class ParkingRegion implements PAppletRenderObject {
    */
   public ParkingSpot getParkingSpot(int index) {
     return this.parkingSpots.get(index);
+  }
+  
+  /**
+   * Parking spots in this parking region.
+   * @return
+   */
+  public LinkedList<ParkingSpot> parkingSpots() {
+    return this.parkingSpots;
   }
 
   @Override

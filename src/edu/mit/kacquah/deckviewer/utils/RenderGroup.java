@@ -25,7 +25,6 @@ public class RenderGroup implements PAppletRenderObject {
     this.renderObjects.add(o);
   }
   
-  
   /**
    * Removes an object from this render group.
    * @param o
@@ -33,6 +32,13 @@ public class RenderGroup implements PAppletRenderObject {
    */
   public boolean removeRenderObject(PAppletRenderObject o) {
     return this.renderObjects.remove(o);
+  }
+  
+  /**
+   * Clears all render objects from this RenderGroup.
+   */
+  public void clear() {
+    this.renderObjects.clear();
   }
 
   @Override

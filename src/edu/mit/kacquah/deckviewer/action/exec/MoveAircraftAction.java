@@ -154,7 +154,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
     @Override
     public void preSpeechProcess() {
       // Explain that multiple aircraft can't be moved.
-      String moveToLocationName = moveToParkingRegion.getParkingRegionName();
+      String moveToLocationName = moveToParkingRegion.name();
       int numFreeSpots = moveAircraft.size() - numNullSpots;
       this.speechText = "I'm sorry, there are only " + numFreeSpots
           + " spots free at the " + moveToLocationName
@@ -186,7 +186,8 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
           continue;
         }
         Point center = spot.center;
-        BlinkingCircle circle = new BlinkingCircle(center, 15, ColorUtil.RED);
+        BlinkingCircle circle = new BlinkingCircle(center, 15, ColorUtil.RED,
+            false);
         remainingParkingSpots.addRenderObject(circle);
         
       }

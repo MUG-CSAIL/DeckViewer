@@ -1,16 +1,25 @@
 package edu.mit.kacquah.deckviewer.action.exec;
 
+import java.awt.Point;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
+import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
+import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
+import edu.mit.kacquah.deckviewer.gui.shape.BlinkingCircle;
+import edu.mit.kacquah.deckviewer.gui.shape.StraightLineArrow;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechNode;
+import edu.mit.kacquah.deckviewer.utils.ColorUtil;
+import edu.mit.kacquah.deckviewer.utils.RenderGroup;
 
 /**
  * Action for finding an alternate destination for aircraft being moved on deck.
+ * Note, this currently only supports moving one aircraft.
+ * TODO(KoolJBlack) Update this to handle multiple aicraft re-routing.
  * @author kojo
  *
  */
@@ -25,8 +34,11 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
     
     @Override
     public void preSpeechProcess() {
-      // TODO Auto-generated method stub
+      calculateAlternateParkingSpots();
       
+      // Start the render pipeline
+      parentGraph.setNextSpeechNode(new RenderBlocked(parentGraph));
+      yieldNext();
     }
 
     @Override
@@ -35,11 +47,27 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
     }
     
     /**
-     * Determines alternate spots for parked aircraft by looking up closest free
-     * parking spots.
+     * Determines alternate spots and regions for parked aircraft by looking up
+     * closest free parking spots.
      */
     private void calculateAlternateParkingSpots() {
-      
+      // Find the closest spots in the parking region target
+      Point centroid = moveToParkingRegion.getCentroid();
+      LinkedList<ParkingSpot> blockSpots = new LinkedList<ParkingSpot>();
+      for (ParkingSpot spot: moveToParkingSpots) {
+        if (spot != null) {
+          blockSpots.add(spot);
+        }
+      }
+      alternateParkingSpots = Deck.getInstance().closestFreeParkingSpots(
+          centroid, numNullSpots, blockSpots);
+      // Get the names of the alternate parking region
+      alternateParkingRegions = new LinkedList<ParkingRegion>();
+      for (ParkingSpot spot: alternateParkingSpots) {
+        if (!alternateParkingRegions.contains(spot.parkingRegion())) {
+          alternateParkingRegions.add(spot.parkingRegion());
+        }
+      }
     }
   }
   
@@ -51,14 +79,23 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
 
     @Override
     public void preSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      // Explain block spots.
+      this.speechText = "Sorry, there is not enough room on the " + moveToParkingRegion.name();
+      // Highlight all parking spots in the target region
+      for (ParkingSpot spot: moveToParkingRegion.parkingSpots()) {
+        BlinkingCircle circle = new BlinkingCircle(spot.center, 30, ColorUtil.RED, true);
+        renderGroup.addRenderObject(circle);
+      }
+      DeckViewerPApplet.getInstance().renderStack().addRenderGroup(renderGroup);
+      yieldWait();
     }
 
     @Override
     public void postSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      DeckViewerPApplet.getInstance().renderStack().removeRenderGroup(renderGroup);
+      renderGroup.clear();
+      parentGraph.setNextSpeechNode(new RenderAlternate(parentGraph));
+      yieldNext();
     }
   }
   
@@ -70,14 +107,34 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
     
     @Override
     public void preSpeechProcess() {
-      // TODO Auto-generated method stub
+      // Explain block spots. We assume there is only one parking region.
       
+      this.speechText = "The next closest spot is at the "
+          + alternateParkingRegions.get(0).name()
+          + ". Shall I move the aircraft there instead?";
+      // Render the alternate placement
+      Point center = alternateParkingSpots.get(0).center;
+      BlinkingCircle circle = new BlinkingCircle(center, 30, ColorUtil.BLUE, false);
+      Point start = new Point((int)(moveAircraft.get(0).getPosition().x), (int)(moveAircraft.get(0).getPosition().y));
+      StraightLineArrow lineArrow = new StraightLineArrow(start, center, ColorUtil.BLUE);
+      renderGroup.addRenderObject(circle);
+      renderGroup.addRenderObject(lineArrow);
+      DeckViewerPApplet.getInstance().renderStack().addRenderGroup(renderGroup);
+      yieldAffirmative();
     }
 
     @Override
     public void postSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      DeckViewerPApplet.getInstance().renderStack().removeRenderGroup(renderGroup);
+      renderGroup.clear();
+      // Our next action is based on affirmative response.
+      Affirmative affirmative = parentGraph.getLastAffirmative();
+      if (affirmative == Affirmative.YES) {
+        parentGraph.setNextSpeechNode(new DoMove(parentGraph));
+      } else {
+        parentGraph.setNextSpeechNode(new DontDoMove(parentGraph));
+      }
+      yieldNext();
     }
   }
   
@@ -85,37 +142,41 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
     
     public DoMove(SpeechGraph speechGraph) {
       super(speechGraph);
+      this.speechText = "Ok Done!";
     }
 
     @Override
     public void preSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      // Move aircraft to their destinations
+      for (int i = 0; i < moveAircraft.size(); ++i) {
+        FlyingObject o = moveAircraft.get(i);
+        ParkingSpot p = alternateParkingSpots.get(i);
+        p.park(o);
+      }
+      // Yeild to give confirmation
+      yieldWait();      
     }
 
     @Override
     public void postSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      yieldDone();      
     }
   }
   
   private class DontDoMove extends SpeechNode{
-    
     public DontDoMove(SpeechGraph speechGraph) {
       super(speechGraph);
+      this.speechText = "Ok, please give another command.";
     }
     
     @Override
     public void preSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      yieldWait();
     }
 
     @Override
     public void postSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      yieldDone();
     }
   }
   
@@ -141,6 +202,10 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
    */
   private LinkedList<ParkingSpot> alternateParkingSpots;
   private LinkedList<ParkingRegion> alternateParkingRegions;
+  /**
+   * Rendering animations.
+   */
+  private RenderGroup renderGroup;
   
   public FindAlternateTargetAction(LinkedList<FlyingObject> moveAircraft,
       ParkingRegion target, LinkedList<ParkingSpot> moveToParkingSpots,
@@ -149,12 +214,12 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
     this.moveToParkingSpots = moveToParkingSpots;
     this.numNullSpots = numNullSpots;
     this.moveToParkingRegion = target;
+    this.renderGroup = new RenderGroup();
   }
   
   @Override
   protected SpeechNode rootNode() {
-    // TODO Auto-generated method stub
-    return null;
+    return new PreProcessTarget(this);
   }
 
   @Override

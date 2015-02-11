@@ -22,13 +22,15 @@ public class BlinkingCircle implements PAppletRenderObject {
   private int renderColor;
   private double angle;
   private float alpha;
+  private boolean hollow;
   
-  public BlinkingCircle(Point center, float radius, int color) {
+  public BlinkingCircle(Point center, float radius, int color, boolean hollow) {
     this.center = center;
     this.radius = radius;
     this.peakColorComponents = ColorUtil.colorComponents(color);
     this.color = color;
     this.angle = 0;
+    this.hollow = hollow;
   }
 
   @Override
@@ -49,9 +51,14 @@ public class BlinkingCircle implements PAppletRenderObject {
     p.pushMatrix();
     p.pushStyle();
     p.translate(center.x, center.y);
-    p.noStroke();
-//    p.fill(renderColor);
     p.fill(color, alpha * 255);
+    p.stroke(color, alpha * 255);
+    p.strokeWeight(GlobalSettings.STROKE_WEIGHT);
+    if (hollow) {
+      p.noFill();
+    } else {
+      p.noStroke();
+    }
     p.ellipse(0, 0, radius * 2, radius * 2);
     p.popStyle();
     p.popMatrix();

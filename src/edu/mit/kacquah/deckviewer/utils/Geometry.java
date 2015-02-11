@@ -27,5 +27,4 @@ public class Geometry {
     }
     return angle;
   }
-
 }

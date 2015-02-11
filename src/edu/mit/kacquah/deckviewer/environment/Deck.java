@@ -279,11 +279,11 @@ public class Deck implements PAppletRenderObject {
     fantail.addParkingSpot(scale(235, 730));
     fantail.addParkingSpot(scale(250, 816));
     fantail.addParkingSpot(scale(315, 596));
-//    fantail.addParkingSpot(scale(330, 681));
-//    fantail.addParkingSpot(scale(345, 766));
-//    fantail.addParkingSpot(scale(410, 546));
-//    fantail.addParkingSpot(scale(425, 631));
-//    fantail.addParkingSpot(scale(440, 716));
+    fantail.addParkingSpot(scale(330, 681));
+    fantail.addParkingSpot(scale(345, 766));
+    fantail.addParkingSpot(scale(410, 546));
+    fantail.addParkingSpot(scale(425, 631));
+    fantail.addParkingSpot(scale(440, 716));
     
     // Over Elevator 4
     ParkingRegion over_el4 = new ParkingRegion(ParkingRegionType.OVER_EL4,
@@ -389,6 +389,42 @@ public class Deck implements PAppletRenderObject {
   public boolean contains(Point p) {
     return deckEdges.contains(p);
   }
+  
+  /**
+   * Finds the n closest free parking spots to a target spot, excluding block spots.
+   * If there are are insufficient free spots, a null list is returned.
+   * @param target
+   * @param blockSpots
+   * @return
+   */
+  public LinkedList<ParkingSpot> closestFreeParkingSpots(Point target, int number,
+      LinkedList<ParkingSpot> blockSpots) {
+    LinkedList<ParkingSpot> result = new LinkedList<ParkingSpot>();
+    
+    if (blockSpots == null) {
+      blockSpots = new LinkedList<ParkingSpot>();
+    }
+    
+    LinkedList<ParkingSpot> sortedParkingSpots = Sorting.parkingSpotDistanceSort(this.parkingSpots, target);
+    
+    int numFound = 0;
+    for(ParkingSpot spot: sortedParkingSpots) {
+      if (!spot.isOccupied() && !blockSpots.contains(spot)) {
+        result.add(spot);
+        numFound ++;
+        if (numFound == number) {
+          return result;
+        }
+      }
+    }
+    // We did not find enough free spots.
+    return null;
+//    for (int i = sortedParkingSpots.size(); i < number; ++i) {
+//      sortedParkingSpots.add(null);
+//    }    
+//    return result;
+  }
+  
 
   @Override
   public void update(long elapsedTime) {

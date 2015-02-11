@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 
 import org.OpenNI.GeneralException;
 
+import edu.mit.kacquah.deckviewer.action.ActionCommand;
 import edu.mit.kacquah.deckviewer.action.ActionManager;
 import edu.mit.kacquah.deckviewer.action.SelectionManager;
 import edu.mit.kacquah.deckviewer.deckobjects.*;
@@ -221,19 +222,21 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   }
 
   public void keyPressed() {
-    switch (Character.toLowerCase(key)) {
+    switch (Character.toUpperCase(key)) {
     case 'S':
-    case 's':
       // Select a flying object.
-      speechParser.createMoveAction("Move these f eighteens");
+      speechParser.createMoveAction("Move this f eighteen");
       break;
     case 'E':
-    case 'e':
       // Execute an action.
       speechParser.createLocationAction("to the fantail");
+    case 'Y':
+      speechParser.createAffirmativeCommand(ActionCommand.YES);
+      break;
+    case 'N':
+      speechParser.createAffirmativeCommand(ActionCommand.NO);
       break;
     case 'R':
-    case 'r':
       // Reset the handtracking background calibration.
       handTracker.recalibrateBackground();
       break;
@@ -361,6 +364,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   public void scene1() {   
     fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2); 
+    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL); 
   }
   
   /**
