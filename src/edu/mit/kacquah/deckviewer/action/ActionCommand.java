@@ -75,7 +75,7 @@ public class ActionCommand {
   public static final String FRNT_TOWER = "in front of the tower";
   
   public static final String STREET = "street";
-  public static final String SIXPACK = "sixpack";
+  public static final String SIXPACK = "six yeipack";
   public static final String POINT = "point";
   public static final String PATIO = "patio";
   public static final String CROTCH = "crotch";

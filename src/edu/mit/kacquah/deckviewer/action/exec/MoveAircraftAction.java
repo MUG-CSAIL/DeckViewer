@@ -33,9 +33,20 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
       
       // Check the path
       if (checkPath()) {
-
+        ClearPathAction action = new ClearPathAction();
+        actionStack.addNewAction(action);
+        yieldDone();
       } else if (checkTartet()) {
-
+        // If we're moving multiple aircraft, we won't suggest alternative
+        // arrangement, rather, we'll point out that all the aircraft can't fit.
+        if (moveAircraft.size() != 1) {
+          parentGraph.setNextSpeechNode(new CantMoveMultiple(parentGraph));
+          yieldNext();
+        }
+        // Load the find alternate target action and yield done
+        FindAlternateTargetAction action = new FindAlternateTargetAction();
+        actionStack.addNewAction(action);
+        yieldDone();
       } else {
         // Set next node and execute move.
         parentGraph.setNextSpeechNode(new DoMove(parentGraph));
@@ -66,6 +77,11 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
      * @return
      */
     private boolean checkPath() {
+      // If we've selected multiple aircraft, we won't check path.
+      if (moveAircraft.size() != 1) {
+        return false;
+      }
+      
       return false;
     }
 
@@ -77,10 +93,14 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
      */
     private boolean checkTartet() {
       // Check to see if any of the parking spaces were null.
+      numNull = 0;
       for (ParkingSpot p: moveToParkingSpots) {
         if (p == null) {
-          return true;
+          numNull +=1;
         }
+      }
+      if (numNull != 0) {
+        return true;
       }
       return false;
     }
@@ -109,6 +129,26 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
       yieldDone();
     }
   }
+  
+  private class CantMoveMultiple extends SpeechNode {
+    
+    public CantMoveMultiple(SpeechGraph speechGraph) {
+      super(speechGraph);
+    }
+
+    @Override
+    public void preSpeechProcess() {
+      // TODO Auto-generated method stub
+      
+    }
+
+    @Override
+    public void postSpeechProcess() {
+      // TODO Auto-generated method stub
+      
+    }
+    
+  }
 
   // ---------------------------Speech Graph------------------------------------
 
@@ -128,6 +168,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
    * List of parking spot destinations corresponding to each move aircraft.
    */
   private LinkedList<ParkingSpot> moveToParkingSpots;
+  private int numNull;
 
   /**
    * Parking regions specified as the target.
