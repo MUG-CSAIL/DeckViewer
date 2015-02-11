@@ -81,6 +81,10 @@ public class Sprite implements PAppletRenderObject {
       this.selectedSpriteImage = newSelection;
     }
   }
+  
+  public PImage getSelectedImage() {
+    return spriteImages[selectedSpriteImage];
+  }
 
   public void move(float xOffset, float yOffset) {
     this.pos.x += xOffset;

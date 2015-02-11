@@ -30,6 +30,8 @@ public class FlyingObject implements PAppletRenderObject {
   
   private ParkingSpot parkingSpot;
   
+  private boolean hide;
+  
   public FlyingObject(AircraftType type, PVector pos, float rotation){
     this.type = type;
     // Load image from image pool
@@ -37,6 +39,15 @@ public class FlyingObject implements PAppletRenderObject {
     this.planeSprite = new Sprite(spriteImages, pos, rotation);
     this.parentManager = null;
     this.UID = -1;
+    this.hide = false;
+  }
+  
+  /**
+   * Hide this aircraft from rendering on screen.
+   * @param hide
+   */
+  public void setHide(boolean hide) {
+    this.hide = hide;
   }
   
   public void addToFlyingObjectManager (FlyingObjectManager m) {
@@ -164,6 +175,10 @@ public class FlyingObject implements PAppletRenderObject {
 
   @Override
   public void render(PApplet p) {
+    // Don't render if this aircraft is hidden.
+    if (hide) {
+      return;
+    }
     // Render plane image.
     planeSprite.render(p);
     if (GlobalSettings.renderAircraftUIDs) {

@@ -15,6 +15,11 @@ import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechNode;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.RenderGroup;
 
+/**
+ * Action for moving one or multiple aircraft to a defined location on deck.
+ * @author kojo
+ *
+ */
 public class MoveAircraftAction extends SpeechGraph implements ExecAction {
 
   // ---------------------------Speech Nodes------------------------------------
@@ -52,7 +57,8 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
           return;
         }
         // Load the find alternate target action and yield done
-        FindAlternateTargetAction action = new FindAlternateTargetAction();
+        FindAlternateTargetAction action = new FindAlternateTargetAction(
+            moveAircraft, moveToParkingRegion, moveToParkingSpots, numNullSpots);
         actionStack.addNewAction(action);
         yieldDone();
         return;
@@ -216,9 +222,6 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
    */
   private ParkingRegion moveToParkingRegion;
   
-  
-  
-
   public MoveAircraftAction(ExecActionStack actionStack, ParkingRegion target,
       LinkedList<FlyingObject> selectedAircraft) {
     this.actionStack = actionStack;
@@ -239,6 +242,5 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
   @Override
   public void render(PApplet p) {
     super.render(p);
-
   }
 }
