@@ -4,6 +4,7 @@ import javax.vecmath.Point4f;
 import javax.vecmath.Tuple4f;
 
 import processing.core.PApplet;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
@@ -13,19 +14,13 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
  *
  */
 public class ColorHighlightFilter implements DynamicImageFilter {
-  /**
-   * Rate of filter oscillation.
-   */
-  private static final double OSCILLATION_RATE = 5.0;
 
   private double angle;
-  private long lastElapsedTime;
   private Point4f peakColorComponents; 
   private int renderColor;
 
   public ColorHighlightFilter(int c) {
     this.peakColorComponents = ColorUtil.colorComponents(c);
-    this.lastElapsedTime = System.currentTimeMillis();
     this.angle = 0;
   }
   
@@ -35,9 +30,8 @@ public class ColorHighlightFilter implements DynamicImageFilter {
   @Override
   public void updateFilter(long elapsedTime) {
     // Update angle
-    angle = elapsedTime /1000.0 * OSCILLATION_RATE;
+    angle = elapsedTime /1000.0 * GlobalSettings.OSCILLATION_RATE;
     angle %= Math.PI * 2;
-    lastElapsedTime = elapsedTime;
     // Compute color
     float a = (float)((Math.sin(angle) + 1)/ 2.0);
     Point4f renderColorComponents = new Point4f();

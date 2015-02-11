@@ -84,6 +84,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   // Static Views
   private LinkedList<StaticTextView> staticViews;
   
+  // Render Stack
+  private RenderStack renderStack;
+  
   /**
    * JFrame that contains this app.
    */
@@ -142,6 +145,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     
     // Setup status bar.
     initStatusBar();
+    
+    // Init render stack
+    renderStack = new RenderStack();
   }
   
   public static DeckViewerPApplet getInstance() {
@@ -182,6 +188,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     
     // Update status bar
     updateStatusBar();
+    
+    // Render stack
+    renderStack.update(elapsedTime);
   }
   
   private void updateStatusBar() {
@@ -201,6 +210,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     
     // Render actions
     actionManager.render(p);
+    
+    // Render stack
+    renderStack.render(p);
     
     // Render static views
     for (StaticTextView view : staticViews) {
@@ -443,5 +455,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   public void setStatusBar(StatusBar sb) {
     this.statusbar = sb;
+  }
+  
+  public RenderStack renderStack() {
+    return this.renderStack;
   }
 }

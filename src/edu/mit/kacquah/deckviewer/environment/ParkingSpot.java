@@ -14,7 +14,7 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
   protected ParkingRegion parkingRegion;
   protected int parkingSpotID;
   protected Deck deck;
-  protected Point center;
+  public final Point center;
 
   protected FlyingObject parkedAircraft;
   

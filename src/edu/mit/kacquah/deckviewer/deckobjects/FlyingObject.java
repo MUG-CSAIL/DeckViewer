@@ -53,6 +53,10 @@ public class FlyingObject implements PAppletRenderObject {
     }
   }
   
+  public Sprite aircraftSprite() {
+    return this.planeSprite;
+  }
+  
   public int getUID() {
     return this.UID;
   }

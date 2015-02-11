@@ -1,5 +1,6 @@
 package edu.mit.kacquah.deckviewer.action.exec;
 
+import java.awt.Point;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
@@ -7,8 +8,12 @@ import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
+import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
+import edu.mit.kacquah.deckviewer.gui.shape.BlinkingCircle;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechNode;
+import edu.mit.kacquah.deckviewer.utils.ColorUtil;
+import edu.mit.kacquah.deckviewer.utils.RenderGroup;
 
 public class MoveAircraftAction extends SpeechGraph implements ExecAction {
 
@@ -142,20 +147,43 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
 
     @Override
     public void preSpeechProcess() {
-      // Simply explain that multiple aircraft can't be moved.
+      // Explain that multiple aircraft can't be moved.
       String moveToLocationName = moveToParkingRegion.getParkingRegionName();
       int numFreeSpots = moveAircraft.size() - numNullSpots;
       this.speechText = "I'm sorry, there are only " + numFreeSpots
           + " spots free at the " + moveToLocationName
           + ". Please choose a subset of aircraft to move.";      
       
+      // Highlight the only free spots
+      createParkingSpotHighlights();
+      DeckViewerPApplet.getInstance().renderStack().addRenderGroup(remainingParkingSpots);
+      // Yeild for speech.
       yieldWait();
     }
 
     @Override
     public void postSpeechProcess() {
+      // Remove parking spot highlights
+      DeckViewerPApplet.getInstance().renderStack().removeRenderGroup(remainingParkingSpots);
       // We're done.
       yieldDone();
+    }
+    
+    /**
+     * Highlights the available parking spots
+     * @return
+     */
+    private void createParkingSpotHighlights() {
+      remainingParkingSpots = new RenderGroup();
+      for (ParkingSpot spot : moveToParkingSpots) {
+        if (spot == null) {
+          continue;
+        }
+        Point center = spot.center;
+        BlinkingCircle circle = new BlinkingCircle(center, 10, ColorUtil.RED);
+        remainingParkingSpots.addRenderObject(circle);
+        
+      }
     }
   }
 
@@ -178,11 +206,17 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
    */
   private LinkedList<ParkingSpot> moveToParkingSpots;
   private int numNullSpots;
-
+  /**
+   * Highlight of remaining free parking spots. Used when number of spots is not sufficient.
+   */
+  RenderGroup remainingParkingSpots;
+  
   /**
    * Parking regions specified as the target.
    */
   private ParkingRegion moveToParkingRegion;
+  
+  
   
 
   public MoveAircraftAction(ExecActionStack actionStack, ParkingRegion target,

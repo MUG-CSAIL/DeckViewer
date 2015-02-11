@@ -43,7 +43,6 @@ public class GlobalSettings {
   // Use mouse pointer instead of finger points (for simpler debugging)
   public static final boolean useMousePoint = true;
 
-  
   /**
    * Grammar configuration for speech recognition.
    */
@@ -73,4 +72,10 @@ public class GlobalSettings {
    * FlyingObject constants.
    */
   public static final boolean renderAircraftUIDs = true;
+  
+  /**
+   * Rendering/image/gui constants.
+   */
+  //Rate of filter oscillation
+  public static final double OSCILLATION_RATE = 5.0;
 }
