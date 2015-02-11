@@ -98,6 +98,12 @@ public class Sprite implements PAppletRenderObject {
     return new Rectangle((int) pos.x - width / 2, (int) pos.y - height / 2,
         width, height);
   }
+  
+  public float getRadius() {
+    float width = spriteImages[selectedSpriteImage].width;
+    float height = spriteImages[selectedSpriteImage].height;
+    return (width + height) /4.0f;
+  }
 
   public Dimension getDimensions() {
     return new Dimension(spriteImages[selectedSpriteImage].width,

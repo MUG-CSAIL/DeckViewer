@@ -1,6 +1,7 @@
 package edu.mit.kacquah.deckviewer.environment;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
@@ -43,7 +44,12 @@ public class ParkingRegion implements PAppletRenderObject {
     CORRAL(ActionCommand.CORRAL),
     JUNK_YARD(ActionCommand.JUNK_YARD);
     
+    public static LinkedList<ParkingRegionType> CATAPULT_TYPES = new LinkedList<ParkingRegionType>(
+        Arrays.asList(CATAPULT_1, CATAPULT_2, CATAPULT_3, CATAPULT_4));
     
+    public static LinkedList<ParkingRegionType> ELEVATOR_TYPES = new LinkedList<ParkingRegionType>(
+        Arrays.asList(ELEVATOR_1, ELEVATOR_2, ELEVATOR_3, ELEVATOR_4));
+        
     public final String name;
     ParkingRegionType(String name) {
       this.name = name;

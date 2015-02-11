@@ -435,7 +435,6 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     this.statusbar = ((DeckViewerSwingFrame)parentFrame).getStatusBar();
     this.statusbar.setMessage("Ready for command...");
   }
-  
 
   /****************************************************************************/
   /* Accessors *************************************************************** */

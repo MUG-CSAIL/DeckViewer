@@ -393,23 +393,32 @@ public class Deck implements PAppletRenderObject {
   /**
    * Finds the n closest free parking spots to a target spot, excluding block spots.
    * If there are are insufficient free spots, a null list is returned.
+   * 
+   * blockSpots or blockRegionTypes can be omitted.
    * @param target
    * @param blockSpots
    * @return
    */
   public LinkedList<ParkingSpot> closestFreeParkingSpots(Point target, int number,
-      LinkedList<ParkingSpot> blockSpots) {
+      LinkedList<ParkingSpot> blockSpots, 
+      LinkedList<ParkingRegionType> blockRegionsTypes) {
     LinkedList<ParkingSpot> result = new LinkedList<ParkingSpot>();
     
     if (blockSpots == null) {
       blockSpots = new LinkedList<ParkingSpot>();
     }
     
-    LinkedList<ParkingSpot> sortedParkingSpots = Sorting.parkingSpotDistanceSort(this.parkingSpots, target);
+    if (blockRegionsTypes == null) {
+      blockRegionsTypes = new LinkedList<ParkingRegionType>();
+    }
+    
+    LinkedList<ParkingSpot> sortedParkingSpots = Sorting
+        .parkingSpotDistanceSort(this.parkingSpots, target);
     
     int numFound = 0;
     for(ParkingSpot spot: sortedParkingSpots) {
-      if (!spot.isOccupied() && !blockSpots.contains(spot)) {
+      if (!spot.isOccupied() && !blockSpots.contains(spot)
+          && !blockRegionsTypes.contains(spot.parkingRegion.type)) {
         result.add(spot);
         numFound ++;
         if (numFound == number) {

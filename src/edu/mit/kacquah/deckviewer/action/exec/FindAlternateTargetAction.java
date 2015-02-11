@@ -7,6 +7,7 @@ import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
+import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.gui.shape.BlinkingCircle;
@@ -60,7 +61,7 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
         }
       }
       alternateParkingSpots = Deck.getInstance().closestFreeParkingSpots(
-          centroid, numNullSpots, blockSpots);
+          centroid, numNullSpots, blockSpots, ParkingRegionType.CATAPULT_TYPES);
       // Get the names of the alternate parking region
       alternateParkingRegions = new LinkedList<ParkingRegion>();
       for (ParkingSpot spot: alternateParkingSpots) {
