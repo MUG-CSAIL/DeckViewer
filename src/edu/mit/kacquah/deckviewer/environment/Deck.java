@@ -279,11 +279,11 @@ public class Deck implements PAppletRenderObject {
     fantail.addParkingSpot(scale(235, 730));
     fantail.addParkingSpot(scale(250, 816));
     fantail.addParkingSpot(scale(315, 596));
-    fantail.addParkingSpot(scale(330, 681));
-    fantail.addParkingSpot(scale(345, 766));
-    fantail.addParkingSpot(scale(410, 546));
-    fantail.addParkingSpot(scale(425, 631));
-    fantail.addParkingSpot(scale(440, 716));
+//    fantail.addParkingSpot(scale(330, 681));
+//    fantail.addParkingSpot(scale(345, 766));
+//    fantail.addParkingSpot(scale(410, 546));
+//    fantail.addParkingSpot(scale(425, 631));
+//    fantail.addParkingSpot(scale(440, 716));
     
     // Over Elevator 4
     ParkingRegion over_el4 = new ParkingRegion(ParkingRegionType.OVER_EL4,

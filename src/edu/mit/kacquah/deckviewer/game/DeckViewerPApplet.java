@@ -44,6 +44,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   // App utils
   private static Logger LOGGER = Logger.getLogger(DeckViewerPApplet.class
       .getName());
+  
+  // Singleton
+  private static DeckViewerPApplet instance;
 
   // Directory constants
   public final String WORKING_DIR = System.getProperty("user.dir");
@@ -93,6 +96,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private NumberFormat numberFormater = new DecimalFormat("#0.00");     
   
   public void setup() {
+    
     // Init app state
     initScreenSize();
     // Linux can't use opengl.
@@ -104,6 +108,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     }
     frameRate(30);
 
+    // Set the instance
+    this.instance = this;
+    
     // Rendering modes
     imageMode(CENTER);
     ellipseMode(CENTER);
@@ -135,6 +142,10 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     
     // Setup status bar.
     initStatusBar();
+  }
+  
+  public static DeckViewerPApplet getInstance() {
+    return instance;
   }
 
   /****************************************************************************/

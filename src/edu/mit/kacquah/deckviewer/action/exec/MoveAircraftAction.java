@@ -33,24 +33,29 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
       
       // Check the path
       if (checkPath()) {
+        // Load the clear path action and yield done
         ClearPathAction action = new ClearPathAction();
         actionStack.addNewAction(action);
         yieldDone();
+        return;
       } else if (checkTartet()) {
         // If we're moving multiple aircraft, we won't suggest alternative
         // arrangement, rather, we'll point out that all the aircraft can't fit.
         if (moveAircraft.size() != 1) {
           parentGraph.setNextSpeechNode(new CantMoveMultiple(parentGraph));
           yieldNext();
+          return;
         }
         // Load the find alternate target action and yield done
         FindAlternateTargetAction action = new FindAlternateTargetAction();
         actionStack.addNewAction(action);
         yieldDone();
+        return;
       } else {
         // Set next node and execute move.
         parentGraph.setNextSpeechNode(new DoMove(parentGraph));
         yieldNext();
+        return;
       }
     }
 
@@ -93,13 +98,13 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
      */
     private boolean checkTartet() {
       // Check to see if any of the parking spaces were null.
-      numNull = 0;
+      numNullSpots = 0;
       for (ParkingSpot p: moveToParkingSpots) {
         if (p == null) {
-          numNull +=1;
+          numNullSpots +=1;
         }
       }
-      if (numNull != 0) {
+      if (numNullSpots != 0) {
         return true;
       }
       return false;
@@ -131,23 +136,27 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
   }
   
   private class CantMoveMultiple extends SpeechNode {
-    
     public CantMoveMultiple(SpeechGraph speechGraph) {
       super(speechGraph);
     }
 
     @Override
     public void preSpeechProcess() {
-      // TODO Auto-generated method stub
+      // Simply explain that multiple aircraft can't be moved.
+      String moveToLocationName = moveToParkingRegion.getParkingRegionName();
+      int numFreeSpots = moveAircraft.size() - numNullSpots;
+      this.speechText = "I'm sorry, there are only " + numFreeSpots
+          + " spots free at the " + moveToLocationName
+          + ". Please choose a subset of aircraft to move.";      
       
+      yieldWait();
     }
 
     @Override
     public void postSpeechProcess() {
-      // TODO Auto-generated method stub
-      
+      // We're done.
+      yieldDone();
     }
-    
   }
 
   // ---------------------------Speech Graph------------------------------------
@@ -168,7 +177,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
    * List of parking spot destinations corresponding to each move aircraft.
    */
   private LinkedList<ParkingSpot> moveToParkingSpots;
-  private int numNull;
+  private int numNullSpots;
 
   /**
    * Parking regions specified as the target.
