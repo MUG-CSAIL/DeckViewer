@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.logging.Logger;
 
 import edu.mit.kacquah.deckviewer.action.ActionManager;
+import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.deckobjects.Sprite.Direction;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
@@ -12,6 +13,7 @@ import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.game.GameConstants;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings.BackgroundRatio;
+import edu.mit.kacquah.deckviewer.gui.shape.Path;
 import edu.mit.kacquah.deckviewer.utils.*;
 import processing.core.PImage;
 import processing.core.PApplet;
@@ -434,6 +436,20 @@ public class Deck implements PAppletRenderObject {
 //    return result;
   }
   
+  /**
+   * Returns list of parking spots that intersect a given path.
+   * @param path
+   * @return
+   */
+  public LinkedList<ParkingSpot> intersectsPath(Path path) {
+    LinkedList<ParkingSpot> result = new LinkedList<ParkingSpot>();
+    for (ParkingSpot spot : this.parkingSpots) {
+      if (path.intersects(spot)) {
+        result.add(spot);
+      }
+    }
+    return result;
+  }  
 
   @Override
   public void update(long elapsedTime) {

@@ -230,6 +230,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     case 'E':
       // Execute an action.
       speechParser.createLocationAction("to the fantail");
+    case 'W':
+      speechParser.createLocationAction("over there");
+      break;
     case 'Y':
       speechParser.createAffirmativeCommand(ActionCommand.YES);
       break;
@@ -364,7 +367,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   public void scene1() {   
     fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2); 
-    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL); 
+//    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL); 
   }
   
   /**
@@ -462,5 +465,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   
   public RenderStack renderStack() {
     return this.renderStack;
+  }
+  
+  public FlyingObjectManager getDeckFlyingObjectManager() {
+    return this.flyingObjectManager;
   }
 }

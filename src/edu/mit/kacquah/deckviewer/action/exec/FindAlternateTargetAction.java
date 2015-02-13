@@ -10,6 +10,7 @@ import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion.ParkingRegionType;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gui.shape.BlinkingCircle;
 import edu.mit.kacquah.deckviewer.gui.shape.StraightLineArrow;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph;
@@ -20,7 +21,7 @@ import edu.mit.kacquah.deckviewer.utils.RenderGroup;
 /**
  * Action for finding an alternate destination for aircraft being moved on deck.
  * Note, this currently only supports moving one aircraft.
- * TODO(KoolJBlack) Update this to handle multiple aicraft re-routing.
+ * TODO(KoolJBlack) Update this to handle multiple aircraft re-routing.
  * @author kojo
  *
  */
@@ -84,7 +85,7 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
       this.speechText = "Sorry, there is not enough room on the " + moveToParkingRegion.name();
       // Highlight all parking spots in the target region
       for (ParkingSpot spot: moveToParkingRegion.parkingSpots()) {
-        BlinkingCircle circle = new BlinkingCircle(spot.center, 30, ColorUtil.RED, true);
+        BlinkingCircle circle = new BlinkingCircle(spot.center, GlobalSettings.AIRCRAFT_RADIUS, ColorUtil.RED, true);
         renderGroup.addRenderObject(circle);
       }
       DeckViewerPApplet.getInstance().renderStack().addRenderGroup(renderGroup);
@@ -115,8 +116,8 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
           + ". Shall I move the aircraft there instead?";
       // Render the alternate placement
       Point center = alternateParkingSpots.get(0).center;
-      BlinkingCircle circle = new BlinkingCircle(center, 30, ColorUtil.BLUE, false);
-      Point start = new Point((int)(moveAircraft.get(0).getPosition().x), (int)(moveAircraft.get(0).getPosition().y));
+      BlinkingCircle circle = new BlinkingCircle(center, GlobalSettings.AIRCRAFT_RADIUS, ColorUtil.BLUE, false);
+      Point start = new Point((int)(moveAircraft.get(0).positionFloat().x), (int)(moveAircraft.get(0).positionFloat().y));
       StraightLineArrow lineArrow = new StraightLineArrow(start, center, ColorUtil.BLUE);
       renderGroup.addRenderObject(circle);
       renderGroup.addRenderObject(lineArrow);
@@ -182,7 +183,9 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
   }
   
   // ---------------------------Speech Graph------------------------------------
-
+  // Parent action stack.
+  private ExecActionStack actionStack;
+  
   /**
    * List of aircraft to move.
    */
@@ -208,9 +211,11 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
    */
   private RenderGroup renderGroup;
   
-  public FindAlternateTargetAction(LinkedList<FlyingObject> moveAircraft,
-      ParkingRegion target, LinkedList<ParkingSpot> moveToParkingSpots,
+  public FindAlternateTargetAction(ExecActionStack actionStack,
+      LinkedList<FlyingObject> moveAircraft, ParkingRegion target,
+      LinkedList<ParkingSpot> moveToParkingSpots,
       int numNullSpots) {
+    this.actionStack = actionStack;
     this.moveAircraft = moveAircraft;
     this.moveToParkingSpots = moveToParkingSpots;
     this.numNullSpots = numNullSpots;

@@ -14,7 +14,7 @@ import processing.core.*;
 
 /**
  * An image object along with position and rotation that is rendered on screen.
- * Also handles image filteres.
+ * Also handles image filters.
  * 
  * @author kojo
  * 

@@ -17,9 +17,9 @@ import processing.core.PApplet;
  * 
  */
 public class DeckPolygon implements PAppletRenderObject {
-  Polygon polygon;
-  private LinkedList<Point> points;
-  Point pos;
+  protected Polygon polygon;
+  protected LinkedList<Point> points;
+  protected Point pos;
 
   public DeckPolygon() {
     polygon = new Polygon();

@@ -150,7 +150,7 @@ public class ActionManager implements PAppletRenderObject {
     // Attempt to move object and test for intersections.
     LinkedList<FlyingObject> potentialObjects = selectionManager.getSelection();
     FlyingObject selectedObject = potentialObjects.get(0);
-    Point2f oldPosition = selectedObject.getPosition();
+    Point2f oldPosition = selectedObject.positionFloat();
     selectedObject.setPosition(fingerPointTarget.x, fingerPointTarget.y);
     LinkedList<FlyingObject> possibleIntersections = flyingObjectManager
         .intersectsFlyingObjects(selectedObject);

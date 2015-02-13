@@ -6,6 +6,7 @@ import javax.vecmath.Point4f;
 import javax.vecmath.Tuple4f;
 
 import processing.core.PApplet;
+import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
@@ -26,7 +27,7 @@ public class BlinkingCircle implements PAppletRenderObject {
   
   public BlinkingCircle(Point center, float radius, int color, boolean hollow) {
     this.center = center;
-    this.radius = radius;
+    this.radius = Deck.getInstance().scaleRatio * radius;
     this.peakColorComponents = ColorUtil.colorComponents(color);
     this.color = color;
     this.angle = 0;

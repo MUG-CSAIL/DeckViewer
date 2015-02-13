@@ -2,6 +2,7 @@ package edu.mit.kacquah.deckviewer.deckobjects;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 import javax.vecmath.Point2f;
 
@@ -10,13 +11,14 @@ import edu.mit.kacquah.deckviewer.action.SelectionManager.SelectionStatus;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
+import edu.mit.kacquah.deckviewer.gui.shape.Contactable;
 import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
 import edu.mit.kacquah.deckviewer.image.DynamicImageFilter;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import edu.mit.kacquah.deckviewer.utils.PImagePool;
 
-public class FlyingObject implements PAppletRenderObject {
+public class FlyingObject implements PAppletRenderObject, Contactable {
   private Sprite planeSprite;
   public final AircraftType type;
   
@@ -40,6 +42,10 @@ public class FlyingObject implements PAppletRenderObject {
     this.parentManager = null;
     this.UID = -1;
     this.hide = false;
+  }
+  
+  public String name() {
+    return this.type.name;
   }
   
   /**
@@ -84,7 +90,14 @@ public class FlyingObject implements PAppletRenderObject {
     this.parkingSpot = s;
   }
   
+  /**
+   * Returns the current parkingspot for this aircrat or null if it is not parked.
+   * @return
+   */
   public ParkingSpot getParkingSpot() {
+    if (this.parkingSpot != null && this.parkingSpot.parkedAircraft() != this) {
+      this.parkingSpot = null;
+    }
     return this.parkingSpot;
   }
   
@@ -119,8 +132,14 @@ public class FlyingObject implements PAppletRenderObject {
     planeSprite.setPosition(x, y);
   }
   
-  public Point2f getPosition() {
+  public Point2f positionFloat() {
     return planeSprite.getPosition();
+  }
+
+  @Override
+  public Point position() {
+    return new Point((int) (planeSprite.getPosition().x),
+        (int) (planeSprite.getPosition().y));
   }
   
   public void setRotation(float newRot) {
@@ -131,14 +150,21 @@ public class FlyingObject implements PAppletRenderObject {
     return planeSprite.getRotation();
   }
   
-  public void move(float xOffset, float yOffset) {
-    planeSprite.move(xOffset, yOffset);
+  @Override
+  public float radius() {
+    return this.aircraftSprite().getRadius();
   }
   
-  public Rectangle getBounds() {
+  @Override
+  public Rectangle bounds() {
     return planeSprite.getBounds();
   }
   
+  
+  public void move(float xOffset, float yOffset) {
+    planeSprite.move(xOffset, yOffset);
+  }
+
   /**
    * Returns true if the flying object sprite intersects a given point
    * @param p
@@ -148,8 +174,24 @@ public class FlyingObject implements PAppletRenderObject {
     return planeSprite.intersectsPoint(p);
   }
   
+  /**
+   * Returns true if this sprite intersects a line.
+   * @param start
+   * @param end
+   * @return
+   */
+  public boolean intersectsLine(Point start, Point end) {
+    Line2D line = new Line2D.Float(start.x, start.y, end.x, end.y);
+    return line.intersects(this.bounds());
+  }
+  
+  /**
+   * Returns true if this flying object intersects another flying object.
+   * @param other
+   * @return
+   */
   public boolean intersectsFlyingObject(FlyingObject other){
-    return planeSprite.getBounds().intersects(other.getBounds());
+    return planeSprite.getBounds().intersects(other.bounds());
   }
   
   /**
@@ -165,7 +207,6 @@ public class FlyingObject implements PAppletRenderObject {
   public void wingsClosed() {
     planeSprite.setSelectedSpriteImage(1);
   }
-  
   
   
   @Override

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import edu.mit.kacquah.deckviewer.gui.shape.Path;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
@@ -57,6 +58,39 @@ public class FlyingObjectManager implements PAppletRenderObject {
   }
   
   /**
+   * Returns all flying objects in this manager who's bounds intersect a given
+   * point.
+   * 
+   * @param start
+   * @param end
+   * @return
+   */
+  public LinkedList<FlyingObject> intersectsLine(Point start, Point end) {
+    LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
+    for (FlyingObject f : this.flyingObjects) {
+      if (f.intersectsLine(start, end)) {
+        result.add(f);
+      }
+    }
+    return result;
+  }
+  
+  /**
+   * Returns all flying objects in this manager who's bounds intersect a path.
+   * @param path
+   * @return
+   */
+  public LinkedList<FlyingObject> intersectsPath(Path path) {
+    LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
+    for (FlyingObject f : this.flyingObjects) {
+      if (path.intersects(f)) {
+        result.add(f);
+      }
+    }
+    return result;
+  }
+  
+  /**
    * Returns all flying objects that intersect a given flying object. 
    * @param other
    * @return
@@ -78,7 +112,7 @@ public class FlyingObjectManager implements PAppletRenderObject {
   public LinkedList<FlyingObject> intersectsPolygon(DeckPolygon p) {
     LinkedList<FlyingObject> result = new LinkedList<FlyingObject>();
     for (FlyingObject f : this.flyingObjects) {
-      if (p.contains(f.getPosition())) {
+      if (p.contains(f.positionFloat())) {
         result.add(f);
       }
     }

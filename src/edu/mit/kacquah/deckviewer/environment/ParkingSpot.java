@@ -1,16 +1,23 @@
 package edu.mit.kacquah.deckviewer.environment;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
+import edu.mit.kacquah.deckviewer.gui.shape.Contactable;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
-public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
+public class ParkingSpot extends DeckPolygon implements PAppletRenderObject, Contactable {
+  // Utils
+  private static Logger LOGGER = Logger.getLogger(ParkingSpot.class
+      .getName());
+  
   protected ParkingRegion parkingRegion;
   protected int parkingSpotID;
   protected Deck deck;
@@ -21,7 +28,7 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
   protected boolean renderOutline;
 
   // Constants
-  protected static final int RADIUS = 30;
+  protected static final int RADIUS = (int) (Deck.getInstance().scaleRatio * 30);
 
   public ParkingSpot(Point center, ParkingRegion parkingRegion) {
     this.center = center;
@@ -83,7 +90,7 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
    * @return
    */
   public boolean hasParkedAircraft() {
-    if (parkedAircraft != null && contains(parkedAircraft.getPosition())) {
+    if (parkedAircraft != null && contains(parkedAircraft.positionFloat())) {
       return true;
     } else {
       // Clear last parked aircraft.
@@ -134,6 +141,22 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject {
       return this.parkedAircraft;
     }
     return null;
+  }
+  
+  @Override
+  public Point position() {
+    return new Point(center);
+  }
+
+  @Override
+  public float radius() {
+    return RADIUS;
+  }
+
+  @Override
+  public Rectangle bounds() {
+    return new Rectangle((int) center.x - RADIUS, (int) center.y - RADIUS,
+        RADIUS * 2, RADIUS * 2);
   }
   
   @Override
