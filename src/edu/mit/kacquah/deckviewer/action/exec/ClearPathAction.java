@@ -124,7 +124,7 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
           this.speechText += " and the " + regions.get(i).name();
         }
       }
-      this.speechText += "are blocking the path.";
+      this.speechText += " are blocking the path.";
       // Highlight all parking spots with blocked aircraft
       for (FlyingObject o: pathBlockAircraft) {
         BlinkingCircle circle = new BlinkingCircle(o.position(), GlobalSettings.AIRCRAFT_RADIUS, ColorUtil.RED, true);
