@@ -29,6 +29,11 @@ public class Path implements PAppletRenderObject{
   
   private boolean renderEdgeLines;
   
+  // Arrow members
+  private final int TRIANGLE_RADIUS = 10;
+  private Point t1, t2, t3;
+  private float arrowAngle;
+  
   public Path(float width, int color) {
     this.points = new LinkedList<Point>();
     this.edgeLines = new LinkedList<Line2D.Float>();
@@ -36,6 +41,10 @@ public class Path implements PAppletRenderObject{
     this.width = Deck.getInstance().scaleRatio * width;
     this.color = color;
     this.renderEdgeLines = GlobalSettings.renderPathEdgeLines;
+    // Triangle points
+    t1 = new Point(-3 * TRIANGLE_RADIUS, -TRIANGLE_RADIUS);
+    t2 = new Point(-3 * TRIANGLE_RADIUS, +TRIANGLE_RADIUS);
+    t3 = new Point(0, 0);
   }
   
   /**
@@ -57,6 +66,8 @@ public class Path implements PAppletRenderObject{
       edgeLines.add(left);
       edgeLines.add(right);
       pathLines.add(middle);
+      // Update arrow
+      arrowAngle = Geometry.angle(start, end);
     }
   }
   
@@ -90,13 +101,21 @@ public class Path implements PAppletRenderObject{
         p.line(l.x1, l.y1, l.x2, l.y2);
       }
     } else {
+      // Draw the line
       for (Line2D.Float l: pathLines) {
         p.line(l.x1, l.y1, l.x2, l.y2);
       }   
-      for (Point point: points) {
+      // Draw connecting points
+      for (int i = 0; i < points.size()-1; ++i) {
+        Point point = points.get(i);
         p.ellipse(point.x, point.y, GlobalSettings.renderPathPointRadius,
             GlobalSettings.renderPathPointRadius);
       }   
+      // Draw the final arrow
+      Point end = points.getLast();
+      p.translate(end.x, end.y);
+      p.rotate((float)Math.toRadians(arrowAngle));
+      p.triangle(t1.x, t1.y, t2.x, t2.y, t3.x, t3.y);
     }
     p.popStyle();
     p.popMatrix();
