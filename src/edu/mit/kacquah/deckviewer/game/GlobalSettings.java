@@ -78,7 +78,7 @@ public class GlobalSettings {
    * ExecAction constants.
    */
   public static final int aircraftPathColor = ColorUtil.ORANGE;
-  public static final boolean renderPathEdgeLines = false;
+  public static final boolean renderPathEdgeLines = true;
   public static final float renderPathPointRadius = 5;
   
   /**
