@@ -18,6 +18,7 @@ import processing.core.PApplet;
  */
 public class Path implements PAppletRenderObject{
   private LinkedList<Point> points;
+  private LinkedList<Line2D.Float> edgeLines;
   private LinkedList<Line2D.Float> pathLines;
   /**
    * Thinkness of line.
@@ -26,11 +27,15 @@ public class Path implements PAppletRenderObject{
   
   private int color;
   
+  private boolean renderEdgeLines;
+  
   public Path(float width, int color) {
     this.points = new LinkedList<Point>();
+    this.edgeLines = new LinkedList<Line2D.Float>();
     this.pathLines = new LinkedList<Line2D.Float>();
     this.width = Deck.getInstance().scaleRatio * width;
     this.color = color;
+    this.renderEdgeLines = GlobalSettings.renderPathEdgeLines;
   }
   
   /**
@@ -46,10 +51,12 @@ public class Path implements PAppletRenderObject{
       angle = (angle + 90) % 360;
       Line2D.Float left = new Line2D.Float(start, end);
       Line2D.Float right = new Line2D.Float(start, end);
+      Line2D.Float middle = new Line2D.Float(start, end);
       left = Geometry.translateLine(left, angle, -width/2);
       right = Geometry.translateLine(right, angle, width/2);
-      pathLines.add(left);
-      pathLines.add(right);
+      edgeLines.add(left);
+      edgeLines.add(right);
+      pathLines.add(middle);
     }
   }
   
@@ -57,7 +64,7 @@ public class Path implements PAppletRenderObject{
    * Returns true if contactable object intersects this path anywhere.
    */
   public boolean intersects(Contactable contactable) {
-    for (Line2D l: pathLines) {
+    for (Line2D l: edgeLines) {
       if (contactable.bounds().intersectsLine(l)) {
         return true;
       }
@@ -76,9 +83,20 @@ public class Path implements PAppletRenderObject{
     p.pushMatrix();
     p.pushStyle();
     p.stroke(color);
+    p.fill(color);
     p.strokeWeight(GlobalSettings.STROKE_WEIGHT);
-    for (Line2D.Float l: pathLines) {
-      p.line(l.x1, l.y1, l.x2, l.y2);
+    if (renderEdgeLines) {
+      for (Line2D.Float l: edgeLines) {
+        p.line(l.x1, l.y1, l.x2, l.y2);
+      }
+    } else {
+      for (Line2D.Float l: pathLines) {
+        p.line(l.x1, l.y1, l.x2, l.y2);
+      }   
+      for (Point point: points) {
+        p.ellipse(point.x, point.y, GlobalSettings.renderPathPointRadius,
+            GlobalSettings.renderPathPointRadius);
+      }   
     }
     p.popStyle();
     p.popMatrix();

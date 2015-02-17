@@ -75,6 +75,13 @@ public class GlobalSettings {
   public static final float AIRCRAFT_RADIUS = 50;
   
   /**
+   * ExecAction constants.
+   */
+  public static final int aircraftPathColor = ColorUtil.GREEN;
+  public static final boolean renderPathEdgeLines = false;
+  public static final float renderPathPointRadius = 5;
+  
+  /**
    * Rendering/image/gui constants.
    */
   //Rate of filter oscillation

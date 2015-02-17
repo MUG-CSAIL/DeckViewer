@@ -189,16 +189,8 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
       // Our next action is based on affirmative response.
       Affirmative affirmative = parentGraph.getLastAffirmative();
       if (affirmative == Affirmative.YES) {
-        if (notifyListener(true)) {
-          yieldDone();
-          return;
-        } 
         parentGraph.setNextSpeechNode(new DoMove(parentGraph));        
       } else {
-        if (notifyListener(false)) {
-          yieldDone();
-          return;
-        } 
         parentGraph.setNextSpeechNode(new DontDoMove(parentGraph));
       }
       yieldNext();
@@ -214,10 +206,16 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
 
     @Override
     public void preSpeechProcess() {
-      // Move aircraft to their destinations
-      for (int i = 0; i < moveAircraft.size(); ++i) {
-        FlyingObject o = moveAircraft.get(i);
+      // Move block aircraft to alternate spots
+      for (int i = 0; i < pathBlockAircraft.size(); ++i) {
+        FlyingObject o = pathBlockAircraft.get(i);
         ParkingSpot p = alternateParkingSpots.get(i);
+        p.park(o);
+      }
+      // Move aircraft to their destinations
+      for (int i = 0; i < pathBlockAircraft.size(); ++i) {
+        FlyingObject o = moveAircraft.get(i);
+        ParkingSpot p = moveToParkingSpots.get(i);
         p.park(o);
       }
       // Yeild to give confirmation

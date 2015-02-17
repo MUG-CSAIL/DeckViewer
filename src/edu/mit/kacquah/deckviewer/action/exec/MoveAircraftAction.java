@@ -10,6 +10,7 @@ import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gui.shape.BlinkingCircle;
 import edu.mit.kacquah.deckviewer.gui.shape.Path;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph;
@@ -68,9 +69,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction, Clear
             moveAircraftPath, pathBlockAircraft, moveToParkingSpots,
             (ClearPathActionCallback) parentGraph);
         actionStack.pushTop(action);
-        // We're going decide what to do if we clear the path or not.
-        parentGraph.setNextSpeechNode(new PostClearPathProcess(parentGraph));
-        yieldNextUpdate();
+        yieldDone();
         return;
       }
       
@@ -111,7 +110,8 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction, Clear
       }
       Point start = moveAircraft.get(0).position();
       Point end = moveToParkingSpots.get(0).center;
-      moveAircraftPath = new Path(30, ColorUtil.GREEN);
+      moveAircraftPath = new Path(GlobalSettings.AIRCRAFT_RADIUS,
+          GlobalSettings.aircraftPathColor);
       moveAircraftPath.addPoint(start);
       moveAircraftPath.addPoint(end);
       pathBlockAircraft = DeckViewerPApplet.getInstance()
