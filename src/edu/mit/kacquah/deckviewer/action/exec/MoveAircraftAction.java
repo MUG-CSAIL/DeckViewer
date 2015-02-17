@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
-import edu.mit.kacquah.deckviewer.action.exec.ClearPathAction.ClearPathActionCallback;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
@@ -24,7 +23,7 @@ import edu.mit.kacquah.deckviewer.utils.RenderGroup;
  * @author kojo
  *
  */
-public class MoveAircraftAction extends SpeechGraph implements ExecAction, ClearPathActionCallback {
+public class MoveAircraftAction extends SpeechGraph implements ExecAction {
 
   // ---------------------------Speech Nodes------------------------------------
 
@@ -66,8 +65,7 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction, Clear
       if (checkPath()) {
         // Load the clear path action and yield done
         ClearPathAction action = new ClearPathAction(actionStack, moveAircraft,
-            moveAircraftPath, pathBlockAircraft, moveToParkingSpots,
-            (ClearPathActionCallback) parentGraph);
+            moveAircraftPath, pathBlockAircraft, moveToParkingSpots);
         actionStack.pushTop(action);
         yieldDone();
         return;

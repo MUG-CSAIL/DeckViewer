@@ -245,17 +245,6 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
     }
   }
   // ---------------------------Speech Graph------------------------------------
-
-  /**
-   * Used to inform other actions if the path was cleared by the ClearPathAction
-   * @author kojo
-   *
-   */
-  public interface ClearPathActionCallback {
-    public void didClearPath(boolean clearPath);
-  }
-  
-  private ClearPathActionCallback listener;
   
   // Parent action stack.
   private ExecActionStack actionStack;
@@ -290,33 +279,18 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
       LinkedList<FlyingObject> moveAircraft,
       Path moveAircraftPath,
       LinkedList<FlyingObject> pathBlockAircraft,
-      LinkedList<ParkingSpot> moveToParkingSpots,
-      ClearPathActionCallback listener) {
+      LinkedList<ParkingSpot> moveToParkingSpots) {
     this.actionStack = actionStack;
     this.moveAircraft = moveAircraft;
     this.moveToParkingSpots = moveToParkingSpots;
     this.pathBlockAircraft = pathBlockAircraft;
     this.renderGroup = new RenderGroup();
-    this.listener = listener;
     this.moveAircraftPath = moveAircraftPath;
   }
   
   @Override
   protected SpeechNode rootNode() {
     return new PreProcessPath(this);
-  }
-  
-  /**
-   * Inform possible listener of action result.
-   * @param didClearPath
-   */
-  protected boolean notifyListener(boolean didClearPath) {
-    if (listener != null) {
-      listener.didClearPath(didClearPath);
-      return true;
-    } else {
-      return false;
-    }
   }
   
   @Override
