@@ -180,6 +180,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     handTracker.update(elapsedTime);
     
     // Update actions
+    selectionManager.update(elapsedTime);
     actionManager.update(elapsedTime);
     
     // Update static views
@@ -210,6 +211,7 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     handTracker.render(p);
     
     // Render actions
+    selectionManager.render(p);
     actionManager.render(p);
     
     // Render stack

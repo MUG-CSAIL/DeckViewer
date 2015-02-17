@@ -42,6 +42,7 @@ public class FlyingObject implements PAppletRenderObject, Contactable {
     this.parentManager = null;
     this.UID = -1;
     this.hide = false;
+    this.selectionStatus = SelectionStatus.NONE;
   }
   
   public String name() {
@@ -126,6 +127,14 @@ public class FlyingObject implements PAppletRenderObject, Contactable {
       // Do nothing
       break;
     }
+  }
+  
+  /**
+   * Current selection status of aircraft via the selection manager.
+   * @return
+   */
+  public SelectionStatus selectionStatus() {
+    return this.selectionStatus;
   }
   
   public void setPosition(float x, float y) {

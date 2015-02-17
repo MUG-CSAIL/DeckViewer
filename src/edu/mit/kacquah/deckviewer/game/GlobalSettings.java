@@ -72,7 +72,7 @@ public class GlobalSettings {
    * FlyingObject constants.
    */
   public static final boolean renderAircraftUIDs = true;
-  public static final float AIRCRAFT_RADIUS = 50;
+  public static final float AIRCRAFT_RADIUS = 40;
   
   /**
    * ExecAction constants.
