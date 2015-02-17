@@ -22,6 +22,7 @@ public class ColorHighlightFilter implements DynamicImageFilter {
   public ColorHighlightFilter(int c) {
     this.peakColorComponents = ColorUtil.colorComponents(c);
     this.angle = 0;
+    this.renderColor = c;
   }
   
   /**

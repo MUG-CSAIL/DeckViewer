@@ -51,8 +51,8 @@ public class Geometry {
     line = new Line2D.Float(line.x1, line.y1, line.x2, line.y2);
     
     // Get components
-    float xcomp = (float) (Math.cos(direction) * distance);
-    float ycomp = (float) (Math.sin(direction) * distance);
+    float xcomp = (float) (Math.cos(Math.toDegrees(direction)) * distance);
+    float ycomp = (float) (Math.sin(Math.toDegrees(direction)) * distance);
     
     line.x1 += xcomp;
     line.x2 += xcomp;

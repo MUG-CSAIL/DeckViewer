@@ -226,12 +226,6 @@ public class SelectionManager implements PAppletRenderObject {
 
   @Override
   public void update(long elapsedTime) {
-//    // Remove highlights from old hover objects.
-//    for (FlyingObject o : hoverObjects) {
-//      if (o.selectionStatus() == SelectionStatus.HOVERIRNG) {
-//        o.setSelectionStatus(SelectionStatus.NONE);
-//      }
-//    }
     
     // Get finer points
     Point2f fingerPoints[] = handTracker.getFilteredPoints();
