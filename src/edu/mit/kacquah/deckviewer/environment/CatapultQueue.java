@@ -142,8 +142,15 @@ public class CatapultQueue extends ParkingRegion {
    * spot is blocked or if there are no more parking spots available.
    */
   public ParkingSpot getNextFreeParkingSpot() {
-    // TODO Auto-generated method stub
     return super.getNextFreeParkingSpot();
+  }
+  
+  /**
+   * Returns true if the launch spot for the catapult is occupied
+   * @return
+   */
+  public boolean isCatapultOccupied() {
+    return this.parkingSpots.get(0).isOccupied();
   }
   
   

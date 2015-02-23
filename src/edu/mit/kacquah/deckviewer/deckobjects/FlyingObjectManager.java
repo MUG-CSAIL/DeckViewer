@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import processing.core.PApplet;
 import processing.core.PFont;
+import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.gui.shape.Path;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
@@ -20,7 +21,7 @@ public class FlyingObjectManager implements PAppletRenderObject {
   public FlyingObjectManager(PApplet p) {
     this.flyingObjects = new LinkedList<FlyingObject>();
     this.nextUID = 1;
-    this.fontSize = 14;
+    this.fontSize = (int) (20 * Deck.getInstance().scaleRatio);
     this.font = p.createFont("Arial", this.fontSize);
     this.parent = p;
     p.textAlign(p.CENTER, p.CENTER);

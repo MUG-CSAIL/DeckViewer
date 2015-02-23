@@ -50,6 +50,8 @@ grammar deckviewer;
 
 <catapult> = catapult <oneToFour>;
 
+<catapultGroup> = catapults (one and two | three and four);
+
 <elevator> = elevator <oneToFour>;
 
 <parkingRegions> = the ( fantail    | 
@@ -79,5 +81,7 @@ grammar deckviewer;
  <locationCommand> = ( <location> );
  
  <affirmativeCommand> = yes | ok | no;
+ 
+ <launchCommand> = to launch on ( <catapult> | <catapultGroup>);
 
-public <command> =  <moveCommand> | <locationCommand> | <affirmativeCommand>;
+public <command> =  <moveCommand> | <locationCommand> | <affirmativeCommand> | <launchCommand>;

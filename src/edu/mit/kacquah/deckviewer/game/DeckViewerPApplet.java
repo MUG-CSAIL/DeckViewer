@@ -322,7 +322,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 //    testConfig1();
 //    testConfig2();
 //    testConfig3();
-    scene1();
+    //scene1();
+    scene3();
+
   }
   
   /**
@@ -372,6 +374,16 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 //    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL); 
   }
   
+  public void scene3() {
+    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL, 4, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL, 2, AircraftType.C2); 
+    fillParkingRegionWithAircraft(ParkingRegionType.STREET, 1, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.SIXPACK, 1, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4, 1, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_3, 1, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 3, AircraftType.F18); 
+  }
+  
   /**
    * Fills all spots of a parking region on deck with aircraft.
    * @param type
@@ -390,14 +402,14 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
    * Fills all spots of a parking region on deck with aircraft.
    * @param type
    */
-  private void fillParkingRegionWithAircraft(ParkingRegionType type, int number) {
+  private void fillParkingRegionWithAircraft(ParkingRegionType type, int number, AircraftType airType) {
     ParkingRegion parkingRegion = deck.getParkingRegion(type);
     if (number > parkingRegion.numberParkingSpots()) {
       number = parkingRegion.numberParkingSpots();
     }
     for (int i = 0; i < number; ++i) {
       PVector pos = new PVector();
-      FlyingObject flyingObject = new FlyingObject(AircraftType.F18, pos, Sprite.Direction.UP.degrees);
+      FlyingObject flyingObject = new FlyingObject(airType, pos, Sprite.Direction.UP.degrees);
       flyingObjectManager.addFlyingObject(flyingObject);
       parkingRegion.getNextFreeParkingSpot().park(flyingObject);
     }

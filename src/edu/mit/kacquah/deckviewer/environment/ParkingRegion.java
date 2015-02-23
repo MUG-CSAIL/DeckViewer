@@ -171,6 +171,20 @@ public class ParkingRegion implements PAppletRenderObject {
   }
   
   /**
+   * Returns the number of free parking spots on this parking space.
+   * @return
+   */
+  public int getNumFreeParkingSpots() {
+    int result = 0;
+    for (ParkingSpot p : parkingSpots) {
+      if (!p.isOccupied()) {
+        result += 1;
+      }
+    }
+    return result;
+  }
+  
+  /**
    * Returns the specified amount of free parking spots in theis parking region,
    * ignoring any spot that is a "block spot". Will return null for every non
    * free parking spot requested.
