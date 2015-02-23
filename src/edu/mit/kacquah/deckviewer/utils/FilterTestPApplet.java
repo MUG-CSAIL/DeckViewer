@@ -43,7 +43,7 @@ public class FilterTestPApplet extends PApplet {
     noisePoint.y = mouseY + random(-RAND_RADIUS, RAND_RADIUS);
     
     kalmanFilter.predict();
-    estimatedPoint = kalmanFilter.correct(mouseX, mouseY);
+    estimatedPoint = kalmanFilter.correct(noisePoint.x, noisePoint.y);
     
   }
 

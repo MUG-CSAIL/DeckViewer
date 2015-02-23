@@ -8,6 +8,7 @@ import static com.googlecode.javacv.cpp.opencv_video.cvCreateKalman;
 import static com.googlecode.javacv.cpp.opencv_video.cvKalmanCorrect;
 import static com.googlecode.javacv.cpp.opencv_video.cvKalmanPredict;
 
+import java.awt.Point;
 import java.nio.FloatBuffer;
 
 import javax.vecmath.Point2f;
@@ -43,6 +44,7 @@ public class KalmanFilter {
     cvSetIdentity(kalmanFilter.error_cov_post(), cvRealScalar(0.1));
     
     measurement = cvCreateMat(2,1,CV_32FC1);
+    init(0,0);
   }
   
   public void init(float x, float y) {
@@ -65,5 +67,12 @@ public class KalmanFilter {
     CvMat statePost = cvKalmanCorrect(kalmanFilter, measurement);
     Point2f result = new Point2f((float)statePost.get(0), (float)statePost.get(1));
     return result;
+  }
+  
+  public void correct(float x, float y, Point result) {
+    measurement.put(x,y);
+    CvMat statePost = cvKalmanCorrect(kalmanFilter, measurement);
+    result.x = (int)statePost.get(0);
+    result.y = (int)statePost.get(1);
   }
 }

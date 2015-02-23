@@ -19,6 +19,7 @@ import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gui.StaticTextView;
 import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.FilteredPoints;
+import edu.mit.kacquah.deckviewer.utils.KalmanFilter;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 import edu.mit.yingyin.tabletop.controllers.ProcessPacketController;
 import edu.mit.yingyin.tabletop.models.HandTrackingEngine;
@@ -81,6 +82,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
    * Diectic events
    */
   private DiecticEvent de;
+  private Point pointingPoint;
+  KalmanFilter kalmanFilter;
   
   private Thread handTrackerThread;
   private boolean recalibrateRequest;
@@ -103,6 +106,10 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
     calibrationView = new StaticTextView(p);
     calibrationView.setText("Calibrating...");
     ((DeckViewerPApplet)p).addStaticView(calibrationView);
+    
+    // Initialize finger pointing.
+    pointingPoint = new Point();
+    kalmanFilter = new KalmanFilter();
   }
   
   /**
@@ -123,6 +130,7 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
     packetController.show3DView(false);
 
     engine.addHandEventListener(this);
+   
     
     // Start the thread for hand tracking
     handTrackerThread = new Thread(this);
@@ -189,14 +197,8 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
     if (tempDe != null && ! isCalibratingBackground()) {
       p.fill(ColorUtil.ORANGE);
 
-      // Extract intersection points
-      for (int i = 0; i < tempDe.pointingLocationsD().length; ++i) {
-        Point2f intersectionDisplayPoint = scale(tempDe.pointingLocationsD()[i]);
-        Point pointInImageCoord = new Point((int) intersectionDisplayPoint.x, (int) intersectionDisplayPoint.y);
-        SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
-        p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
-            circleRadius * 2);
-      }
+      p.ellipse(pointingPoint.x, pointingPoint.y, circleRadius * 2,
+          circleRadius * 2);
     }
     p.popStyle();
   }
@@ -222,15 +224,25 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
 
   @Override
   public void fingerPointed(DiecticEvent de) {
-    processPointing(de);
-  }
-  
-  public void processPointing(DiecticEvent de) {
     synchronized(this) {
       this.de = de;
-    }
+      // Extract intersection points
+      if (de.pointingLocationsD().length != 0) {
+        Point2f intersectionDisplayPoint = scale(de.pointingLocationsD()[0]);
+        pointingPoint.x = (int) intersectionDisplayPoint.x;
+        pointingPoint.y = (int) intersectionDisplayPoint.y;
+        SwingUtilities.convertPointFromScreen(pointingPoint, parent);
+        // Kalman filtered point
+        kalmanFilter.predict();
+        kalmanFilter.correct(pointingPoint.x, pointingPoint.y, pointingPoint);
+
+//        Point2f result = kalmanFilter.correct(pointingPoint.x, pointingPoint.y);
+//        pointingPoint.x = (int)result.x;
+//        pointingPoint.y = (int)result.y;
+      }
+    }  
   }
-  
+
   /**
    * List of current filtered finger pointed maintained by hand tracker.
    * @return
@@ -244,10 +256,17 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
       return filteredPoints.getFilteredPoints();
     }
   }
+
   
   public DiecticEvent getDiecticEvent() {
     synchronized (this) {
       return this.de;
+    }
+  }
+  
+  public Point getPointingPoint() {
+    synchronized (this) {
+      return new Point(this.pointingPoint);
     }
   }
 
