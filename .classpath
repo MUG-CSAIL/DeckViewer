@@ -11,6 +11,9 @@
 	<classpathentry kind="lib" path="lib/FreeTTS/freetts.jar"/>
 	<classpathentry kind="lib" path="lib/FreeTTS/jsapi.jar"/>
 	<classpathentry kind="lib" path="lib/FreeTTS/freetts-jsapi10.jar"/>
+	<classpathentry kind="lib" path="lib/javacpp.jar"/>
+	<classpathentry kind="lib" path="lib/javacv-os.jar"/>
+	<classpathentry kind="lib" path="lib/javacv.jar"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/tabletop_kinect"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
