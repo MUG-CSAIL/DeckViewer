@@ -25,12 +25,14 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
       if (!canFit()) {
         parentGraph.setNextSpeechNode(new CannotFit(parentGraph));
         yieldNext();
+        return;
       }
       
       // Do we need to queue?
       if (mustQueue()) {
         parentGraph.setNextSpeechNode(new AskForQueue(parentGraph));
-        yieldNext();    
+        yieldNext(); 
+        return;
       }
       
       // Do the move

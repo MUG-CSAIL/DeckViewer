@@ -10,9 +10,11 @@ import edu.mit.kacquah.deckviewer.action.ActionCommand.ActionCommandType;
 import edu.mit.kacquah.deckviewer.action.ActionCommand.LocationType;
 import edu.mit.kacquah.deckviewer.action.exec.ExecActionStack;
 import edu.mit.kacquah.deckviewer.action.exec.MoveAircraftAction;
+import edu.mit.kacquah.deckviewer.action.exec.QueueCatapultAction;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObjectManager;
 import edu.mit.kacquah.deckviewer.environment.Catapult;
+import edu.mit.kacquah.deckviewer.environment.CatapultQueue;
 import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.environment.Elevator;
 import edu.mit.kacquah.deckviewer.environment.ParkingRegion;
@@ -119,7 +121,8 @@ public class ActionManager implements PAppletRenderObject {
       moveToPointing(actionCommand);
     } else if (actionCommand.locationType == LocationType.CATAPULT) {
       // Move to catapult.
-      moveToCatapult(actionCommand);
+//      moveToCatapult(actionCommand);
+      launchOnCatapult(actionCommand);
     } else if (actionCommand.locationType == LocationType.ELEVATOR) {
       // Move to elevator
       moveToElevator(actionCommand);
@@ -181,6 +184,27 @@ public class ActionManager implements PAppletRenderObject {
       // Report error
       updateStatusWithError(ActionError.AIRCRAFT_COLLISIONS);
     }
+  }
+  
+  /**
+   * Attempts to launch selected aircraft on catapult(s)
+   * @param actionCommand
+   */
+  private void launchOnCatapult(ActionCommand actionCommand) {
+    LinkedList<CatapultQueue> catapultTargets = new LinkedList<CatapultQueue>();
+    CatapultQueue catapult1 = deck.getCatapult(actionCommand.locationNumber).catapultParkingQueue();
+    catapultTargets.add(catapult1);
+    if (actionCommand.locationNumber2 != -1) {
+      CatapultQueue catapult2 = deck.getCatapult(actionCommand.locationNumber2).catapultParkingQueue();
+      catapultTargets.add(catapult2);
+    }
+    // Get and clear selection.
+    LinkedList<FlyingObject> selectedObjects = selectionManager.getSelection();
+    selectionManager.clearSelection();
+    // Start execution
+    QueueCatapultAction action = new QueueCatapultAction(actionStack,
+        catapultTargets, selectedObjects);
+    actionStack.addNewAction(action);
   }
   
   /**

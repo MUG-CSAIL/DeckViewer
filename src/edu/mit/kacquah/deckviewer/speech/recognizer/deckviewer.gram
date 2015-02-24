@@ -46,11 +46,13 @@ grammar deckviewer;
  * Deck locations.
  */
 
-<location> = <preposition> ( <catapult> | <elevator> | <parkingRegions> | <genericLocation> );
+<location> = <preposition> ( <elevator> | <parkingRegions> | <genericLocation> );
 
 <catapult> = catapult <oneToFour>;
 
-<catapultGroup> = catapults (one and two | three and four);
+<catapultGroup> = catapults (one and two | one and three | one and four
+                             two and three | two and four
+                             three and four);
 
 <elevator> = elevator <oneToFour>;
 

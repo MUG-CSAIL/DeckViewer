@@ -56,6 +56,7 @@ public class ActionCommand {
    */
   // Catapults
   public static final String CATAPULT = "catapult";
+  public static final String CATAPULTS = "catapults";
   public static final String CATAPULT_1 = "catapult one";
   public static final String CATAPULT_2 = "catapult two";
   public static final String CATAPULT_3 = "catapult three";
@@ -101,7 +102,7 @@ public class ActionCommand {
    *
    */
   public enum LocationType {
-    POINTING, CATAPULT, ELEVATOR, PARKING_REGION;
+    POINTING, CATAPULT, CATAPULT_GROUP, ELEVATOR, PARKING_REGION;
   }
   
   /****************************************************************************/
@@ -118,6 +119,7 @@ public class ActionCommand {
   public LocationType locationType;
   public ParkingRegionType parkingRegionType;
   public int locationNumber;
+  public int locationNumber2;
   public final String text;
   public boolean affirmative;
   
@@ -125,6 +127,7 @@ public class ActionCommand {
     this.commandType = type;
     this.text = text;
     this.locationNumber = -1;
+    this.locationNumber2 = -1;
     this.aircraftNumber = -1;
   }
   
@@ -142,6 +145,7 @@ public class ActionCommand {
       result.multipleSelection = first.multipleSelection;
       result.locationType = second.locationType;
       result.locationNumber = second.locationNumber;
+      result.locationNumber2 = second.locationNumber2;
       result.parkingRegionType = second.parkingRegionType;
       return result;
     } else {

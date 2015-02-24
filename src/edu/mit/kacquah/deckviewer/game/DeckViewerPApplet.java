@@ -232,6 +232,9 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     case 'E':
       // Execute an action.
       speechParser.createLocationAction("to the fantail");
+    case 'C':
+      // Execute an action.
+      speechParser.createLocationAction("to launch on catapult one");
     case 'W':
       speechParser.createLocationAction("over there");
       break;

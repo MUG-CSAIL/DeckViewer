@@ -201,6 +201,10 @@ public class Deck implements PAppletRenderObject {
     parkingRegions.add(cat2Queue);
     parkingRegions.add(cat3Queue);
     parkingRegions.add(cat4Queue);
+    catapults[0].setCatapultParking(cat1Queue);
+    catapults[1].setCatapultParking(cat2Queue);
+    catapults[2].setCatapultParking(cat3Queue);
+    catapults[3].setCatapultParking(cat4Queue);
     
     // Elevators
     ParkingRegion el1 = new ParkingRegion(ParkingRegionType.ELEVATOR_1, elevators[0].elevatorDirection());
@@ -310,6 +314,15 @@ public class Deck implements PAppletRenderObject {
    * @return
    */
   public Catapult getCatapult(int number) {
+    return this.catapults[number - 1];
+  }
+  
+  /**
+   * Catapult by number.
+   * @param number
+   * @return
+   */
+  public Catapult getCatapultQueue(int number) {
     return this.catapults[number - 1];
   }
   

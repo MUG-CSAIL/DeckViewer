@@ -9,7 +9,9 @@ import javax.swing.plaf.basic.BasicScrollPaneUI.HSBChangeListener;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
 import edu.mit.kacquah.deckviewer.gui.shape.Contactable;
+import edu.mit.kacquah.deckviewer.utils.ColorUtil;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 
@@ -166,8 +168,13 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject, Con
 
   @Override
   public void render(PApplet p) {
-    if (renderOutline) {
+    if (GlobalSettings.renderParkingSpots) {
+      p.pushStyle();
+      p.noFill();
+      p.stroke(ColorUtil.RED);
+      p.strokeWeight(GlobalSettings.STROKE_WEIGHT);
       super.render(p);
+      p.popStyle();
     }
   }
 }

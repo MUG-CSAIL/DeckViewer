@@ -58,6 +58,7 @@ public class GlobalSettings {
   public static final boolean renderDeckOutline = true;
   public static final boolean renderDeckCatapults = true;
   public static final boolean renderDeckElevators = false;
+  public static final boolean renderParkingSpots = true;
   
   /**
    * Selection engine constants

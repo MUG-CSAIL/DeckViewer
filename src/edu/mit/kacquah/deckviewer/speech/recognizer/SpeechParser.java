@@ -102,17 +102,32 @@ public class SpeechParser implements ISpeechEventListener {
         command);
     // Determine location
     int number = 0;
-    if (command.contains(ActionCommand.CATAPULT)) {
+    
+    if (command.contains(ActionCommand.CATAPULTS)) {
+      // Location is group of catapults
+      actionCommand.locationType = ActionCommand.LocationType.CATAPULT_GROUP;
+      String[] splits = command.split("and");
+      actionCommand.locationNumber = getNumberFromCommmand(splits[0]);
+      actionCommand.locationNumber2 = getNumberFromCommmand(splits[1]);
+      
+    } else if (command.contains(ActionCommand.CATAPULT)) {
+      // Location is a single catapult
       number = getNumberFromCommmand(command);
       actionCommand.locationType = ActionCommand.LocationType.CATAPULT;
       actionCommand.locationNumber = number;
+      
     } else if (command.contains(ActionCommand.ELEVATOR)) {
+      // Location is an elevator
       number = getNumberFromCommmand(command);
       actionCommand.locationType = ActionCommand.LocationType.ELEVATOR;
       actionCommand.locationNumber = number;
+      
     } else if (command.contains(ActionCommand.THERE)) {
+      // Location is where finger is pointing
       actionCommand.locationType = ActionCommand.LocationType.POINTING;
+      
     } else {
+      // Location is a parking region
       actionCommand.locationType = ActionCommand.LocationType.PARKING_REGION;
       ParkingRegionType region =  parseParkingRegionType(command);
       if (region == null) {
@@ -121,9 +136,11 @@ public class SpeechParser implements ISpeechEventListener {
       }
       actionCommand.parkingRegionType = region;
     }
+    
     if (number == -1) {
       return false;
     }
+    
     actionManager.processActionCommand(actionCommand);
     return true;
   }

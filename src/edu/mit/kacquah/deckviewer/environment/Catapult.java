@@ -15,7 +15,7 @@ import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
 public class Catapult implements PAppletRenderObject{
   private Point startPoint, endPoint;
   public final int catapultNumber;
-  private ParkingRegion catapultParking;
+  private CatapultQueue catapultParking;
 
   public Catapult(Point start, Point end, int number) {
     this.startPoint = start;
@@ -55,8 +55,16 @@ public class Catapult implements PAppletRenderObject{
     return this.catapultParking;
   }
   
+  /**
+   * Parking region for this catapult.
+   * @return
+   */
+  public CatapultQueue catapultParkingQueue() {
+    return this.catapultParking;
+  }
+  
   public void setCatapultParking(ParkingRegion parking) {
-    this.catapultParking = parking;
+    this.catapultParking = (CatapultQueue)parking;
   }
   
   /**
