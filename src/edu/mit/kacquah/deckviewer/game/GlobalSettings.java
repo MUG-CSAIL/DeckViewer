@@ -15,7 +15,7 @@ public class GlobalSettings {
   /**
    * Choose between wide cropped or full display of carrier.
    */
-  public static BackgroundRatio backgroundRatio = BackgroundRatio.WIDE;
+  public static final BackgroundRatio backgroundRatio = BackgroundRatio.WIDE;
 
   /**
    * When true, the app will resize to fit the window screen.
@@ -58,7 +58,7 @@ public class GlobalSettings {
   public static final boolean renderDeckOutline = true;
   public static final boolean renderDeckCatapults = true;
   public static final boolean renderDeckElevators = false;
-  public static final boolean renderParkingSpots = true;
+  public static final boolean renderParkingSpots = false;
   
   /**
    * Selection engine constants

@@ -105,7 +105,7 @@ public class SpeechParser implements ISpeechEventListener {
     
     if (command.contains(ActionCommand.CATAPULTS)) {
       // Location is group of catapults
-      actionCommand.locationType = ActionCommand.LocationType.CATAPULT_GROUP;
+      actionCommand.locationType = ActionCommand.LocationType.CATAPULT;
       String[] splits = command.split("and");
       actionCommand.locationNumber = getNumberFromCommmand(splits[0]);
       actionCommand.locationNumber2 = getNumberFromCommmand(splits[1]);

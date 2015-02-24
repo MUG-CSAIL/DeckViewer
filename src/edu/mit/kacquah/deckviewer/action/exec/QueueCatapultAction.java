@@ -107,9 +107,9 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
     @Override
     public void preSpeechProcess() {
       if (catapultTargets.size() > 1) {
-        this.speechText = "There is not enough room at the catapults. Please choose a subset of aircraft to move.";
+        this.speechText = "There is not enough room at the catapults. Perhaps try moving fewer aircraft or try a different catapult.";
       } else {
-        this.speechText = "There is not enough room at the catapult. Please choose a subset of aircraft to move.";
+        this.speechText = "There is not enough room at the catapult. Perhaps try moving fewer aircraft or try a different catapult.";
       }
       yieldWait();
     }

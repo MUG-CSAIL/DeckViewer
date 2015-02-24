@@ -137,7 +137,7 @@ public class SelectionManager implements PAppletRenderObject {
    * @param potentialObjects
    */
   private LinkedList<FlyingObject> selectSurroundingObjects(
-      LinkedList<FlyingObject> potentialObjects, AircraftType typeRestriction) {
+     LinkedList<FlyingObject> potentialObjects, AircraftType typeRestriction) {
     // We start of with one selected aircraft.
     FlyingObject centerAircraft = potentialObjects.get(0);
     ParkingSpot parkingSpot = centerAircraft.getParkingSpot();
