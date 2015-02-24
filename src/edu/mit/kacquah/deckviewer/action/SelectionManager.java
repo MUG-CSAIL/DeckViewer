@@ -193,6 +193,9 @@ public class SelectionManager implements PAppletRenderObject {
     // Highlight the objects.
     for (FlyingObject o : selectedObjects) {
       o.setSelectionStatus(SelectionStatus.SELECTED);
+      if (hoverObjects.contains(o)) {
+        hoverObjects.remove(o);
+      }
     }
   }
 
@@ -211,6 +214,7 @@ public class SelectionManager implements PAppletRenderObject {
     selectedObjects = null;
     currentError = ActionError.NO_ERROR;
   }
+ 
   
   public boolean hasSelection() {
     return this.hasSelection;
