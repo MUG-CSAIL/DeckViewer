@@ -87,4 +87,9 @@ public class GlobalSettings {
   //Rate of filter oscillation
   public static final double OSCILLATION_RATE = 5.0;
   public static final float STROKE_WEIGHT = 3;
+  
+  /**
+   * Scene configuration
+   */
+  public static final int SCHENE_NUMBER = 3;
 }

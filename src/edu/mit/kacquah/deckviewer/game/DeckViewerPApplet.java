@@ -322,9 +322,17 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
 //    testConfig1();
 //    testConfig2();
 //    testConfig3();
-    //scene1();
-    scene3();
-
+    switch (GlobalSettings.SCHENE_NUMBER) {
+    case 1:
+      scene1();
+      break;
+    case 2:
+      scene2();
+      break;
+    case 3:
+      scene3();
+      break;
+    }
   }
   
   /**
@@ -369,19 +377,36 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4);
   }
   
+  /**
+   * Scene 1 for demo.
+   */
   public void scene1() {   
-    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2); 
-//    fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL); 
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 5, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 1, AircraftType.C2); 
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 1, AircraftType.F18); 
   }
-  
-  public void scene3() {
+
+  /**
+   * Scene 2 for demo.
+   */
+  public void scene2() {   
     fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL, 4, AircraftType.F18); 
     fillParkingRegionWithAircraft(ParkingRegionType.FANTAIL, 2, AircraftType.C2); 
     fillParkingRegionWithAircraft(ParkingRegionType.STREET, 1, AircraftType.F18); 
     fillParkingRegionWithAircraft(ParkingRegionType.SIXPACK, 1, AircraftType.F18); 
+//    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_1, 1, AircraftType.F18); 
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_4, 1, AircraftType.F18); 
     fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_3, 1, AircraftType.F18); 
-    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 3, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 3, AircraftType.F18);
+  }
+  
+  /**
+   * Scene 3 for demo.
+   */
+  public void scene3() {
+    fillParkingRegionWithAircraft(ParkingRegionType.OVER_EL1_AND_EL2, 5, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_1, 1, AircraftType.F18); 
+    fillParkingRegionWithAircraft(ParkingRegionType.CATAPULT_2, 1, AircraftType.F18); 
   }
   
   /**
