@@ -213,7 +213,7 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
         p.park(o);
       }
       // Move aircraft to their destinations
-      for (int i = 0; i < pathBlockAircraft.size(); ++i) {
+      for (int i = 0; i < moveAircraft.size(); ++i) {
         FlyingObject o = moveAircraft.get(i);
         ParkingSpot p = moveToParkingSpots.get(i);
         p.park(o);

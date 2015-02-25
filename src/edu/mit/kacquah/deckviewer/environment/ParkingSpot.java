@@ -84,6 +84,7 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject, Con
     this.parkedAircraft.setRotation(this.parkingRegion.getAngle());
     this.parkedAircraft.setPosition(this.center.x, this.center.y);
     this.parkedAircraft.setParkingSpot(this);
+    this.parkedAircraft.wingsClosed();
     return true;
   }
   
@@ -143,6 +144,15 @@ public class ParkingSpot extends DeckPolygon implements PAppletRenderObject, Con
       return this.parkedAircraft;
     }
     return null;
+  }
+  
+  /**
+   * Returns true if this parking spot overlaps with another parking spot.
+   * @param other
+   * @return
+   */
+  public boolean intersects(ParkingSpot other) {
+    return this.bounds().intersects(other.bounds());
   }
   
   @Override

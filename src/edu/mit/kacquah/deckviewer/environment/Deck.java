@@ -431,9 +431,15 @@ public class Deck implements PAppletRenderObject {
         .parkingSpotDistanceSort(this.parkingSpots, target);
     
     int numFound = 0;
-    for(ParkingSpot spot: sortedParkingSpots) {
+    outerloop: for(ParkingSpot spot: sortedParkingSpots) {
       if (!spot.isOccupied() && !blockSpots.contains(spot)
           && !blockRegionsTypes.contains(spot.parkingRegion.type)) {
+        // Make sure it doesn't cover a block spot
+        for (ParkingSpot blockSpot: blockSpots) {
+          if (blockSpot.intersects(spot)) {
+            continue outerloop;
+          }
+        }
         result.add(spot);
         numFound ++;
         if (numFound == number) {

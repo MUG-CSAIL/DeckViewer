@@ -116,8 +116,8 @@ public class MoveAircraftAction extends SpeechGraph implements ExecAction {
           .getDeckFlyingObjectManager().intersectsPath(moveAircraftPath);
       
       // Remove any aircraft that are move aircraft.
-      for (FlyingObject o : pathBlockAircraft) {
-        if (moveAircraft.contains(o)) {
+      for (FlyingObject o : moveAircraft) {
+        if (pathBlockAircraft.contains(o)) {
           pathBlockAircraft.remove(o);
         }
       }

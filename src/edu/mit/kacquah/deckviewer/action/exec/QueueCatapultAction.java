@@ -1,11 +1,15 @@
 package edu.mit.kacquah.deckviewer.action.exec;
 
+import java.awt.Point;
 import java.util.LinkedList;
 
 import processing.core.PApplet;
 import edu.mit.kacquah.deckviewer.deckobjects.FlyingObject;
 import edu.mit.kacquah.deckviewer.environment.CatapultQueue;
 import edu.mit.kacquah.deckviewer.environment.ParkingSpot;
+import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
+import edu.mit.kacquah.deckviewer.game.GlobalSettings;
+import edu.mit.kacquah.deckviewer.gui.shape.Path;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechGraph;
 import edu.mit.kacquah.deckviewer.speech.synthesis.SpeechNode;
 
@@ -128,6 +132,16 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
 
     @Override
     public void preSpeechProcess() {
+      // Check the path
+      if (checkPath()) {
+        // Load the clear path action and yield done
+        ClearPathAction action = new ClearPathAction(actionStack, moveAircraft,
+            moveAircraftPath, pathBlockAircraft, moveToParkingSpots);
+        actionStack.pushTop(action);
+        yieldDone();
+        return;
+      }
+      
       // Move aircraft to their destinations
       int catIndex = 0;
       for (int i = 0; i < moveAircraft.size(); ++i) {
@@ -144,6 +158,48 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
     @Override
     public void postSpeechProcess() {
       yieldDone();
+    }
+    
+    /**
+     * Checks the path from the move aircraft to the destination. If there are
+     * any aircraft in the way, they are added to the pathBlockAircraft list and
+     * this method returns true.
+     * 
+     * This assumes the target is already set. Only works for a single aircraft.
+     * 
+     * @return
+     */
+    private boolean checkPath() {
+      // If we've selected multiple aircraft, we won't check path.
+      if (moveAircraft.size() != 1) {
+        return false;
+      }
+      // Fill move to parking spots
+      moveToParkingSpots = new LinkedList<ParkingSpot>();
+      int catIndex = 0;
+      for (int i = 0; i < moveAircraft.size(); ++i) {
+        moveToParkingSpots.add(catapultTargets.get(catIndex).getNextFreeParkingSpot());
+        catIndex += 1;
+        catIndex %= catapultTargets.size();
+      }
+      // Check the path
+      Point start = moveAircraft.get(0).position();
+      Point end = moveToParkingSpots.get(0).center;
+      moveAircraftPath = new Path(GlobalSettings.AIRCRAFT_RADIUS,
+          GlobalSettings.aircraftPathColor);
+      moveAircraftPath.addPoint(start);
+      moveAircraftPath.addPoint(end);
+      pathBlockAircraft = DeckViewerPApplet.getInstance()
+          .getDeckFlyingObjectManager().intersectsPath(moveAircraftPath);
+      
+      // Remove any aircraft that are move aircraft.
+      for (FlyingObject o : moveAircraft) {
+        if (pathBlockAircraft.contains(o)) {
+          pathBlockAircraft.remove(o);
+        }
+      }
+      
+      return !pathBlockAircraft.isEmpty();
     }
   }
   
@@ -175,7 +231,18 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
    * List of aircraft to move.
    */
   private LinkedList<FlyingObject> moveAircraft;
-  
+  /**
+   * Path for move aircraft to traverse.
+   */
+  private Path moveAircraftPath;
+  /**
+   * Aircraft blocking the path.
+   */
+  private LinkedList<FlyingObject> pathBlockAircraft;
+  /**
+   * List of parking spot destinations corresponding to each move aircraft.
+   */
+  private LinkedList<ParkingSpot> moveToParkingSpots;
   /**
    * Target catapults for aircraft
    */
