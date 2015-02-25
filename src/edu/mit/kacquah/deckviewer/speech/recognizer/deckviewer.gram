@@ -56,7 +56,8 @@ grammar deckviewer;
 
 <elevator> = elevator <oneToFour>;
 
-<parkingRegions> = the ( fantail    | 
+<parkingRegions> = the ( starboard  | 
+                         fantail    | 
                          street     | 
                          six pack   | 
                          point      | 

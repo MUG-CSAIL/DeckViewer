@@ -69,14 +69,16 @@ public class ActionCommand {
   public static final String ELEVATOR_4 = "elevator four";
   // Parking Regions
   public static final String FANTAIL = "fantail";
-  public static final String OVER_EL1_AND_EL2 = "over elevator one and two";
+//  public static final String OVER_EL1_AND_EL2 = "over elevator one and two";
+  public static final String OVER_EL1_AND_EL2 = "starboard";
   public static final String BTWN_EL1_AND_CAT = "between elevator one and the catapults";
-  public static final String BHND_TOWER = "behind the tower";
+//  public static final String BHND_TOWER = "behind the tower";
+  public static final String BHND_TOWER = "junk yard";
   public static final String OVER_EL4 = "over elevator four";
   public static final String FRNT_TOWER = "in front of the tower";
   
   public static final String STREET = "street";
-  public static final String SIXPACK = "six yeipack";
+  public static final String SIXPACK = "six pack";
   public static final String POINT = "point";
   public static final String PATIO = "patio";
   public static final String CROTCH = "crotch";

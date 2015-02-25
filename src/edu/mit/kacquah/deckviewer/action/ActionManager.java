@@ -125,7 +125,8 @@ public class ActionManager implements PAppletRenderObject {
       launchOnCatapult(actionCommand);
     } else if (actionCommand.locationType == LocationType.ELEVATOR) {
       // Move to elevator
-      moveToElevator(actionCommand);
+//      moveToElevator(actionCommand);
+      moveToParkingRegion(actionCommand);
     } else if (actionCommand.locationType == LocationType.PARKING_REGION) {
       moveToParkingRegion(actionCommand);
     }
