@@ -41,7 +41,7 @@ public class GlobalSettings {
   public static final int FILTER_HISTORY_LENGTH = 5;
   public static final int FINGER_CIRCLE_RADIUS = 10;
   // Use mouse pointer instead of finger points (for simpler debugging)
-  public static final boolean useMousePoint = true;
+  public static final boolean useMousePoint = false;
   public static final boolean usePointingEstimate = true;
 
   /**
@@ -49,7 +49,7 @@ public class GlobalSettings {
    */
   public static final boolean useSpeechRecognition = true;
   public static final boolean useSpeechSynthesis = true;
-  public static final String speechSynthesisVoice = "mbrola_us1";
+  public static final String speechSynthesisVoice = "mbrola_us2";
   public static final String grammarPath = "resource:/edu/mit/kacquah/deckviewer/speech/recognizer";
   public static final String grammarName = "deckviewer";
   

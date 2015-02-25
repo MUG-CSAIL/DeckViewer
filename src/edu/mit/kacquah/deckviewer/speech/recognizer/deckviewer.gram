@@ -50,8 +50,8 @@ grammar deckviewer;
 
 <catapult> = catapult <oneToFour>;
 
-<catapultGroup> = catapults (one and two | one and three | one and four
-                             two and three | two and four
+<catapultGroup> = catapults (one and two | one and three | one and four |
+                             two and three | two and four |
                              three and four);
 
 <elevator> = elevator <oneToFour>;
