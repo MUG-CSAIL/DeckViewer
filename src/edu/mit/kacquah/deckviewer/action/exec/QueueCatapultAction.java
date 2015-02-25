@@ -143,14 +143,19 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
       }
       
       // Move aircraft to their destinations
-//      int catIndex = 0;
-//      for (int i = 0; i < moveAircraft.size(); ++i) {
-//        FlyingObject o = moveAircraft.get(i);
-//        ParkingSpot p = catapultTargets.get(catIndex).getNextFreeParkingSpot();
-//        p.park(o);
-//        catIndex += 1;
-//        catIndex %= catapultTargets.size();
-//      }
+      int catIndex = 0;
+      for (int i = 0; i < moveAircraft.size(); ++i) {
+        FlyingObject o = moveAircraft.get(i);
+        ParkingSpot spot = catapultTargets.get(catIndex).getNextFreeParkingSpot();
+        if (spot == null) {
+          catIndex += 1;
+          catIndex %= catapultTargets.size();
+          spot = catapultTargets.get(catIndex).getNextFreeParkingSpot();
+        }        
+        spot.park(o);
+        catIndex += 1;
+        catIndex %= catapultTargets.size();
+      }
       // Move aircraft to their destinations
       for (int i = 0; i < moveAircraft.size(); ++i) {
         FlyingObject o = moveAircraft.get(i);
