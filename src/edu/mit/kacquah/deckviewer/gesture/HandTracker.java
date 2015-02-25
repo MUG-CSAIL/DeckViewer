@@ -13,6 +13,7 @@ import javax.vecmath.Point3f;
 import org.OpenNI.GeneralException;
 
 import processing.core.PApplet;
+import edu.mit.kacquah.deckviewer.action.ActionError;
 import edu.mit.kacquah.deckviewer.game.DeckViewerPApplet;
 import edu.mit.kacquah.deckviewer.game.GameConstants;
 import edu.mit.kacquah.deckviewer.game.GlobalSettings;
@@ -267,6 +268,34 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
   public Point getPointingPoint() {
     synchronized (this) {
       return new Point(this.pointingPoint);
+    }
+  }
+  
+  /**
+   * Returns the point to be used for 
+   * @return
+   */
+  public Point getFingerPoint() {
+    if (GlobalSettings.useMousePoint) {
+      // Use the mouse point
+      Point mouse = new Point((int)parent.mouseX, (int)parent.mouseY) ;
+      return mouse;
+    } else {
+      if (GlobalSettings.usePointingEstimate) {
+        // Use the pointing point.
+        return getPointingPoint();
+      } else {
+        // Get finer points
+        Point2f fingerPoints[] = getFilteredPoints();
+        if (fingerPoints.length == 0) {
+          return null;
+        }
+
+        // Take the first finger point for selection.
+        Point fingerPoint = new Point((int) fingerPoints[0].x,
+            (int) fingerPoints[0].y);
+        return fingerPoint;
+      }
     }
   }
 

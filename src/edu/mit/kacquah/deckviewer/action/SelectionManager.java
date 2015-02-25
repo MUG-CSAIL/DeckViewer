@@ -104,19 +104,14 @@ public class SelectionManager implements PAppletRenderObject {
    * @return
    */
   public boolean selectAircraftAtFingerLocation(boolean multipleSelection, AircraftType typeRestriction) {
-    // Get finer points
-    Point2f fingerPoints[] = handTracker.getFilteredPoints();
-    if (fingerPoints.length == 0) {
-      currentError = ActionError.NO_FINGERS_ON_SCREEN;
-      LOGGER.severe(currentError.description);
+    // Get finer point
+    Point fingerPoint = getCurrentFingerPoint();
+    if (fingerPoint == null) {
       return false;
     }
-
-    // Take the first finger point for selection.
-    Point fingerPoint = new Point((int) fingerPoints[0].x,
-        (int) fingerPoints[0].y);
+    
     LinkedList<FlyingObject> potentialObjects = flyingObjectManager.intersectsPoint(fingerPoint);
-
+    
     if (potentialObjects.size() == 0) {
       currentError = ActionError.SELECTION_FAILED;
       LOGGER.severe(currentError.description);
@@ -160,23 +155,19 @@ public class SelectionManager implements PAppletRenderObject {
    */
   public Point getCurrentFingerPoint() {
     // Get finer points
-    Point2f fingerPoints[] = handTracker.getFilteredPoints();
-    if (fingerPoints.length == 0) {
+    Point fingerPoint = handTracker.getFingerPoint();
+    if (fingerPoint == null) {
       currentError = ActionError.NO_FINGERS_ON_SCREEN;
       LOGGER.severe(currentError.description);
       return null;
     }
 
-    // Take the first finger point for the target.
-    Point fingerPointTarget = new Point((int) fingerPoints[0].x,
-        (int) fingerPoints[0].y);
-    
-    if (!deck.contains(fingerPointTarget)) {
+    if (!deck.contains(fingerPoint)) {
       currentError = ActionError.TARGET_NOT_ON_DECK;
       LOGGER.severe(currentError.description);
       return null;
     } else {
-      return fingerPointTarget;
+      return fingerPoint;
     }
   }
   
@@ -231,15 +222,12 @@ public class SelectionManager implements PAppletRenderObject {
   @Override
   public void update(long elapsedTime) {
     
-    // Get finer points
-    Point2f fingerPoints[] = handTracker.getFilteredPoints();
-    if (fingerPoints.length == 0) {
+    // Get finer point
+    Point fingerPoint = getCurrentFingerPoint();
+    if (fingerPoint == null) {
       return;
     }
 
-    // Take the first finger point for selection.
-    Point fingerPoint = new Point((int) fingerPoints[0].x,
-        (int) fingerPoints[0].y);
     LinkedList<FlyingObject> newHoverObjects = flyingObjectManager.intersectsPoint(fingerPoint);
    
     
