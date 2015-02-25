@@ -226,7 +226,7 @@ public class SelectionManager implements PAppletRenderObject {
    */
   public LinkedList<FlyingObject> getHoverObjects() {
     synchronized(this) {
-      return this.hoverObjects;
+      return new LinkedList<FlyingObject>(this.hoverObjects);
     }
   }
 
