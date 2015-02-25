@@ -111,7 +111,7 @@ public class SelectionManager implements PAppletRenderObject {
       return false;
     }
     
-    LinkedList<FlyingObject> potentialObjects = flyingObjectManager.intersectsPoint(fingerPoint);
+    LinkedList<FlyingObject> potentialObjects = this.getHoverObjects();
     
     if (potentialObjects.size() == 0) {
       currentError = ActionError.SELECTION_FAILED;
@@ -216,8 +216,18 @@ public class SelectionManager implements PAppletRenderObject {
     return this.currentError;
   }
   
-  LinkedList<FlyingObject> getSelection() {
+  public LinkedList<FlyingObject> getSelection() {
     return this.selectedObjects;
+  }
+  
+  /**
+   * Synchronized access for hoverObjects list.
+   * @return
+   */
+  public LinkedList<FlyingObject> getHoverObjects() {
+    synchronized(this) {
+      return this.hoverObjects;
+    }
   }
 
   @Override
@@ -229,35 +239,27 @@ public class SelectionManager implements PAppletRenderObject {
       return;
     }
 
-    LinkedList<FlyingObject> newHoverObjects = flyingObjectManager.intersectsPoint(fingerPoint);
-   
-    
-    // Highlight new hover objects, remove old ones.
-//    for (FlyingObject o : hoverObjects) {
-//      if (!newHoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.HOVERIRNG) {
-//        o.setSelectionStatus(SelectionStatus.NONE);
-//        hoverObjects.remove(o);
-//      }
-//    }
-    
-    Iterator<FlyingObject> i = hoverObjects.iterator();
-    while (i.hasNext()) {
-      FlyingObject o = i.next();
-      if (!newHoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.HOVERIRNG) {
-        o.setSelectionStatus(SelectionStatus.NONE);
-        i.remove();
+    synchronized(this) {
+      LinkedList<FlyingObject> newHoverObjects = flyingObjectManager
+          .intersectsPoint(fingerPoint);
+         
+      // Highlight new hover objects, remove old ones. 
+      Iterator<FlyingObject> i = hoverObjects.iterator();
+      while (i.hasNext()) {
+        FlyingObject o = i.next();
+        if (!newHoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.HOVERIRNG) {
+          o.setSelectionStatus(SelectionStatus.NONE);
+          i.remove();
+        }
       }
-    }
-    
-    for (FlyingObject o : newHoverObjects) {
-      if (!hoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.NONE) {
-        o.setSelectionStatus(SelectionStatus.HOVERIRNG);
-        hoverObjects.add(o);
+      
+      for (FlyingObject o : newHoverObjects) {
+        if (!hoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.NONE) {
+          o.setSelectionStatus(SelectionStatus.HOVERIRNG);
+          hoverObjects.add(o);
+        }
       }
-    }
-    
-
-    
+    } // end synchronized this.
   }
 
   @Override

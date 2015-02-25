@@ -40,7 +40,7 @@ grammar deckviewer;
 
 <aircraftSingular> = this  ( aircraft | f eighteen | c two);
 
-<aircraftPlural> = these ( aircrafts | f eighteens | c twos);
+<aircraftPlural> = these ( aircraft | f eighteens | c twos);
 
 /**
  * Deck locations.
