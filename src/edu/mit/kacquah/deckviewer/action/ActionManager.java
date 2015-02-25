@@ -234,6 +234,11 @@ public class ActionManager implements PAppletRenderObject {
   public void moveToParkingRegion(ActionCommand actionCommand) {
     ParkingRegion parkingRegion = Deck.getInstance().getParkingRegion(
         actionCommand.parkingRegionType);
+    // This parking region isn't implemented yet.
+    if (parkingRegion == null) {
+      updateStatusWithError(ActionError.PARKING_REGION_NULL);
+      return;
+    }
     // Get and clear selection.
     LinkedList<FlyingObject> selectedObjects = selectionManager.getSelection();
     selectionManager.clearSelection();
