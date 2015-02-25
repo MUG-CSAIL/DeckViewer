@@ -146,7 +146,7 @@ public class ActionManager implements PAppletRenderObject {
   private void moveToPointing(ActionCommand actionCommand) {
     // Get the current finger point
     Point fingerPointTarget = selectionManager.getCurrentFingerPoint();
-    if (fingerPointTarget == null) {
+    if (fingerPointTarget == null || !selectionManager.isOnDeck(fingerPointTarget)) {
       // Report error
       updateStatusWithError(selectionManager.getError());
       return;

@@ -10,6 +10,7 @@ import edu.mit.kacquah.deckviewer.environment.Deck;
 import edu.mit.kacquah.deckviewer.gui.shape.Path;
 import edu.mit.kacquah.deckviewer.utils.DeckPolygon;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
+import edu.mit.kacquah.deckviewer.utils.Sorting;
 
 public class FlyingObjectManager implements PAppletRenderObject {
   private LinkedList<FlyingObject> flyingObjects;
@@ -133,7 +134,17 @@ public class FlyingObjectManager implements PAppletRenderObject {
     }
     return null;
   }
-
+  
+  /**
+   * Returns a soted list of flying objects based on distance to the target.
+   * @param target
+   * @param result
+   * @return
+   */
+  public LinkedList<FlyingObject> sortFlyingObjectsToTarget(Point target, LinkedList<FlyingObject> result) {
+    return Sorting.flyingObjectDistanceSort(this.flyingObjects, target, result);
+  }
+  
   @Override
   public void update(long elapsedTime) {
     // Update the manager.

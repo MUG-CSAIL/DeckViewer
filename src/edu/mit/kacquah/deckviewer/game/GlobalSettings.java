@@ -68,7 +68,9 @@ public class GlobalSettings {
   public static final int selectionStatusHoveringColor = ColorUtil.GREEN;
   public static final int selectionStatusErrorColor = ColorUtil.RED;
   // Radius for selecting multiple aircraft
-  public static final float selectionRadius = 60;
+  public static final float MULTI_SELECTION_RADIUS = 60;
+  public static final float STICKY_SELECTION_RADIUS = 100;
+  public static final boolean USE_STICKY_SELECTION = true;
   
   /**
    * FlyingObject constants.
@@ -93,5 +95,5 @@ public class GlobalSettings {
   /**
    * Scene configuration
    */
-  public static final int SCHENE_NUMBER = 1;
+  public static final int SCHENE_NUMBER = 2;
 }

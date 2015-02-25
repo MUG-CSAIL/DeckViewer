@@ -1,6 +1,7 @@
 package edu.mit.kacquah.deckviewer.action;
 
 import java.awt.Point;
+import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import edu.mit.kacquah.deckviewer.gesture.HandTracker;
 import edu.mit.kacquah.deckviewer.image.ColorHighlightFilter;
 import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechParser;
 import edu.mit.kacquah.deckviewer.utils.PAppletRenderObject;
+import edu.mit.kacquah.deckviewer.utils.Sorting;
 
 /**
  * State machine for handling aircraft selection and action execution.
@@ -162,13 +164,24 @@ public class SelectionManager implements PAppletRenderObject {
       LOGGER.severe(currentError.description);
       return null;
     }
+    return fingerPoint;
 
-    if (!deck.contains(fingerPoint)) {
+//    if (!deck.contains(fingerPoint)) {
+//      currentError = ActionError.TARGET_NOT_ON_DECK;
+//      LOGGER.severe(currentError.description);
+//      return null;
+//    } else {
+//      return fingerPoint;
+//    }
+  }
+  
+  public boolean isOnDeck(Point p) {
+    if (!deck.contains(p)) {
       currentError = ActionError.TARGET_NOT_ON_DECK;
       LOGGER.severe(currentError.description);
-      return null;
+      return false;
     } else {
-      return fingerPoint;
+      return true;
     }
   }
   
@@ -242,6 +255,23 @@ public class SelectionManager implements PAppletRenderObject {
     synchronized(this) {
       LinkedList<FlyingObject> newHoverObjects = flyingObjectManager
           .intersectsPoint(fingerPoint);
+      
+      // Did we select anything?
+      if (newHoverObjects.isEmpty()) {
+        // If we're using sticky selection. use the closest flying object if
+        // its in the selection radius.
+        if (GlobalSettings.USE_STICKY_SELECTION) {
+          newHoverObjects = flyingObjectManager.sortFlyingObjectsToTarget(
+              fingerPoint, newHoverObjects);
+          FlyingObject closestFlyingObject = newHoverObjects.get(0);
+          newHoverObjects.clear();
+          float scaleRatio = Deck.getInstance().scaleRatio;
+          if (closestFlyingObject.position().distance(fingerPoint) < scaleRatio
+              * GlobalSettings.STICKY_SELECTION_RADIUS) {
+            newHoverObjects.add(closestFlyingObject);
+          }
+        }
+      }
          
       // Highlight new hover objects, remove old ones. 
       Iterator<FlyingObject> i = hoverObjects.iterator();
