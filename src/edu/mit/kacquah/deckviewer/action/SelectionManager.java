@@ -1,6 +1,7 @@
 package edu.mit.kacquah.deckviewer.action;
 
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.logging.Logger;
 
@@ -232,19 +233,31 @@ public class SelectionManager implements PAppletRenderObject {
    
     
     // Highlight new hover objects, remove old ones.
-    for (FlyingObject o : hoverObjects) {
+//    for (FlyingObject o : hoverObjects) {
+//      if (!newHoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.HOVERIRNG) {
+//        o.setSelectionStatus(SelectionStatus.NONE);
+//        hoverObjects.remove(o);
+//      }
+//    }
+    
+    Iterator<FlyingObject> i = hoverObjects.iterator();
+    while (i.hasNext()) {
+      FlyingObject o = i.next();
       if (!newHoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.HOVERIRNG) {
         o.setSelectionStatus(SelectionStatus.NONE);
-        hoverObjects.remove(o);
+        i.remove();
       }
     }
+    
     for (FlyingObject o : newHoverObjects) {
       if (!hoverObjects.contains(o) && o.selectionStatus() == SelectionStatus.NONE) {
         o.setSelectionStatus(SelectionStatus.HOVERIRNG);
         hoverObjects.add(o);
       }
-      
     }
+    
+
+    
   }
 
   @Override

@@ -32,7 +32,7 @@ public class GlobalSettings {
    * Limit the maximum resolution of the app for runtime optimization.
    */
   public static final int maxNumPixels = 2000000;
-  public static final boolean limitMaxRes = true;
+  public static final boolean limitMaxRes = false;
   
   /**
    * HandTracking constants.
