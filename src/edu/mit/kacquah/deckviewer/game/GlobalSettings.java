@@ -93,5 +93,5 @@ public class GlobalSettings {
   /**
    * Scene configuration
    */
-  public static final int SCHENE_NUMBER = 2;
+  public static final int SCHENE_NUMBER = 3;
 }

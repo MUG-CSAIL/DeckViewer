@@ -176,10 +176,6 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
      * @return
      */
     private boolean checkPath() {
-      // If we've selected multiple aircraft, we won't check path.
-      if (moveAircraft.size() != 1) {
-        return false;
-      }
       // Fill move to parking spots
       moveToParkingSpots = new LinkedList<ParkingSpot>();
       int catIndex = 0;
@@ -194,6 +190,12 @@ public class QueueCatapultAction extends SpeechGraph implements ExecAction {
         catIndex += 1;
         catIndex %= catapultTargets.size();
       }
+      
+      // If we've selected multiple aircraft, we won't check path.
+      if (moveAircraft.size() != 1) {
+        return false;
+      }
+      
       // Check the path
       Point start = moveAircraft.get(0).position();
       Point end = moveToParkingSpots.get(0).center;
