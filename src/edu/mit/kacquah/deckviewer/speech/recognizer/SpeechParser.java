@@ -22,9 +22,11 @@ import edu.mit.kacquah.deckviewer.speech.recognizer.SpeechRecognizer.ISpeechEven
  */
 public class SpeechParser implements ISpeechEventListener {
   private static Logger LOGGER = Logger.getLogger(SpeechParser.class.getName());
-  ActionManager actionManager;
-
+  private ActionManager actionManager;
+  private String statusMessage;
+  
   public SpeechParser() {
+    this.statusMessage = "--";
   }
 
   // public void setSelectionManager(SelectionManager m) {
@@ -39,6 +41,8 @@ public class SpeechParser implements ISpeechEventListener {
   public void handleSpeechResult(SpeechResult result) {
     String command = result.getHypothesis().toLowerCase();
 
+    this.statusMessage = command;
+    
     boolean success;
 
     // Since commands come in two types (action + selection) or (location), we
@@ -58,6 +62,7 @@ public class SpeechParser implements ISpeechEventListener {
     if (!success) {
       // We don't understand this command...
       LOGGER.severe("Unable to parse command:" + command);
+      this.statusMessage = "Unable to parse command:" + command;
     }
   }
 
@@ -214,5 +219,13 @@ public class SpeechParser implements ISpeechEventListener {
     } else {
       return -1;
     }
+  }
+  
+  /**
+   * Returns string status for the status bar to display.
+   * @return
+   */
+  public String getStatus() {
+    return this.statusMessage;
   }
 }

@@ -198,6 +198,8 @@ public class DeckViewerPApplet extends PApplet implements PAppletRenderObject {
   private void updateStatusBar() {
     // Action status on left
     statusbar.setMessageLeft(actionManager.getStatus());
+    // Last speech command on center
+    statusbar.setMessageCenter(speechParser.getStatus());
     // FrameRate on right
     statusbar.setMessageRight("FrameRate: " + numberFormater.format(frameRate));
   }
