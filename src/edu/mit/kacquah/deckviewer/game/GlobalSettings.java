@@ -43,6 +43,8 @@ public class GlobalSettings {
   // Use mouse pointer instead of finger points (for simpler debugging)
   public static final boolean useMousePoint = false;
   public static final boolean usePointingEstimate = true;
+  public static final boolean showFingerPoints = false;
+  public static final boolean showPointingPoint = true;
 
   /**
    * Grammar configuration for speech recognition.

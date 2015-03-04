@@ -183,24 +183,30 @@ public class HandTracker implements IHandEventListener, PAppletRenderObject, Run
   public void render(PApplet p) {
     p.pushStyle();
     p.noStroke();
-    if (feList != null) {
-      p.fill(ColorUtil.RED);
-      Point2f[] points = getFilteredPoints();
-      for (Point2f point : points) {
-        Point pointInImageCoord = new Point((int) point.x, (int) point.y);
-        //SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
-        p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
+    
+    if (GlobalSettings.showFingerPoints) {
+      if (feList != null) {
+        p.fill(ColorUtil.RED);
+        Point2f[] points = getFilteredPoints();
+        for (Point2f point : points) {
+          Point pointInImageCoord = new Point((int) point.x, (int) point.y);
+          //SwingUtilities.convertPointFromScreen(pointInImageCoord, p);
+          p.ellipse(pointInImageCoord.x, pointInImageCoord.y, circleRadius * 2,
+              circleRadius * 2);
+        }
+      }
+    }
+    
+    if (GlobalSettings.showPointingPoint) {
+      DiecticEvent tempDe = this.getDiecticEvent();
+      if (tempDe != null && ! isCalibratingBackground()) {
+        p.fill(ColorUtil.ORANGE);
+  
+        p.ellipse(pointingPoint.x, pointingPoint.y, circleRadius * 2,
             circleRadius * 2);
       }
     }
     
-    DiecticEvent tempDe = this.getDiecticEvent();
-    if (tempDe != null && ! isCalibratingBackground()) {
-      p.fill(ColorUtil.ORANGE);
-
-      p.ellipse(pointingPoint.x, pointingPoint.y, circleRadius * 2,
-          circleRadius * 2);
-    }
     p.popStyle();
   }
 
