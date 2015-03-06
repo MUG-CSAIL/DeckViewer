@@ -11,8 +11,7 @@ grammar deckviewer;
  * Parts of speech.
  */
 
-<digit> = oh    |
-          zero  |
+<digit> = zero  |
           one   |
           two   |
           three |
@@ -88,3 +87,4 @@ grammar deckviewer;
  <launchCommand> = to launch on ( <catapult> | <catapultGroup>);
 
 public <command> =  <moveCommand> | <locationCommand> | <affirmativeCommand> | <launchCommand>;
+//public <command> =  <digit> ;

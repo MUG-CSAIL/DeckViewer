@@ -31,7 +31,7 @@ public class GlobalSettings {
   /**
    * Limit the maximum resolution of the app for runtime optimization.
    */
-  public static final int maxNumPixels = 2000000;
+  public static final int maxNumPixels = 3000000;
   public static final boolean limitMaxRes = false;
   
   /**
@@ -97,5 +97,5 @@ public class GlobalSettings {
   /**
    * Scene configuration
    */
-  public static final int SCHENE_NUMBER = 2;
+  public static final int SCHENE_NUMBER = 1;
 }
