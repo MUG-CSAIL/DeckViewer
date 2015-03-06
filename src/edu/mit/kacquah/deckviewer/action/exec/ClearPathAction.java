@@ -78,7 +78,7 @@ public class ClearPathAction  extends SpeechGraph implements ExecAction {
         // Find the closest alternate spots to one of the blocking aircraft
         Point centroid = blockAircraft.position();
         alternateParkingSpots = Deck.getInstance().closestFreeParkingSpots(
-            centroid, 1, blockSpots, ParkingRegionType.CATAPULT_TYPES);
+            centroid, 1, blockSpots, ParkingRegionType.CATAPULT_ELEVATOR_TYPES);
         // Add alternate spot to result and block spots
         result.add(alternateParkingSpots.get(0));
         blockSpots.add(alternateParkingSpots.get(0));

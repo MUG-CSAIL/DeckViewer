@@ -62,7 +62,7 @@ public class FindAlternateTargetAction extends SpeechGraph implements ExecAction
         }
       }
       alternateParkingSpots = Deck.getInstance().closestFreeParkingSpots(
-          centroid, numNullSpots, blockSpots, ParkingRegionType.CATAPULT_TYPES);
+          centroid, numNullSpots, blockSpots, ParkingRegionType.CATAPULT_ELEVATOR_TYPES);
       // Get the names of the alternate parking region
       alternateParkingRegions = new LinkedList<ParkingRegion>();
       for (ParkingSpot spot: alternateParkingSpots) {
