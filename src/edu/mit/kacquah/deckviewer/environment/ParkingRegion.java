@@ -49,7 +49,11 @@ public class ParkingRegion implements PAppletRenderObject {
     
     public static LinkedList<ParkingRegionType> ELEVATOR_TYPES = new LinkedList<ParkingRegionType>(
         Arrays.asList(ELEVATOR_1, ELEVATOR_2, ELEVATOR_3, ELEVATOR_4));
-        
+    
+    public static LinkedList<ParkingRegionType> CATAPULT_ELEVATOR_TYPES = new LinkedList<ParkingRegionType>(
+        Arrays.asList(CATAPULT_1, CATAPULT_2, CATAPULT_3, CATAPULT_4,
+            ELEVATOR_1, ELEVATOR_2, ELEVATOR_3, ELEVATOR_4));
+  
     public final String name;
     ParkingRegionType(String name) {
       this.name = name;

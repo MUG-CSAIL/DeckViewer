@@ -74,7 +74,8 @@ public class ActionCommand {
   public static final String BTWN_EL1_AND_CAT = "between elevator one and the catapults";
 //  public static final String BHND_TOWER = "behind the tower";
   public static final String BHND_TOWER = "junk yard";
-  public static final String OVER_EL4 = "over elevator four";
+//  public static final String OVER_EL4 = "over elevator four";
+  public static final String OVER_EL4 = "elevator four";
   public static final String FRNT_TOWER = "in front of the tower";
   
   public static final String STREET = "street";
