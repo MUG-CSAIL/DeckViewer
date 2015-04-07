@@ -1,9 +1,9 @@
 # DeckViewer
 
-This code is part of the research project for multimodal interaction with an Aircraft Carreir Deck Ouija Board Display. 
+This code is part of the research project for multimodal interaction with an Aircraft Carrier Deck Ouija Board Display. 
 
 # Environment 
-* Currently developing on Ubuntu 12.04 with Sun Java 7. Tested on Windows 7.
+* Currently developing on Ubuntu 12.04 with Sun Java 7. Tested on Windows 7. Built using Eclipse (Version Kepler)
 
 # Prerequisites
 
@@ -40,8 +40,7 @@ This code is part of the research project for multimodal interaction with an Air
     * Note: For DeckViewer, make sure you include the location of the mbrola base as a Java VM argument
     * Example: `-Dmbrola.base=/home/jim/mbrola`
 
+# How to build and run
 
-  
-  
-  
-  
+* To build all code, open up this project in Eclipse and add the prerequisites above (particulary the jar files).
+* The main class is `DeckViewerMain.java`.
